@@ -101,7 +101,7 @@
 						$comm = 'docker run -i --rm -v $PWD:/app -w /app demo/oracle-java:8 java CompareTextFilesJava';
 
 						$content = system($comm);
-						$calificacion = file_get_contents('ResultsOutJava',FALSE,NULL,0,7);
+						$calificacion = file_get_contents('ResultsOutJava',FALSE,NULL,-1,7);
 						$try = file_get_contents('tries');
 
 						echo "Result = ".$calificacion;
