@@ -132,7 +132,7 @@
 				?>
 			</pre>
 	</body>
-	<form action="../../../index.php" method="post" enctype="multipart/form-data">
+	<form action="../../../../index.php" method="post" enctype="multipart/form-data">
 			<div class="form-group col-md-6">
 				<h4>Return to home page:</h4>
 				<input type="submit" value="Home" name="submit" class="btn btn-primary">
