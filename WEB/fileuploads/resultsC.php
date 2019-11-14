@@ -94,7 +94,7 @@
 						// Compare Output
 						
 						system('echo '.$matricula.' > ./Alumnos/'.$matricula.'/current');
-						system('docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac -d ./Alumnos/'.$matricula.' ./TestCasesJava/CompareTextFilesC.java');
+						system('docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac -d ./Alumnos/'.$matricula.' ./TestCasesC/CompareTextFilesC.java');
 
 						chdir('./Alumnos/'.$matricula.'/');
 						
