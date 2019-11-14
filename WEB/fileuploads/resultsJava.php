@@ -101,7 +101,8 @@
 						$comm = 'docker run -i --rm -v $PWD:/app -w /app demo/oracle-java:8 java CompareTextFilesJava';
 
 						$content = system($comm);
-						$calificacion = file_get_contents('ResultsOutJava',FALSE,NULL,0,7);
+						$calificacion = file_get_contents('ResultsOutJava');
+						$calif = explode(" ",$calificacion);
 						$try = file_get_contents('tries');
 
 						echo "Result = ".$calificacion;
@@ -121,7 +122,7 @@
 								$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 								$sql = "INSERT INTO `Submissions`(`id_ass`, `matricula`, `calificacion`, `intento`, `time`, `language`) VALUES (?,?,?,?,?,?)";
 								$q = $pdo->prepare($sql);
-								$q->execute(array($_SESSION['group'].'-'.$_SESSION['task'],$matricula,$calificacion,$try,$date,'Java'));
+								$q->execute(array($_SESSION['group'].'-'.$_SESSION['task'],$matricula,$calif[0],$try,$date,'Java'));
 								Database::disconnect();
 							}
 						}
