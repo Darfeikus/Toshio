@@ -102,7 +102,7 @@
 
 						$content = system($comm);
 						$calificacion = file_get_contents('ResultsOutC');
-						$calif = explode(" ",$calificacion);
+						$calif = explode("\n",$calificacion);
 						$try = file_get_contents('tries');
 
 						echo "Result = ".$calificacion;
