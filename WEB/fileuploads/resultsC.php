@@ -94,11 +94,11 @@
 						// Compare Output
 						
 						system('echo '.$matricula.' > ./Alumnos/'.$matricula.'/current');
-						system('docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac -d ./Alumnos/'.$matricula.' ./TestCasesC/CompareTextFilesC.java');
+						system('docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine javac -d ./Alumnos/'.$matricula.' ./TestCasesC/CompareTextFilesC.java');
 
 						chdir('./Alumnos/'.$matricula.'/');
 						
-						$comm = 'docker run -i --rm -v $PWD:/app -w /app demo/oracle-java:8 java CompareTextFilesC';
+						$comm = 'docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine java CompareTextFilesC';
 
 						$content = system($comm);
 						$calificacion = file_get_contents('ResultsOutC');

@@ -80,7 +80,7 @@
 
 						// Compile Main.java
 
-						if(!system('docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac ./Alumnos/'.$matricula.'/Main.java'))
+						if(!system('docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine javac ./Alumnos/'.$matricula.'/Main.java'))
 
 						$myfile = fopen('tcNum', "r");
 						$tcNum = fgets($myfile);
@@ -88,17 +88,17 @@
 
 						// Run TestCase
 						for ($i=1; $i <= $tcNum; $i++) { 
-							$cont = system('docker run -i --rm -v $PWD:/app -w /app demo/oracle-java:8 java -cp ./Alumnos/'.$matricula.' Main < ./TestCases/in'.$i.' > ./Alumnos/'.$matricula.'/out'.$i);
+							$cont = system('docker run -i --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine java -cp ./Alumnos/'.$matricula.' Main < ./TestCases/in'.$i.' > ./Alumnos/'.$matricula.'/out'.$i);
 						}
 						
 						// Compare Output
 						
 						system('echo '.$matricula.' > ./Alumnos/'.$matricula.'/current');
-						system('docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac -d ./Alumnos/'.$matricula.' ./TestCasesJava/CompareTextFilesJava.java');
+						system('docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine javac -d ./Alumnos/'.$matricula.' ./TestCasesJava/CompareTextFilesJava.java');
 
 						chdir('./Alumnos/'.$matricula.'/');
 						
-						$comm = 'docker run -i --rm -v $PWD:/app -w /app demo/oracle-java:8 java CompareTextFilesJava';
+						$comm = 'docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine java CompareTextFilesJava';
 
 						$content = system($comm);
 						$calificacion = file_get_contents('ResultsOutJava');
