@@ -15,7 +15,7 @@
 <html lang="en">
 
 <head>
-        <title>Sumbission</title><meta charset="UTF-8" />
+        <title>Submission</title><meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
@@ -41,7 +41,7 @@
             ?>
             <form method="post" class="form-vertical" action="">
 				 <div class="control-group normal_text"> <h3><img src="img/logo.png" alt="Logo" /></h3></div>
-                <h4>Select the group you whish to check:</h4>
+                <h4>Select the group you wish to check:</h4>
                     
                     <?php 
                         require './fileuploads/Database.php';
