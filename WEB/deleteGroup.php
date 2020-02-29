@@ -19,29 +19,61 @@ if(mysqli_num_rows($results) != 1){
 }
 ?>
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-	<title>Delete Assigments</title><meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="css/bootstrap.min.css" />
-	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-	<link rel="stylesheet" href="css/matrix-login.css" />
-	<link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+<title>Home Page</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/fullcalendar.css" />
+<link rel="stylesheet" href="../css/matrix-style.css" />
+<link rel="stylesheet" href="../css/matrix-media.css" />
+<link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" href="jquery.gritter.css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<div id="loginbox">
-		<form id="loginform" class="form-vertical" action="index.html">
-			<div class="control-group normal_text"> <h3><img src="img/logo.png" alt="Logo" /></h3></div>
-		</form>
-	</div>
-</body>
-<body>
-	<div class="container-fluid">
-		<h1>Delete Assignment</h1>
-		<br><br>
 
+<!--Header-part-->
+<div id="header">
+  <h1><a href="dashboard.html">Submission</a></h1>
+</div>
+<div class="content">
+    <!-- notification message -->
+
+    <?php if (isset($_SESSION['success'])) : ?>
+      <div class="error success" >
+        <h3>
+          <?php 
+            echo $_SESSION['success']; 
+            unset($_SESSION['success']);
+          ?>
+        </h3>
+      </div>
+    <?php endif ?>
+
+    <!-- logged in user information -->
+    <?php  if (isset($_SESSION['username'])) : ?>
+      <p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
+      <p> <a href="../index.php?logout='1'" style="color: red;">logout</a> </p>
+    <?php endif ?>
+</div>
+
+<!--main-container-part-->
+<div id="content">
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>Delete Group</a></div>
+  </div>
+<!--End-breadcrumbs-->
+<?php 
+  if (!empty($_SESSION['msg'])) {
+      echo '<p class="msg"> '.$_SESSION['msg'].'</p>';
+      unset($_SESSION['msg']);
+  }
+?>
+<div class="container-fluid">
 		<?php 
 		if (isset($_POST['task'])){
 			$_SESSION['group'] = $_POST['task'];
@@ -51,7 +83,6 @@ if(mysqli_num_rows($results) != 1){
 				echo "It seems you can't go there :p";
 		}
 		?>
-
 		<form action="" method="post" enctype="multipart/form-data">
 
 
@@ -76,13 +107,9 @@ if(mysqli_num_rows($results) != 1){
 			<br><br>
 
 			<h4>
-				Deleting a group will also remove it from the data base and all the assigments in this
-				Group, it's advisable to download a copy of the db or download the data from the assigments
-				first.
+				Deleting a group will restrict all access to that group submissions
 			</h4>
-			You can download the data from the assigments in Check Assigment Results
-
-			<br></br>
+			You can download the data from the assignments in Check assignment Results
 			<br><br>
 			<input type="submit" value="Confirm" name="submit" class="btn btn-primary">
 

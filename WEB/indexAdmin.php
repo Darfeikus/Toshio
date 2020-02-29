@@ -80,10 +80,10 @@
         <li class="bg_lb"> <a href="fileuploads/createNewAssignement.php"> <i class="icon-pencil"></i> <span class="label label-important"></span> Create New Assignement </a> </li>
       </ul>
       <ul class="quick-actions">
-        <li class="bg_lg"> <a href="editIndex.php"> <i class="icon-book"></i> <span class="label label-important"></span> Edit Assigment </a> </li>
+        <li class="bg_lg"> <a href="editIndex.php"> <i class="icon-book"></i> <span class="label label-important"></span> Edit assignment </a> </li>
       </ul>
       <ul class="quick-actions">
-        <li class="bg_lr"> <a href="deleteIndex.php"> <i class="icon-book"></i> <span class="label label-important"></span> Delete Assigment </a> </li>
+        <li class="bg_lr"> <a href="deleteIndex.php"> <i class="icon-book"></i> <span class="label label-important"></span> Delete assignment </a> </li>
       </ul>
       <ul class="quick-actions">
         <li class="bg_ly"> <a href="reactivateIndex.php"> <i class="icon-book"></i> <span class="label label-important"></span> Reactivate </a> </li>
@@ -97,7 +97,7 @@
         <li class="bg_lr"> <a href="deleteGroup.php"> <i class="icon-dashboard"></i> <span class="label label-important"></span> Delete a Group </a> </li>
       </ul>
       <ul class="quick-actions">
-        <li class="bg_lg"> <a href="fileuploads/groupIndexTable.php"> <i class="icon-dashboard"></i> <span class="label label-important"></span> Check Assigment Results </a> </li>
+        <li class="bg_lg"> <a href="fileuploads/groupIndexTable.php"> <i class="icon-dashboard"></i> <span class="label label-important"></span> Check assignment Results </a> </li>
       </ul>
     </div>
   </div>

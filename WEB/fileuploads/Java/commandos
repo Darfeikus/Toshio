@@ -6,26 +6,23 @@ docker build -f Dockerfile -t demo/oracle-java:8 .
 
 En la misma carpeta
 
-docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac Main.java
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine javac Main.java
+
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine java Main
 
 
-docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 java Main
+En diferente
 
 
-En 
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine javac prueba/Main.java
 
-diferente
-
- docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac prueba/Main.java
-
-
-docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 java -cp prueba Main
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine java -cp prueba Main
 
 
 
 En PHP 
 
-docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 javac prueba/Main.java
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine javac prueba/Main.java
 
-docker run --rm -v $PWD:/app -w /app demo/oracle-java:8 sh -c \'java Main < in > out\'
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine sh -c \'java Main < in > out\'
 
