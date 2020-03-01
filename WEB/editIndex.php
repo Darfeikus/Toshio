@@ -85,13 +85,13 @@ if (isset($_GET['logout'])) {
                 require './fileuploads/Database.php';
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "SELECT * FROM `Groups` WHERE matricula = ?";
+                $sql = "SELECT * FROM `groups` WHERE matricula = ?";
                 $result = $pdo->prepare($sql);
                 $result->execute(array($_SESSION['username']));
 
                 ?>
 
-                <select name="group">
+                <select name="group" required>
                     <?php while ($row = $result->fetch(PDO::FETCH_NUM)) { ?>
                         <option value="<?php echo $row[0] ?>"><?php echo $row[1]; ?> </option>
                     <?php } ?>
@@ -111,3 +111,40 @@ if (isset($_GET['logout'])) {
 
 
 </html>
+
+<script>
+    var createAllErrors = function() {
+        var form = $(this),
+            errorList = $("ul.errorMessages", form);
+
+        var showAllErrorMessages = function() {
+            errorList.empty();
+
+            // Find all invalid fields within the form.
+            var invalidFields = form.find(":invalid").each(function(index, node) {
+
+                // Find the field's corresponding label
+                var label = $("label[for=" + node.id + "] "),
+                    // Opera incorrectly does not fill the validationMessage property.
+                    message = node.validationMessage || 'Invalid value.';
+
+                errorList
+                    .show()
+                    .append("<li><span>" + label.html() + "</span> " + message + "</li>");
+            });
+        };
+
+        $("input[type=submit], button:not([type=button])", form)
+            .on("click", showAllErrorMessages);
+
+        $("input", form).on("keypress", function(event) {
+            var type = $(this).attr("type");
+            if (/date|email|month|number|search|tel|text|time|url|week/.test(type) &&
+                event.keyCode == 13) {
+                showAllErrorMessages();
+            }
+        });
+    };
+
+    $("form").each(createAllErrors);
+</script>

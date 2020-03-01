@@ -102,7 +102,7 @@ if (mysqli_num_rows($results) != 1) {
         try {
           $pdo = Database::connect();
           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $sql = "DELETE FROM `Groups` WHERE id_group = ?";
+          $sql = "DELETE FROM `groups` WHERE id_group = ?";
           $result = $pdo->prepare($sql);
           $result->execute(array($_SESSION['group']));
           Database::disconnect();

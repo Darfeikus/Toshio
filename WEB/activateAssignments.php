@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 $db = mysqli_connect('localhost', 'SrBarbosa', 'Wy$rUH1r#', 'calificador_registration');
 if (!isset($_SESSION['username'])) {
@@ -13,68 +13,142 @@ if (isset($_GET['logout'])) {
 $user = $_SESSION['username'];
 $query = "SELECT * FROM `users` WHERE id != '' AND username = '$user'";
 $results = mysqli_query($db, $query);
-if(mysqli_num_rows($results) != 1){
+if (mysqli_num_rows($results) != 1) {
 	$_SESSION['msg'] = "Unauthorized access. You've been reported to the great admin. ";
-	header("location: ./index.php");	
+	header("location: ./index.php");
 }
 ?>
+
 <!DOCTYPE html>
+<html lang="en">
 
-<html>
-		<head>
-	        <title>Edit assignment</title><meta charset="UTF-8" />
-	        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-			<link rel="stylesheet" href="css/bootstrap.min.css" />
-			<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-	        <link rel="stylesheet" href="css/matrix-login.css" />
-	        <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
-			<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-	   </head>
-	    <body>
-	        <div id="loginbox">
-	            <form id="loginform" class="form-vertical" action="index.html">
-					 <div class="control-group normal_text"> <h3><img src="img/logo.png" alt="Logo" /></h3></div>
-	            </form>
-	        </div>
-	    </body>
-	<body>
-		<div class="container-fluid">
-		<h1>Activate Assignments</h1>
-		<br><br>
+<head>
+	<title>Home Page</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+	<link rel="stylesheet" href="../css/fullcalendar.css" />
+	<link rel="stylesheet" href="../css/matrix-style.css" />
+	<link rel="stylesheet" href="../css/matrix-media.css" />
+	<link href="../font-awesome/css/font-awesome.css" rel="stylesheet" />
+	<link rel="stylesheet" href="jquery.gritter.css" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+</head>
 
-		<form action="./fileuploads/reactivateUp.php" method="post" enctype="multipart/form-data">
-			
-                 
-        <h4>Select the assignment you wish to Activate</h4>
-            
-            <?php 
-			require './fileuploads/Database.php';
-			$pdo = Database::connect();
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$sql = "SELECT * FROM `assignments` WHERE id_group = ?";
-			$result = $pdo->prepare($sql);
-			$result->execute(array($_SESSION['group']));
+<body>
 
-			?>
+	<!--Header-part-->
+	<div id="header">
+	</div>
+	<div class="content">
+		<!-- notification message -->
 
-            <select name="task">
-			<?php while ($row = $result->fetch(PDO::FETCH_NUM)) { if(file_exists('./fileuploads/deactivated/'.$row[2])){?>
-				<option value="<?php echo $row[2] ?>"><?php echo $row[2]; ?>  </option>
-				<?php } ?>
-			<?php } ?>
-		</select>
-
-			<br><br>
-	 		<input type="submit" value="Confirm" name="submit" class="btn btn-primary">
-
-		</form>
-
-		<form action="./indexAdmin.php" method="post" enctype="multipart/form-data">
-			<div class="form-group col-md-6">
-				<h4>Return to home page:</h4>
-				<input type="submit" value="Home" name="submit" class="btn btn-primary">
+		<?php if (isset($_SESSION['success'])) : ?>
+			<div class="error success">
+				<h3>
+					<?php
+					echo $_SESSION['success'];
+					unset($_SESSION['success']);
+					?>
+				</h3>
 			</div>
-		</form>
+		<?php endif ?>
 
-	</body>
+		<!-- logged in user information -->
+		<?php if (isset($_SESSION['username'])) : ?>
+			<p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
+			<p> <a href="../index.php?logout='1'" style="color: red;">logout</a> </p>
+		<?php endif ?>
+	</div>
+
+	<!--main-container-part-->
+	<div id="content">
+		<!--breadcrumbs-->
+		<div id="content-header">
+			<div id="breadcrumb"> <a href="../index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Reactivation</a></div>
+		</div>
+		<!--End-breadcrumbs-->
+		<?php
+		if (!empty($_SESSION['msg'])) {
+			echo '<p class="msg"> ' . $_SESSION['msg'] . '</p>';
+			unset($_SESSION['msg']);
+		}
+		?>
+		<div class="container-fluid">
+
+			<form action="./fileuploads/reactivateUp.php" method="post" enctype="multipart/form-data">
+
+
+				<h4>Select the assignment you wish to Activate</h4>
+
+				<?php
+				require './fileuploads/Database.php';
+				$pdo = Database::connect();
+				$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$sql = "SELECT * FROM `assignments` WHERE id_group = ?";
+				$result = $pdo->prepare($sql);
+				$result->execute(array($_SESSION['group']));
+
+				?>
+
+				<select name="task" required>
+					<?php while ($row = $result->fetch(PDO::FETCH_NUM)) {
+						if (file_exists('./fileuploads/deactivated/' . $row[2])) { ?>
+							<option value="<?php echo $row[2] ?>"><?php echo $row[2]; ?> </option>
+						<?php } ?>
+					<?php } ?>
+				</select>
+
+				<br><br>
+				<input type="submit" value="Confirm" name="submit" class="btn btn-primary">
+
+			</form>
+
+			<form action="./indexAdmin.php" method="post" enctype="multipart/form-data">
+				<div class="form-group col-md-6">
+					<h4>Return to home page:</h4>
+					<input type="submit" value="Home" name="submit" class="btn btn-primary">
+				</div>
+			</form>
+
+</body>
+
 </html>
+
+<script>
+	var createAllErrors = function() {
+		var form = $(this),
+			errorList = $("ul.errorMessages", form);
+
+		var showAllErrorMessages = function() {
+			errorList.empty();
+
+			// Find all invalid fields within the form.
+			var invalidFields = form.find(":invalid").each(function(index, node) {
+
+				// Find the field's corresponding label
+				var label = $("label[for=" + node.id + "] "),
+					// Opera incorrectly does not fill the validationMessage property.
+					message = node.validationMessage || 'Invalid value.';
+
+				errorList
+					.show()
+					.append("<li><span>" + label.html() + "</span> " + message + "</li>");
+			});
+		};
+
+		$("input[type=submit], button:not([type=button])", form)
+			.on("click", showAllErrorMessages);
+
+		$("input", form).on("keypress", function(event) {
+			var type = $(this).attr("type");
+			if (/date|email|month|number|search|tel|text|time|url|week/.test(type) &&
+				event.keyCode == 13) {
+				showAllErrorMessages();
+			}
+		});
+	};
+
+	$("form").each(createAllErrors);
+</script>

@@ -1,21 +1,21 @@
-<?php 
+<?php
 session_start();
 $db = mysqli_connect('localhost', 'SrBarbosa', 'Wy$rUH1r#', 'calificador_registration');
 if (!isset($_SESSION['username'])) {
-	$_SESSION['msg'] = "You must log in first";
-	header('location: ./index.php');
+    $_SESSION['msg'] = "You must log in first";
+    header('location: ./index.php');
 }
 if (isset($_GET['logout'])) {
-	session_destroy();
-	unset($_SESSION['username']);
-	header("location: ./index.php");
+    session_destroy();
+    unset($_SESSION['username']);
+    header("location: ./index.php");
 }
 $user = $_SESSION['username'];
 $query = "SELECT * FROM `users` WHERE id != '' AND username = '$user'";
 $results = mysqli_query($db, $query);
-if(mysqli_num_rows($results) != 1){
-	$_SESSION['msg'] = "Unauthorized access. You've been reported to the great admin. ";
-	header("location: ./index.php");	
+if (mysqli_num_rows($results) != 1) {
+    $_SESSION['msg'] = "Unauthorized access. You've been reported to the great admin. ";
+    header("location: ./index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -76,52 +76,90 @@ if(mysqli_num_rows($results) != 1){
         }
         ?>
         <div class="container-fluid">
-		<h1>Delete Assignment</h1>
-		<br><br>
+            <h1>Delete Assignment</h1>
+            <br><br>
 
-		<form action="./fileuploads/deleteUp.php" method="post" enctype="multipart/form-data">
+            <form action="./fileuploads/deleteUp.php" method="post" enctype="multipart/form-data">
 
 
-			<h4>Select your assignment</h4>
+                <h4>Select your assignment</h4>
 
-			<?php 
-			require './fileuploads/Database.php';
-			$pdo = Database::connect();
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$sql = "SELECT * FROM `Assignments` WHERE id_group = ?";
-			$result = $pdo->prepare($sql);
-			$result->execute(array($_SESSION['group']));
+                <?php
+                require './fileuploads/Database.php';
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "SELECT * FROM `assignments` WHERE id_group = ?";
+                $result = $pdo->prepare($sql);
+                $result->execute(array($_SESSION['group']));
 
-			?>
+                ?>
 
-			<select name="task">
-				<?php while ($row = $result->fetch(PDO::FETCH_NUM)) { if(file_exists('./fileuploads/Classes/'.$_SESSION['group'].'/'.$row[2])){?>
-					<option value="<?php echo $row[2];?>"><?php echo $row[2]; ?>  </option>
-				<?php } ?>
-			<?php } ?>
-		</select>
+                <select name="task" required>
+                    <?php while ($row = $result->fetch(PDO::FETCH_NUM)) {
+                        if (file_exists('./fileuploads/Classes/' . $_SESSION['group'] . '/' . $row[2])) { ?>
+                            <option value="<?php echo $row[2]; ?>"><?php echo $row[2]; ?> </option>
+                        <?php } ?>
+                    <?php } ?>
+                </select>
 
-		<br><br>
+                <br><br>
 
-		Deleting an assignment will also remove it from the data base.
-		You can download the data from the assignment in Check assignment Results
+                Deleting an assignment will also remove it from the data base.
+                You can download the data from the assignment in Check assignment Results
 
-		<br></br>
-		<select name="opt">
-			<option value="0">Deactivate</option>
-			<option value="1">Delete</option>
-		</select>
-		<br><br>
-		<input type="submit" value="Confirm" name="submit" class="btn btn-primary">
+                <br></br>
+                <select name="opt" required>
+                    <option value="0">Deactivate</option>
+                    <option value="1">Delete</option>
+                </select>
+                <br><br>
+                <input type="submit" value="Confirm" name="submit" class="btn btn-primary">
 
-	</form>
+            </form>
 
-	<form action="./indexAdmin.php" method="post" enctype="multipart/form-data">
-		<div class="form-group col-md-6">
-			<h4>Return to home page:</h4>
-			<input type="submit" value="Home" name="submit" class="btn btn-primary">
-		</div>
-	</form>
+            <form action="./indexAdmin.php" method="post" enctype="multipart/form-data">
+                <div class="form-group col-md-6">
+                    <h4>Return to home page:</h4>
+                    <input type="submit" value="Home" name="submit" class="btn btn-primary">
+                </div>
+            </form>
 
 </body>
+
 </html>
+<script>
+    var createAllErrors = function() {
+        var form = $(this),
+            errorList = $("ul.errorMessages", form);
+
+        var showAllErrorMessages = function() {
+            errorList.empty();
+
+            // Find all invalid fields within the form.
+            var invalidFields = form.find(":invalid").each(function(index, node) {
+
+                // Find the field's corresponding label
+                var label = $("label[for=" + node.id + "] "),
+                    // Opera incorrectly does not fill the validationMessage property.
+                    message = node.validationMessage || 'Invalid value.';
+
+                errorList
+                    .show()
+                    .append("<li><span>" + label.html() + "</span> " + message + "</li>");
+            });
+        };
+
+        $("input[type=submit], button:not([type=button])", form)
+            .on("click", showAllErrorMessages);
+
+        $("input", form).on("keypress", function(event) {
+            var type = $(this).attr("type");
+            if (/date|email|month|number|search|tel|text|time|url|week/.test(type) &&
+                event.keyCode == 13) {
+                showAllErrorMessages();
+            }
+        });
+    };
+
+    $("form").each(createAllErrors);
+</script>

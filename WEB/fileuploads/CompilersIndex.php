@@ -33,7 +33,7 @@ if (isset($_GET['logout'])) {
 
     <!--Header-part-->
     <div id="header">
-    <h1><a href="dashboard.html">Submission</a></h1>
+        <h1><a href="dashboard.html">Submission</a></h1>
     </div>
     <div class="content">
         <!-- notification message -->
@@ -91,12 +91,12 @@ if (isset($_GET['logout'])) {
                     require 'Database.php';
                     $pdo = Database::connect();
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "SELECT * FROM `Assignments` WHERE id_group = ?";
+                    $sql = "SELECT * FROM `assignments` WHERE id_group = ?";
                     $result = $pdo->prepare($sql);
                     $result->execute(array($_SESSION['group']));
                     ?>
 
-                    <select name="task">
+                    <select name="task" required>
                         <?php while ($row = $result->fetch(PDO::FETCH_NUM)) {
                             if (file_exists('./Classes/' . $_SESSION['group'] . '/' . $row[2] . '/Alumnos/' . $_SESSION['username'])) { ?>
                                 <option value="<?php echo $row[2]; ?>"><?php echo $row[2]; ?> </option>
@@ -118,3 +118,39 @@ if (isset($_GET['logout'])) {
 </form>
 
 </html>
+<script>
+    var createAllErrors = function() {
+        var form = $(this),
+            errorList = $("ul.errorMessages", form);
+
+        var showAllErrorMessages = function() {
+            errorList.empty();
+
+            // Find all invalid fields within the form.
+            var invalidFields = form.find(":invalid").each(function(index, node) {
+
+                // Find the field's corresponding label
+                var label = $("label[for=" + node.id + "] "),
+                    // Opera incorrectly does not fill the validationMessage property.
+                    message = node.validationMessage || 'Invalid value.';
+
+                errorList
+                    .show()
+                    .append("<li><span>" + label.html() + "</span> " + message + "</li>");
+            });
+        };
+
+        $("input[type=submit], button:not([type=button])", form)
+            .on("click", showAllErrorMessages);
+
+        $("input", form).on("keypress", function(event) {
+            var type = $(this).attr("type");
+            if (/date|email|month|number|search|tel|text|time|url|week/.test(type) &&
+                event.keyCode == 13) {
+                showAllErrorMessages();
+            }
+        });
+    };
+
+    $("form").each(createAllErrors);
+</script>

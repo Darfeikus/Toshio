@@ -55,7 +55,6 @@ if (mysqli_num_rows($results) != 1) {
 				</h3>
 			</div>
 		<?php endif ?>
-
 		<!-- logged in user information -->
 		<?php if (isset($_SESSION['username'])) : ?>
 			<p>Welcome <strong><?php echo $_SESSION['username']; ?></strong></p>
@@ -70,13 +69,13 @@ if (mysqli_num_rows($results) != 1) {
 			<div id="breadcrumb"> <a href="../index.php" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Create new submission</a></div>
 		</div>
 		<!--End-breadcrumbs-->
-		<?php
-		if (!empty($_SESSION['msg'])) {
-			echo '<p class="msg"> ' . $_SESSION['msg'] . '</p>';
-			unset($_SESSION['msg']);
-		}
-		?>
 		<div class="container-fluid">
+			<?php
+			if (!empty($_SESSION['msg'])) {
+				echo '<p> ' . $_SESSION['msg'] . '</p>';
+				unset($_SESSION['msg']);
+			}
+			?>
 
 			<form action="./assUp.php" method="post" enctype="multipart/form-data">
 				<div class="form-group col-md-6">
@@ -86,13 +85,13 @@ if (mysqli_num_rows($results) != 1) {
 					require 'Database.php';
 					$pdo = Database::connect();
 					$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					$sql = "SELECT * FROM `Groups` WHERE matricula = ?";
+					$sql = "SELECT * FROM `groups` WHERE matricula = ?";
 					$result = $pdo->prepare($sql);
 					$result->execute(array($_SESSION['username']));
 
 					?>
 
-					<select name="group">
+					<select name="group" required>
 						<?php while ($row = $result->fetch(PDO::FETCH_NUM)) { ?>
 							<option value="<?php echo $row[0] ?>"><?php echo $row[1]; ?> </option>
 						<?php } ?>
@@ -103,13 +102,13 @@ if (mysqli_num_rows($results) != 1) {
 
 				<div class="form-group col-md-6">
 					<h4>Name of the Assignement(No special characters):</h4>
-					<input class="form-control" type="text" name="assName">
+					<input class="form-control" type="text" name="assName" required>
 					<br><br>
 				</div>
 
 				<div class="form-group col-md-6">
 					<h4>Number of Test Cases:</h4>
-					<select name="tcNum">
+					<select name="tcNum" required>
 						<?php for ($i = 1; $i <= 100; $i++) : ?>
 							<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 						<?php endfor; ?>
@@ -119,7 +118,7 @@ if (mysqli_num_rows($results) != 1) {
 
 				<div class="form-group col-md-6">
 					<h4>Number of tries allowed:</h4>
-					<select name="trNum">
+					<select name="trNum" required>
 						<?php for ($i = 1; $i <= 10; $i++) : ?>
 							<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 						<?php endfor; ?>
@@ -129,16 +128,23 @@ if (mysqli_num_rows($results) != 1) {
 
 				<div class="form-group col-md-6">
 					<h4>Select Language:</h4>
-					<select name="lang">
+					<select name="lang" required>
 						<option value="C">C</option>
 						<option value="Java">Java</option>
 					</select>
 					<br><br>
 				</div>
+				<div>
+					<h4>Please upload a zip file with the test cases</h4>
+					<input type="file" name="testCases" id="testCases" required>
+					<br><br>
+				</div>
 
-				<h4>Please upload a zip file with the test cases</h4>
-				<input type="file" name="testCases" id="testCases">
-				<br><br>
+				<div>
+					<h4>Please upload a PDF with the instructions</h4>
+					<input type="file" name="pdf" id="pdf" required>
+					<br><br>
+				</div>
 
 				<input type="submit" value="Upload" name="submit" class="btn btn-primary">
 
@@ -153,3 +159,40 @@ if (mysqli_num_rows($results) != 1) {
 </body>
 
 </html>
+
+<script>
+	var createAllErrors = function() {
+		var form = $(this),
+			errorList = $("ul.errorMessages", form);
+
+		var showAllErrorMessages = function() {
+			errorList.empty();
+
+			// Find all invalid fields within the form.
+			var invalidFields = form.find(":invalid").each(function(index, node) {
+
+				// Find the field's corresponding label
+				var label = $("label[for=" + node.id + "] "),
+					// Opera incorrectly does not fill the validationMessage property.
+					message = node.validationMessage || 'Invalid value.';
+
+				errorList
+					.show()
+					.append("<li><span>" + label.html() + "</span> " + message + "</li>");
+			});
+		};
+
+		$("input[type=submit], button:not([type=button])", form)
+			.on("click", showAllErrorMessages);
+
+		$("input", form).on("keypress", function(event) {
+			var type = $(this).attr("type");
+			if (/date|email|month|number|search|tel|text|time|url|week/.test(type) &&
+				event.keyCode == 13) {
+				showAllErrorMessages();
+			}
+		});
+	};
+
+	$("form").each(createAllErrors);
+</script>

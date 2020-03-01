@@ -60,7 +60,7 @@
                         require 'Database.php';
                         $pdo = Database::connect();
                         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $sql = "SELECT * FROM `Assignments` WHERE id_group = ?";
+                        $sql = "SELECT * FROM `assignments` WHERE id_group = ?";
                         $result = $pdo->prepare($sql);
                         $result->execute(array($_SESSION['group']));
                     ?>

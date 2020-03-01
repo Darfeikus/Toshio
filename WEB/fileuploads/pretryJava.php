@@ -72,17 +72,16 @@ if (isset($_GET['logout'])) {
 		<div class="container-fluid">
 			<div id="loginbox">
 				<h1>Java Sumbission</h1>
-
+				<embed src="problem.pdf" type="application/pdf" width="100%" height="600px"/>	
 				<form action="./results.php" method="post" enctype="multipart/form-data">
 					<div class="form-group col-md-6">
 						<h4>Matricula:</h4>
 						<?php if (isset($_SESSION['username'])) : ?>
 							<p> <strong><?php echo $_SESSION['username']; ?></strong></p>
 						<?php endif ?>
-						<br><br>
 					</div>
 					<input type="file" name="fileToUpload" id="fileToUpload">
-					<br>
+					<br><br>
 					<input type="submit" value="Upload" name="submit" class="btn btn-primary">
 
 				</form>

@@ -22,7 +22,7 @@ if (mysqli_num_rows($results) != 1) {
 <html lang="en">
 
 <head>
-  <title>Home Page</title>
+  <title>Submission</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../css/bootstrap.min.css" />
@@ -39,7 +39,7 @@ if (mysqli_num_rows($results) != 1) {
 
   <!--Header-part-->
   <div id="header">
-  <h1><a href="dashboard.html">Submission</a></h1>
+    <h1><a href="dashboard.html">Submission</a></h1>
   </div>
   <div class="content">
     <!-- notification message -->
@@ -77,22 +77,28 @@ if (mysqli_num_rows($results) != 1) {
       $target_dir = 'Classes/' . $group . '/' . $assName;
       $target_dir2 = $target_dir . '/TestCases';
       $target_dir4 = $target_dir . '/Alumnos';
-      if (!file_exists($target_dir) && $assName != "") {
+      if (!file_exists($target_dir)) {
+        
         mkdir($target_dir, 0777, true);
         mkdir($target_dir2, 0777, true);
         mkdir($target_dir4, 0777, true);
+
         chmod($target_dir, 0777);
         chmod($target_dir2, 0777);
         chmod($target_dir4, 0777);
+        
         system('echo ' . $_POST['lang'] . ' > ' . $target_dir . '/lang');
         system('echo ' . $_POST['tcNum'] . ' > ' . $target_dir . '/tcNum');
         system('echo ' . $_POST['trNum'] . ' > ' . $target_dir . '/trNum');
         system('echo ' . $_POST['assName'] . ' > ' . $target_dir . '/name');
+        
         chmod($target_dir . '/lang', 0777);
         chmod($target_dir . '/tcNum', 0777);
         chmod($target_dir . '/trNum', 0777);
         chmod($target_dir . '/name', 0777);
+        
         $myfile = fopen($target_dir . '/lang', "r");
+        
         if (fgets($myfile) == "C\n") {
           $target_dir3 = $target_dir . '/TestCasesC';
           mkdir($target_dir3, 0777);
@@ -115,9 +121,19 @@ if (mysqli_num_rows($results) != 1) {
           chmod($target_dir . '/pretry.php', 0777);
         }
       }
+      else{
+        $_SESSION['msg'] = "Assignment under that name already exists";
+        header('location: createNewAssignment.php');
+      }
+
       move_uploaded_file($_FILES["testCases"]["tmp_name"], $target_dir . '/tc.zip');
       chmod($target_dir . '/tc.zip', 0777);
+      
+      move_uploaded_file($_FILES["pdf"]["tmp_name"], $target_dir . '/problem.pdf');
+      chmod($target_dir . '/problem.pdf', 0777);
+
       $row = 0;
+
       if (($handle = fopen('./Classes/' . $group . '/class.csv', "r")) !== FALSE) {
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
           $num = count($data);
@@ -160,7 +176,7 @@ if (mysqli_num_rows($results) != 1) {
         if (!empty($_POST)) {
           $pdo = Database::connect();
           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $sql = "INSERT INTO `Assignments`(`id_ass`, `id_group`,`name`) VALUES (?,?,?)";
+          $sql = "INSERT INTO `assignments`(`id_ass`, `id_group`,`name`) VALUES (?,?,?)";
           $q = $pdo->prepare($sql);
           $q->execute(array($idAss, $group, $assName));
           Database::disconnect();

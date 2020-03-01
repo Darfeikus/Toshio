@@ -128,7 +128,7 @@ if (mysqli_num_rows($results) != 1) {
         if (!empty($_POST)) {
           $pdo = Database::connect();
           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $sql = "INSERT INTO `Groups`(`id_group`, `name`,`matricula`) VALUES (?,?,?)";
+          $sql = "INSERT INTO `groups`(`id_group`, `name`,`matricula`) VALUES (?,?,?)";
           $q = $pdo->prepare($sql);
           $q->execute(array($id, $clase, $_SESSION['username']));
           Database::disconnect();

@@ -77,7 +77,7 @@
     </div>
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
-        <li class="bg_lb"> <a href="fileuploads/createNewAssignement.php"> <i class="icon-pencil"></i> <span class="label label-important"></span> Create New Assignement </a> </li>
+        <li class="bg_lb"> <a href="fileuploads/createNewAssignment.php"> <i class="icon-pencil"></i> <span class="label label-important"></span> Create New Assignment </a> </li>
       </ul>
       <ul class="quick-actions">
         <li class="bg_lg"> <a href="editIndex.php"> <i class="icon-book"></i> <span class="label label-important"></span> Edit assignment </a> </li>
