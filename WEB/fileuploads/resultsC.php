@@ -156,7 +156,7 @@ if (isset($_GET['logout'])) {
 						if ($valido == true) {
 							$pdo = Database::connect();
 							$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-							$sql = "INSERT INTO `Submissions`(`id_ass`, `matricula`, `calificacion`, `intento`, `time`, `language`) VALUES (?,?,?,?,?,?)";
+							$sql = "INSERT INTO `submissions`(`id_ass`, `matricula`, `calificacion`, `intento`, `time`, `language`) VALUES (?,?,?,?,?,?)";
 							$q = $pdo->prepare($sql);
 							$q->execute(array($_SESSION['group'] . '_' . $_SESSION['task'], $matricula, $calif[0], $try, $date, 'C'));
 							Database::disconnect();
