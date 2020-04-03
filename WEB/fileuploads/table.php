@@ -69,7 +69,7 @@ if(mysqli_num_rows($results) != 1){
 						$assName = fgets($file);
 						fclose($file);
 						$original = str_replace("\n",'',$assName);
-						$sql = "SELECT * FROM `Submissions` WHERE id_ass = ?";
+						$sql = "SELECT * FROM `submissions` WHERE id_ass = ?";
 						$result = $pdo->prepare($sql);
 						$result->execute(array($_SESSION['id_ass']));
 						while ($row = $result->fetch(PDO::FETCH_NUM)) {

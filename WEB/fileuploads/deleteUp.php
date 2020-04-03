@@ -38,7 +38,7 @@
 
 <html>
   <head>
-          <title>Delete Assigment</title><meta charset="UTF-8" />
+          <title>Delete assignment</title><meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="stylesheet" href="../css/bootstrap.min.css" />
       <link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
@@ -54,6 +54,7 @@
               </form>
           </div>
       </body>
+      <div class="container-fluid">
 <?php
   
   $assName = $_POST['task'];
@@ -73,7 +74,7 @@
         if (!empty($_POST)) {
             $pdo = Database::connect();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "DELETE FROM `Assigments` WHERE name = ?";
+            $sql = "DELETE FROM `assignments` WHERE name = ?";
             $result = $pdo->prepare($sql);
             $result->execute(array($assName));
             Database::disconnect();

@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	        <title>Check my assigments</title><meta charset="UTF-8" />
+	        <title>Check my assignments</title><meta charset="UTF-8" />
 	        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<link rel="stylesheet" href="../css/bootstrap.min.css" />
 			<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
@@ -60,7 +60,7 @@
                         require 'Database.php';
                         $pdo = Database::connect();
                         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                        $sql = "SELECT * FROM `Assigments` WHERE id_group = ?";
+                        $sql = "SELECT * FROM `assignments` WHERE id_group = ?";
                         $result = $pdo->prepare($sql);
                         $result->execute(array($_SESSION['group']));
                     ?>
