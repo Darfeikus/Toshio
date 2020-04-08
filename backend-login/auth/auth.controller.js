@@ -20,6 +20,7 @@ exports.createUser = (req, res, next) => {
     });
     const dataUser = {
       mat: user.mat,
+      type: user.type,
       accessToken,
       expiresIn
     };
