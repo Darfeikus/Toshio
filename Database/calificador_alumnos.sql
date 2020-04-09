@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 06, 2019 at 11:12 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 7.3.2
+-- Generation Time: Apr 09, 2020 at 08:37 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Assigments`
+-- Table structure for table `assigments`
 --
 
-CREATE TABLE `Assigments` (
+CREATE TABLE `assigments` (
   `id_ass` varchar(100) NOT NULL,
   `id_group` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL
@@ -37,10 +36,10 @@ CREATE TABLE `Assigments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Groups`
+-- Table structure for table `groups`
 --
 
-CREATE TABLE `Groups` (
+CREATE TABLE `groups` (
   `id_group` varchar(100) NOT NULL,
   `name` varchar(100) NOT NULL,
   `matricula` varchar(10) NOT NULL
@@ -66,16 +65,16 @@ CREATE TABLE `Submissions` (
 --
 
 --
--- Indexes for table `Assigments`
+-- Indexes for table `assigments`
 --
-ALTER TABLE `Assigments`
+ALTER TABLE `assigments`
   ADD PRIMARY KEY (`id_ass`),
   ADD KEY `id_group` (`id_group`);
 
 --
--- Indexes for table `Groups`
+-- Indexes for table `groups`
 --
-ALTER TABLE `Groups`
+ALTER TABLE `groups`
   ADD PRIMARY KEY (`id_group`);
 
 --
@@ -83,10 +82,10 @@ ALTER TABLE `Groups`
 --
 
 --
--- Constraints for table `Assigments`
+-- Constraints for table `assigments`
 --
-ALTER TABLE `Assigments`
-  ADD CONSTRAINT `Assigment-Grupo` FOREIGN KEY (`id_group`) REFERENCES `Groups` (`id_group`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `assigments`
+  ADD CONSTRAINT `Assigment-Grupo` FOREIGN KEY (`id_group`) REFERENCES `groups` (`id_group`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
