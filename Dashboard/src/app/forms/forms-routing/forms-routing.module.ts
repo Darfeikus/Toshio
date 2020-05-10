@@ -1,22 +1,18 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule} from '@angular/router';
-import { FormsComponent } from '../forms.component';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
+import { FormsComponent } from "../forms.component";
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
+    path: "",
+    pathMatch: "full",
     component: FormsComponent,
     data: {
-      title: 'Forms Works'
+      title: "Forms Works"
     }
   }
 ];
 @NgModule({
-    imports: [
-      RouterModule.forChild(routes)
-    ],
-    exports: [
-      RouterModule
-    ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class FormsRoutingModule { }
+export class FormsRoutingModule {}
