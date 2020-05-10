@@ -15,8 +15,12 @@ export class LoginComponent implements OnInit {
 
   onLogin(form): void {
     this.authService.login(form.value).subscribe(res => {
-      // mandar a dashboard, no a auth
-      this.router.navigateByUrl("/auth");
+      console.log(res);
+      if (res.dataUser) {
+        this.router.navigateByUrl("/dashboard/home");
+      } else {
+        console.log("Datos incorrectos");
+      }
     });
   }
 }
