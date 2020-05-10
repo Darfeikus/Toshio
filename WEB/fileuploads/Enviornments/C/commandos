@@ -3,7 +3,7 @@ Buildear usando la página
 En la misma carpeta
 
 
-docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 gcc -o code code.c
+docker run --it --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 gcc -o code code.c
 
 
 
