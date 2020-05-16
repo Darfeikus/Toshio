@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="login">
+    <div class="login-triangle"></div>
+
+    <h2 class="login-header">Registro Alumnos</h2>
+
+    <form
+      #frmRegister="ngForm"
+      (ngSubmit)="onRegister(frmRegister)"
+      class="login-container"
+    >
+      <p>
+        <input
+          type="text"
+          name="mat"
+          placeholder="Matrícula (A0XXXXXXX)"
+          ngModel
+          required
+        />
+      </p>
+      <p>
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          ngModel
+          required
+        />
+      </p>
+      <p>
+        <input
+          type="text"
+          name="type"
+          placeholder="Student,Admin,Professor"
+          ngModel
+          required
+        />
+      </p>
+      <p><input type="submit" value="Dar de alta" /></p>
+    </form>
+  </div>
+</div>
