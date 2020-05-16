@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -7,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StudentDashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    console.log(window.location)
+  }
+
+  uploadAttempt(): void{
+    this.router.navigateByUrl("/student/attempt")
   }
 
 }
