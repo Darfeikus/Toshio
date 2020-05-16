@@ -4,19 +4,13 @@ import {BlankTemplateComponent} from './template/blank-template.component';
 import {LeftNavTemplateComponent} from './template/left-nav-template.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 
-export const routes: Routes = [{
-  path: '',
-  redirectTo: 'dashboard',
-  pathMatch: 'full'
-}, {
+export const routes: Routes = [
+{
   path: '',
   component: LeftNavTemplateComponent,
-  data: {
-    title: 'Angular Admin Template'
-  },
   children: [
     {
-      path: 'dashboard',
+      path: '',
       loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
       data: {
         title: 'Dashboard Page'
@@ -35,9 +29,14 @@ export const routes: Routes = [{
       data: {
         title: 'Form Page'
       },
+    },
+    { 
+      path: 'student', 
+      loadChildren: () => import('./student/student.module').then(m => m.StudentModule)
     }
   ]
-}, {
+}, 
+{
   path: 'tables',
   component: LeftNavTemplateComponent,
   data: {
@@ -49,10 +48,12 @@ export const routes: Routes = [{
       loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule)
     }
   ]
-}, {
+}, 
+{
   path: '**',
   component: PageNotFoundComponent
-}];
+}
+];
 
 @NgModule({
   imports: [

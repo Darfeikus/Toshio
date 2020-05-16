@@ -21,7 +21,7 @@ import { NavigationComponent } from "./shared/navigation/navigation.component";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes, { useHash: true })
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
