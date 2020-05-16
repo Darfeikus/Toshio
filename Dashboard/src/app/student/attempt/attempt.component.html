@@ -30,7 +30,22 @@
                 <div class="card">
                     <h5 class="card-header">Subir Intento</h5>
                     <div class="card-body">
-                        <h2>Aqui va el input</h2>
+                        <form [formGroup]="myForm" (ngSubmit)="submit()">
+                            <div class="form-group">
+                                <label for="file">Archivo</label>
+                                <input 
+                                    formControlName="file"
+                                    id="file" 
+                                    type="file" 
+                                    class="form-control"
+                                    (change)="onFileChange($event)">
+                                <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+                                    <div *ngIf="f.file.errors.required">File is required.</div>
+                                </div>
+                            </div>
+                                  
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
