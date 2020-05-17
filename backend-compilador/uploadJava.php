@@ -4,10 +4,13 @@
     header("Access-Control-Allow-Methods: PUT, GET, POST");
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     
+    $id_student = $_GET['id'];
+    $id_assignment = $_GET['idAss'];
+
     //File Upload
     
-    $folderPath = 'uploads/A01329173/AD19_01/';
-    $testCases = 'testCases/AD19_01/';
+    $folderPath = 'uploads/'.$id_student.'/'.$id_assignment.'/';
+    $testCases = 'testCases/'.$id_assignment.'/';
     $numberOfTestCases = 10;
 
     if(!file_exists($folderPath)){
@@ -36,8 +39,9 @@
     }
 
     //Run Text Comparison
-    system('echo A01329173#AD19_01#10 > '.$folderPath.'input');
+    system('echo '.$id_student.'#'.$id_assignment.'#'.$numberOfTestCases.' > '.$folderPath.'input');
     system('docker run -i --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine java -cp '.$folderPath.' CompareTextFilesJava < '.$folderPath.'input');
 
-
+    //Clean TestCase
+    system('rm '.$folderPath.'out* && rm '.$folderPath.'Main.* && rm '.$folderPath.'CompareTextFilesJava.class');
 ?>
