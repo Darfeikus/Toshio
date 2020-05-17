@@ -2,22 +2,22 @@
     function compile(){
         $id_student = $_GET['id'];
         $id_assignment = $_GET['idAss'];
-    
+        
         //File Upload
         
         $folderPath = 'uploads/'.$id_student.'/'.$id_assignment.'/';
         $testCases = 'testCases/'.$id_assignment.'/';
         $numberOfTestCases = 10;
-    
+
         if(!file_exists($folderPath)){
             mkdir($folderPath,0777,true);
         }
-    
+
         $file_tmp = $_FILES['file']['tmp_name'];
-        $file_ext = strtolower(end(explode('.',$_FILES['file']['name'])));
-        $file = $folderPath . 'Main' . '.'.$file_ext;
+        
+        $file = $folderPath . 'Main' . '.java';
+        
         move_uploaded_file($file_tmp, $file);
-      
         //
     
         //Compile Uploaded file
@@ -39,6 +39,8 @@
         system('docker run -i --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp openjdk:8-jdk-alpine java -cp '.$folderPath.' CompareTextFilesJava < '.$folderPath.'input');
     
         //Clean TestCase
-        system('rm '.$folderPath.'out* && rm '.$folderPath.'Main.* && rm '.$folderPath.'CompareTextFilesJava.class');
+        system('rm '.$folderPath.'out*');
+        
+        return(json_encode(array("HOLA" => "MUNDO")));
     }
 ?>

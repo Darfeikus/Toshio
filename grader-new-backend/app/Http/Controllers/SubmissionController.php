@@ -27,7 +27,6 @@ class SubmissionController extends Controller
     {
         //
         compile();
-        return(json_encode(array("HOLA" => "MUNDO")));
     }
 
     /**
