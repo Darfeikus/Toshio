@@ -1,0 +1,17 @@
+Buildear usando la página
+
+En la misma carpeta
+
+
+docker run --it --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 gcc -o code code.c
+
+
+
+
+En PHP
+
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 gcc -o main code.c
+
+./main <in >out.txt
+
+ cat out.txt

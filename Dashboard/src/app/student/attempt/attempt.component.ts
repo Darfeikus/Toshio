@@ -32,7 +32,7 @@ export class AttemptComponent implements OnInit {
   submit() {
     const formData = new FormData();
     formData.append('file', this.myForm.get('fileSource').value);
-    this.http.post('http://localhost:80/Online_Grader/backend-compilador/uploadJava.php?id=A01329173&idAss=AD19_01', formData)
+    this.http.post('http://localhost:8000/api/submission?id=A01329173&idAss=AD19_01', formData)
       .subscribe(res => {
         console.log(res);
         alert('Uploaded Successfully.');

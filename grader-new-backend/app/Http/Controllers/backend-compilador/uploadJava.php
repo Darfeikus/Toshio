@@ -1,6 +1,5 @@
 <?php
     function compile(){
-        dd($_GET);
         $id_student = $_GET['id'];
         $id_assignment = $_GET['idAss'];
     

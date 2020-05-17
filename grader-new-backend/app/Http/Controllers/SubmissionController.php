@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+require 'backend-compilador/uploadJava.php';
 use Illuminate\Http\Request;
 
 class SubmissionController extends Controller
@@ -25,6 +26,7 @@ class SubmissionController extends Controller
     public function store(Request $request)
     {
         //
+        compile();
         return(json_encode(array("HOLA" => "MUNDO")));
     }
 

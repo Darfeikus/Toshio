@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 //API ROUTES
-Route::get("/submission", 'SubmissionController@store');
+Route::post("/submission", 'SubmissionController@store');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
