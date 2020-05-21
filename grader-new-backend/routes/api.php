@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 //API ROUTES
 Route::post("/submission", 'SubmissionController@store');
 
+//language routes
+Route::get("/language", 'LanguageController@index');
+Route::get("/language/{id}", 'LanguageController@show');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
