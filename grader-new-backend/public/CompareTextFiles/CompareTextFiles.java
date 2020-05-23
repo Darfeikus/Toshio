@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class CompareTextFilesJava {
+public class CompareTextFiles {
 	public static void main(String[] args) throws IOException {
 		Scanner sc = new Scanner(System.in);
 
@@ -67,7 +67,7 @@ public class CompareTextFilesJava {
 			if(i==numberTestCases){
 				try {
 					String content = ""+grade;
-					fw = new FileWriter("uploads/"+matricula+"/"+id+"/ResultsOutJava");
+					fw = new FileWriter("uploads/"+matricula+"/"+id+"/ResultsOut");
 					bw = new BufferedWriter(fw);
 					bw.write(content);
 					bw.write(comments);
@@ -91,7 +91,7 @@ public class CompareTextFilesJava {
 
 				reader2.close();
 			}
-			sc.close();
 		}
+		sc.close();
 	}
 }

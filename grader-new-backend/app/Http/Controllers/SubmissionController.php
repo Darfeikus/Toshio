@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-require 'backend-compilador/uploadJava.php';
+require 'backend-compilador/upload.php';
 use Illuminate\Http\Request;
 
 class SubmissionController extends Controller
