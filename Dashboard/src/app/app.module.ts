@@ -8,6 +8,7 @@ import { AppRoutingModule, routes } from "./app.routing";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { HeaderComponent } from "./shared/header/header.component";
 import { NavigationComponent } from "./shared/navigation/navigation.component";
+import { ContestsDashboardComponent } from './contests/contests-dashboard/contests-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { NavigationComponent } from "./shared/navigation/navigation.component";
     PageNotFoundComponent,
     HeaderComponent,
     LeftNavTemplateComponent,
-    NavigationComponent
+    NavigationComponent,
+    ContestsDashboardComponent
   ],
   imports: [
     BrowserModule,
