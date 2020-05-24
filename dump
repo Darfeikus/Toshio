@@ -1,0 +1,348 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.7 (Ubuntu 11.7-2.pgdg18.04+1)
+-- Dumped by pg_dump version 11.7 (Ubuntu 11.7-2.pgdg18.04+1)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: assignments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.assignments (
+    assignment_id bigint NOT NULL,
+    name character varying NOT NULL,
+    crn character varying NOT NULL,
+    start_date date NOT NULL,
+    end_date date NOT NULL,
+    tries integer NOT NULL,
+    language integer NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT date CHECK ((start_date < end_date))
+);
+
+
+ALTER TABLE public.assignments OWNER TO postgres;
+
+--
+-- Name: assignments_assignment_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.assignments_assignment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.assignments_assignment_id_seq OWNER TO postgres;
+
+--
+-- Name: assignments_assignment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.assignments_assignment_id_seq OWNED BY public.assignments.assignment_id;
+
+
+--
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.groups (
+    crn character varying NOT NULL,
+    name character varying NOT NULL,
+    term_code character varying NOT NULL,
+    professor_id character varying NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.groups OWNER TO postgres;
+
+--
+-- Name: languages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.languages (
+    language character varying NOT NULL,
+    language_id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.languages OWNER TO postgres;
+
+--
+-- Name: languages_languages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.languages_languages_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.languages_languages_id_seq OWNER TO postgres;
+
+--
+-- Name: languages_languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.languages_languages_id_seq OWNED BY public.languages.language_id;
+
+
+--
+-- Name: professor_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.professor_group (
+    crn character varying NOT NULL,
+    professor_id character varying
+);
+
+
+ALTER TABLE public.professor_group OWNER TO postgres;
+
+--
+-- Name: student_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.student_group (
+    user_id character varying NOT NULL,
+    crn character varying NOT NULL
+);
+
+
+ALTER TABLE public.student_group OWNER TO postgres;
+
+--
+-- Name: submissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.submissions (
+    assignment_id integer,
+    date date,
+    grade numeric(5,2),
+    try integer,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    submission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.submissions OWNER TO postgres;
+
+--
+-- Name: submissions_submission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.submissions_submission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.submissions_submission_id_seq OWNER TO postgres;
+
+--
+-- Name: submissions_submission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.submissions_submission_id_seq OWNED BY public.submissions.submission_id;
+
+
+--
+-- Name: assignments assignment_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments ALTER COLUMN assignment_id SET DEFAULT nextval('public.assignments_assignment_id_seq'::regclass);
+
+
+--
+-- Name: languages language_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.languages ALTER COLUMN language_id SET DEFAULT nextval('public.languages_languages_id_seq'::regclass);
+
+
+--
+-- Name: submissions submission_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.submissions ALTER COLUMN submission_id SET DEFAULT nextval('public.submissions_submission_id_seq'::regclass);
+
+
+--
+-- Data for Name: assignments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.assignments (assignment_id, name, crn, start_date, end_date, tries, language, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.groups (crn, name, term_code, professor_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: languages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.languages (language, language_id, created_at, updated_at) FROM stdin;
+C++	1	\N	\N
+C	2	\N	\N
+Java	3	\N	\N
+Python3	4	\N	\N
+\.
+
+
+--
+-- Data for Name: professor_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.professor_group (crn, professor_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: student_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.student_group (user_id, crn) FROM stdin;
+\.
+
+
+--
+-- Data for Name: submissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.submissions (assignment_id, date, grade, try, created_at, updated_at, submission_id) FROM stdin;
+\.
+
+
+--
+-- Name: assignments_assignment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.assignments_assignment_id_seq', 1, true);
+
+
+--
+-- Name: languages_languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.languages_languages_id_seq', 4, true);
+
+
+--
+-- Name: submissions_submission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.submissions_submission_id_seq', 1, false);
+
+
+--
+-- Name: assignments assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments
+    ADD CONSTRAINT assignments_pkey PRIMARY KEY (assignment_id);
+
+
+--
+-- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (crn);
+
+
+--
+-- Name: languages languages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.languages
+    ADD CONSTRAINT languages_pkey PRIMARY KEY (language_id);
+
+
+--
+-- Name: submissions submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.submissions
+    ADD CONSTRAINT submissions_pkey PRIMARY KEY (submission_id);
+
+
+--
+-- Name: submissions assignment-id-submission; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.submissions
+    ADD CONSTRAINT "assignment-id-submission" FOREIGN KEY (assignment_id) REFERENCES public.assignments(assignment_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: assignments crn-assignments; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments
+    ADD CONSTRAINT "crn-assignments" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+
+
+--
+-- Name: professor_group crn-professor-group; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.professor_group
+    ADD CONSTRAINT "crn-professor-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+
+
+--
+-- Name: student_group crn-student-group; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_group
+    ADD CONSTRAINT "crn-student-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+
+
+--
+-- Name: assignments language-assignments; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments
+    ADD CONSTRAINT "language-assignments" FOREIGN KEY (language) REFERENCES public.languages(language_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
