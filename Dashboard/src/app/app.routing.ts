@@ -12,59 +12,60 @@ export const routes: Routes = [
       {
         path: "",
         loadChildren: () =>
-          import("./dashboard/dashboard.module").then(m => m.DashboardModule),
-        data: {
-          title: "Dashboard Page"
-        }
+          import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
       },
       {
         path: "ui-elements",
         loadChildren: () =>
           import("./ui-elements/ui-elements.module").then(
-            m => m.UiElementsModule
+            (m) => m.UiElementsModule
           ),
-        data: {
-          title: "UI Elements"
-        }
+      },
+      {
+        path: "assignments",
+        loadChildren: () =>
+          import("./assignments/assignments.module").then(
+            (m) => m.AssignmentsModule
+          ),
       },
       {
         path: "forms",
         loadChildren: () =>
-          import("./forms/forms.module").then(m => m.FormsModule),
+          import("./forms/forms.module").then((m) => m.FormsModule),
         data: {
-          title: "Form Page"
-        }
+          title: "Form Page",
+        },
       },
       {
         path: "student",
         loadChildren: () =>
-          import("./student/student.module").then(m => m.StudentModule)
-      }
-    ]
+          import("./student/student.module").then((m) => m.StudentModule),
+      },
+    ],
   },
   {
     path: "tables",
     component: LeftNavTemplateComponent,
     data: {
-      title: "Tables"
+      title: "Tables",
     },
     children: [
       {
         path: "",
         loadChildren: () =>
-          import("./tables/tables.module").then(m => m.TablesModule)
-      }
-    ]
+          import("./tables/tables.module").then((m) => m.TablesModule),
+      },
+    ],
   },
   {
     path: "**",
-    component: PageNotFoundComponent
-  }
+    component: PageNotFoundComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  declarations: []
+  declarations: [],
 })
 export class AppRoutingModule {}

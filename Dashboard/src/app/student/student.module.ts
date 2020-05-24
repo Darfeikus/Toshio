@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { StudentRoutingModule } from './routing/student-routing.module';
-import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
-import { AttemptComponent } from './attempt/attempt.component';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { StudentRoutingModule } from "./routing/student-routing.module";
+import { StudentDashboardComponent } from "./student-dashboard/student-dashboard.component";
+import { AttemptComponent } from "./attempt/attempt.component";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [StudentDashboardComponent, AttemptComponent],
@@ -15,9 +14,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     StudentRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap:[AttemptComponent]
+  bootstrap: [AttemptComponent],
 })
-export class StudentModule { }
+export class StudentModule {}
