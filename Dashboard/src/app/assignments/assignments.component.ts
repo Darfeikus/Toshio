@@ -4,7 +4,6 @@ import {
   ModalDismissReasons,
   NgbDate,
   NgbCalendar,
-  NgbPeriod,
 } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: "app-assignments",

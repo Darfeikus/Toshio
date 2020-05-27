@@ -1,8 +1,5 @@
 <div class="" id="page-wrapper">
   <div class="container-fluid">
-    <button class="btn btn-lg btn-outline-primary" (click)="open(content)">
-      CREAR GRUPO
-    </button>
     <div class="row row-stat">
       <div class="col-lg-4">
         <div class="panel noborder">
@@ -235,42 +232,6 @@
         </div>
       </div>
     </div>
-    <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Crear Grupo</h4>
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          (click)="modal.dismiss('Cross click')"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="exampleFormControlFile1"
-              >Seleccionar archivo xlsx</label
-            >
-            <input
-              type="file"
-              class="form-control-file"
-              id="exampleFormControlFile1"
-            />
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-outline-dark"
-          (click)="modal.close('Save click')"
-        >
-          Guardar
-        </button>
-      </div>
-    </ng-template>
     <hr />
     <div class="row">
       <div class="table-responsive m-3">

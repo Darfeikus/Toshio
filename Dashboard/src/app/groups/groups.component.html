@@ -1,5 +1,116 @@
 <div class="" id="page-wrapper">
   <div class="container-fluid">
-    <p>group works!</p>
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Crear Grupo</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="exampleFormControlFile1">Nota: Archivo .xlsx</label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="exampleFormControlFile1"
+            />
+            <small id="passwordHelpBlock" class="form-text text-muted">
+              Se le enviará correo con su contraseña a todos los alumnos que no
+              estén registrados previamente.
+            </small>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-outline-dark"
+          (click)="modal.close('Save click')"
+        >
+          Crear
+        </button>
+      </div>
+    </ng-template>
+    <div class="row row-stat">
+      <div class="table-responsive m-3">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><h3>Mis Grupos</h3></div>
+          <div class="p-2">
+            <button
+              class="btn btn-lg btn-outline-success"
+              (click)="open(content)"
+            >
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              Crear Grupo
+            </button>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>CRN</th>
+              <th>Periodo</th>
+              <th>Número Alumnos</th>
+              <th>Detalles de Alumnos</th>
+              <th>Cerrar Grupo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bases</td>
+              <td>11111</td>
+              <td>FJ20</td>
+              <td>35</td>
+              <td>
+                <i class="fa fa-users" aria-hidden="true"></i>
+              </td>
+              <td>
+                <span style="font-size: 1em; color: Tomato;">
+                  <i class="fa fa-window-close-o" aria-hidden="true"></i>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Bases 2</td>
+              <td>11111</td>
+              <td>FJ20</td>
+              <td>35</td>
+              <td>
+                <i class="fa fa-users" aria-hidden="true"></i>
+              </td>
+              <td>
+                <span style="font-size: 1em; color: Tomato;">
+                  <i class="fa fa-window-close-o" aria-hidden="true"></i>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>Bases 3</td>
+              <td>11111</td>
+              <td>FJ20</td>
+              <td>35</td>
+              <td>
+                <i class="fa fa-users" aria-hidden="true"></i>
+              </td>
+              <td>
+                <span style="font-size: 1em; color: Tomato;">
+                  <i class="fa fa-window-close-o" aria-hidden="true"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
