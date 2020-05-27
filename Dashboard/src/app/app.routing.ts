@@ -41,6 +41,16 @@ export const routes: Routes = [
         loadChildren: () =>
           import("./student/student.module").then((m) => m.StudentModule),
       },
+      {
+        path: "students",
+        loadChildren: () =>
+          import("./students/students.module").then((m) => m.StudentsModule),
+      },
+      {
+        path: "groups",
+        loadChildren: () =>
+          import("./groups/groups.module").then((m) => m.GroupsModule),
+      },
     ],
   },
   {
