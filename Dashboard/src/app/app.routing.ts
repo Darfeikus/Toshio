@@ -3,6 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { BlankTemplateComponent } from "./template/blank-template.component";
 import { LeftNavTemplateComponent } from "./template/left-nav-template.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { LoginComponent } from "./login/login.component";
 
 export const routes: Routes = [
   {
@@ -66,6 +67,10 @@ export const routes: Routes = [
           import("./tables/tables.module").then((m) => m.TablesModule),
       },
     ],
+  },
+  {
+    path: "login",
+    component: LoginComponent,
   },
   {
     path: "**",
