@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+require 'backend-compilador/uploadGroup.php';
+
+
 use App\group;
 use Illuminate\Http\Request;
 
@@ -26,6 +29,7 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         //
+        compile();
     }
 
     /**
