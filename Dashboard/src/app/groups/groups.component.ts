@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
+import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: "app-groups",
@@ -8,8 +10,41 @@ import { Router } from "@angular/router";
   styleUrls: ["./groups.component.css"],
 })
 export class GroupsComponent implements OnInit {
+  myForm = new FormGroup({
+    name: new FormControl(''),
+    file: new FormControl('', [Validators.required]),
+    fileSource: new FormControl('', [Validators.required])
+  });
+
   closeResult = "";
-  constructor(private modalService: NgbModal, private router: Router) {}
+  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router) {}
+
+  get f() {
+    return this.myForm.controls;
+  }
+
+  onFileChange(event) {
+
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.myForm.patchValue({
+        fileSource: file
+      });
+    }
+  }
+
+  submit() {
+    const formData = new FormData();
+    formData.append('file', this.myForm.get('fileSource').value);
+    formData.append('name',this.myForm.get('name').value);
+
+    this.http.post('http://localhost:8000/api/group?id=A01329173', formData,{responseType: 'text'})
+      .subscribe(res => {
+        console.log(res);
+        alert('Uploaded Successfully.');
+        location.reload()
+      })
+  }
 
   ngOnInit(): void {}
 
@@ -39,4 +74,5 @@ export class GroupsComponent implements OnInit {
   details() {
     this.router.navigateByUrl("/groups/details");
   }
+  
 }

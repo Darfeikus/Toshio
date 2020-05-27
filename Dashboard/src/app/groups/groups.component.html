@@ -13,19 +13,34 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="myForm" (ngSubmit)="submit()">
           <div class="form-group">
-            <label for="exampleFormControlFile1">Nota: Archivo .xlsx</label>
+
+            <label for="name">Name</label>
+            
+            <input 
+              formControlName="name"
+              id="name" 
+              type="text" 
+              class="form-control"
+              />
+
+            <label for="exampleFormControlFile1">Nota: Archivo .xls</label>
+            
             <input
+              id="exampleFormControlFile1"
               type="file"
               class="form-control-file"
-              id="exampleFormControlFile1"
+              (change)="onFileChange($event)"
             />
+            
             <small id="passwordHelpBlock" class="form-text text-muted">
               Se le enviará correo con su contraseña a todos los alumnos que no
               estén registrados previamente.
             </small>
+          
           </div>
+          <button class="btn btn-primary" type="submit"> Submit </button>
         </form>
       </div>
 
