@@ -39,24 +39,127 @@
               type="number"
               class="form-control"
               id="exampleFormControlInput2"
-              placeholder="1"
+              placeholder="0"
             />
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlFile1">Carpeta zip</label>
-            <input
-              type="file"
-              class="form-control-file"
-              id="exampleFormControlFile1"
-            />
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Carpeta zip</label>
+                <input
+                  type="file"
+                  class="form-control-file"
+                  id="exampleFormControlFile1"
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Archivo Test</label>
+                <input
+                  type="file"
+                  class="form-control-file"
+                  id="exampleFormControlFile1"
+                />
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlFile1">Archivo Test</label>
-            <input
-              type="file"
-              class="form-control-file"
-              id="exampleFormControlFile1"
-            />
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="datePicker1">Fecha Apertura</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="dp"
+                    [(ngModel)]="dateOpen"
+                    [ngModelOptions]="{ standalone: true }"
+                    ngbDatepicker
+                    #d2="ngbDatepicker"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      (click)="d2.toggle()"
+                      type="button"
+                    >
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                  (click)="selectToday()"
+                >
+                  Hoy
+                </button>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="datePicker2">Fecha Clausura</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="dp"
+                    [(ngModel)]="dateClose"
+                    [ngModelOptions]="{ standalone: true }"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      (click)="d.toggle()"
+                      type="button"
+                    >
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                  (click)="oneDay()"
+                >
+                  1 Dia
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                  (click)="threeDays()"
+                >
+                  3 Dias
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                  (click)="oneWeek()"
+                >
+                  1 Semana
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Hora Apertura</label>
+                <ngb-timepicker
+                  [(ngModel)]="time"
+                  [ngModelOptions]="{ standalone: true }"
+                ></ngb-timepicker>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Hora Clausura</label>
+                <ngb-timepicker
+                  [(ngModel)]="timeEnd"
+                  [ngModelOptions]="{ standalone: true }"
+                ></ngb-timepicker>
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -64,6 +167,7 @@
       <div class="modal-footer">
         <button
           type="button"
+          ngbAutofocus
           class="btn btn-outline-dark"
           (click)="modal.close('Save click')"
         >

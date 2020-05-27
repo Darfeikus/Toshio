@@ -1,18 +1,58 @@
 import { Component, OnInit } from "@angular/core";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
-
+import {
+  NgbModal,
+  ModalDismissReasons,
+  NgbDate,
+  NgbCalendar,
+  NgbPeriod,
+} from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: "app-assignments",
   templateUrl: "./assignments.component.html",
   styleUrls: ["./assignments.component.css"],
 })
 export class AssignmentsComponent implements OnInit {
+  dateOpen: NgbDate;
+  dateClose: NgbDate;
   closeResult = "";
-  constructor(private modalService: NgbModal) {}
-  ngOnInit(): void {}
+  date: any;
+  now = Date.now();
+  time = { hour: 0, minute: 0 };
+  timeEnd = { hour: 23, minute: 59 };
+
+  constructor(private modalService: NgbModal, private calendar: NgbCalendar) {}
+
+  ngOnInit(): void {
+    this.setCurrentTimeForStartingTime();
+  }
+
+  setCurrentTimeForStartingTime() {
+    let date = new Date(this.now);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    this.time.hour = hours;
+    this.time.minute = minutes;
+  }
+
+  selectToday() {
+    this.dateOpen = this.calendar.getToday();
+  }
+
+  oneDay() {
+    this.dateClose = this.calendar.getNext(this.dateOpen, "d", 1);
+  }
+
+  threeDays() {
+    this.dateClose = this.calendar.getNext(this.dateOpen, "d", 3);
+  }
+
+  oneWeek() {
+    this.dateClose = this.calendar.getNext(this.dateOpen, "d", 7);
+  }
+
   open(content) {
     this.modalService
-      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .open(content, { ariaLabelledBy: "modal-basic-title", size: "lg" })
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
