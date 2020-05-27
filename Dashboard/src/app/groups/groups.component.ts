@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-groups",
@@ -8,7 +9,7 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 })
 export class GroupsComponent implements OnInit {
   closeResult = "";
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -33,5 +34,9 @@ export class GroupsComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  details() {
+    this.router.navigateByUrl("/groups/details");
   }
 }

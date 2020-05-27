@@ -9,6 +9,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { GroupsComponent } from "./groups.component";
 import { GroupsRoutingModule } from "./groups-routing/groups-routing.module";
+import { GroupsDetailsComponent } from './groups-details/groups-details.component';
 @NgModule({
   imports: [
     NgbModule,
@@ -21,7 +22,7 @@ import { GroupsRoutingModule } from "./groups-routing/groups-routing.module";
     PaginationModule.forRoot(),
     AlertModule.forRoot(),
   ],
-  declarations: [GroupsComponent],
+  declarations: [GroupsComponent, GroupsDetailsComponent],
   providers: [],
 })
 export class GroupsModule {}
