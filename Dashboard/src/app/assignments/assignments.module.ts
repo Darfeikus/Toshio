@@ -9,7 +9,7 @@ import { AssignmentsRoutingModule } from "./assignments-routing/assignments-rout
 import { CommonModule } from "@angular/common";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
-import { AssignmentDetailsComponent } from './assignment-details/assignment-details.component';
+import { AssignmentDetailsComponent } from "./assignment-details/assignment-details.component";
 @NgModule({
   imports: [
     NgbModule,
