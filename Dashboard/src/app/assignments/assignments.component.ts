@@ -5,6 +5,8 @@ import {
   NgbDate,
   NgbCalendar,
 } from "@ng-bootstrap/ng-bootstrap";
+import { Router } from "@angular/router";
+
 @Component({
   selector: "app-assignments",
   templateUrl: "./assignments.component.html",
@@ -19,7 +21,11 @@ export class AssignmentsComponent implements OnInit {
   time = { hour: 0, minute: 0 };
   timeEnd = { hour: 23, minute: 59 };
 
-  constructor(private modalService: NgbModal, private calendar: NgbCalendar) {}
+  constructor(
+    private modalService: NgbModal,
+    private calendar: NgbCalendar,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.setCurrentTimeForStartingTime();
@@ -47,6 +53,10 @@ export class AssignmentsComponent implements OnInit {
 
   oneWeek() {
     this.dateClose = this.calendar.getNext(this.dateOpen, "d", 7);
+  }
+
+  details() {
+    this.router.navigateByUrl("/assignments/details");
   }
 
   open(content) {
