@@ -1,22 +1,22 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { AssignmentsComponent } from "../assignments.component";
-import { AssignmentDetailsComponent } from "../assignment-details/assignment-details.component";
+import { GroupsComponent } from "../groups.component";
+import { GroupsDetailsComponent } from "../groups-details/groups-details.component";
 const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    component: AssignmentsComponent,
+    component: GroupsComponent,
     data: {
-      title: "Assignments",
+      title: "Groups",
     },
   },
   {
     path: "details",
     pathMatch: "full",
-    component: AssignmentDetailsComponent,
+    component: GroupsDetailsComponent,
     data: {
-      title: "Code",
+      title: "Details",
     },
   },
 ];
@@ -24,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AssignmentsRoutingModule {}
+export class GroupsRoutingModule {}

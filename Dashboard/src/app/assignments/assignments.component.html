@@ -1,5 +1,352 @@
 <div class="" id="page-wrapper">
-    <div class="container-fluid">
-        <p>assignments works!</p>
+  <div class="container-fluid">
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Crear Tarea</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder="ICA X.X"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Materia</label>
+            <select class="form-control" id="exampleFormControlSelect1">
+              <option>Estructura de Datos</option>
+              <option>Bases de Datos</option>
+              <option>Bases de Datos Avanzadas</option>
+              <option>Graficas Computacionales</option>
+              <option>Intro a la Computación</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Intentos</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exampleFormControlInput2"
+              placeholder="0"
+            />
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Carpeta zip</label>
+                <input
+                  type="file"
+                  class="form-control-file"
+                  id="exampleFormControlFile1"
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Archivo Test</label>
+                <input
+                  type="file"
+                  class="form-control-file"
+                  id="exampleFormControlFile1"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="datePicker1">Fecha Apertura</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="dp"
+                    [(ngModel)]="dateOpen"
+                    [ngModelOptions]="{ standalone: true }"
+                    ngbDatepicker
+                    #d2="ngbDatepicker"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      (click)="d2.toggle()"
+                      type="button"
+                    >
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                  (click)="selectToday()"
+                >
+                  Hoy
+                </button>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="datePicker2">Fecha Clausura</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="dp"
+                    [(ngModel)]="dateClose"
+                    [ngModelOptions]="{ standalone: true }"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      (click)="d.toggle()"
+                      type="button"
+                    >
+                      <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                  (click)="oneDay()"
+                >
+                  1 Dia
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                  (click)="threeDays()"
+                >
+                  3 Dias
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                  (click)="oneWeek()"
+                >
+                  1 Semana
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Hora Apertura</label>
+                <ngb-timepicker
+                  [(ngModel)]="time"
+                  [ngModelOptions]="{ standalone: true }"
+                ></ngb-timepicker>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Hora Clausura</label>
+                <ngb-timepicker
+                  [(ngModel)]="timeEnd"
+                  [ngModelOptions]="{ standalone: true }"
+                ></ngb-timepicker>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          ngbAutofocus
+          class="btn btn-outline-dark"
+          (click)="modal.close('Save click')"
+        >
+          Guardar
+        </button>
+      </div>
+    </ng-template>
+    <div class="row row-stat">
+      <div class="table-responsive m-3">
+        <div class="d-flex justify-content-between">
+          <div class="p-2"><h3>Tareas Activas</h3></div>
+          <div class="p-2">
+            <button
+              class="btn btn-lg btn-outline-success"
+              (click)="open(content)"
+            >
+              <i class="fa fa-file" aria-hidden="true"></i>
+              Crear Tarea
+            </button>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Tarea</th>
+              <th>Fecha Límite</th>
+              <th>Materia</th>
+              <th>Administración</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Proyecto Final</td>
+              <td>31-12-2020 23:59</td>
+              <td>Bases de Datos Avanzadas</td>
+              <td>
+                <button type="button" class="btn btn-info">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-danger">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Proyecto Final</td>
+              <td>31-12-2020 23:59</td>
+              <td>Bases de Datos Avanzadas</td>
+              <td>
+                <button type="button" class="btn btn-info">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-danger">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Proyecto Final</td>
+              <td>31-12-2020 23:59</td>
+              <td>Bases de Datos Avanzadas</td>
+              <td>
+                <button type="button" class="btn btn-info">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-danger">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pull-right">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#"><<</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">3</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">>></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </div>
+    <hr />
+    <div class="row row-stat">
+      <div class="table-responsive m-3">
+        <h3>Tareas Inactivas</h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Tarea</th>
+              <th>Materia</th>
+              <th>Calificación</th>
+              <th>Detalles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Antonio Sánchez</td>
+              <td>Proyecto Final</td>
+              <td>Bases de Datos Avanzadas</td>
+              <td>100</td>
+              <td>
+                <button type="button" class="btn btn-dark (click)=details()">
+                  <i
+                    class="fa fa-code"
+                    (click)="details()"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>Oscar Barbosa</td>
+              <td>Proyecto Final</td>
+              <td>Bases de Datos Avanzadas</td>
+              <td>100</td>
+              <td>
+                <button type="button" class="btn btn-dark (click)=details()">
+                  <i
+                    class="fa fa-code"
+                    (click)="details()"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>André Rodríguez</td>
+              <td>Proyecto Final</td>
+              <td>Bases de Datos Avanzadas</td>
+              <td>100</td>
+              <td>
+                <button type="button" class="btn btn-dark (click)=details()">
+                  <i
+                    class="fa fa-code"
+                    (click)="details()"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pull-right">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#"><<</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">2</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">3</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="#">>></a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

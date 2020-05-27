@@ -1,22 +1,21 @@
 import { Component, OnInit } from "@angular/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Router } from "@angular/router";
+
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"],
+  selector: "app-groups",
+  templateUrl: "./groups.component.html",
+  styleUrls: ["./groups.component.css"],
 })
-export class DashboardComponent implements OnInit {
-  activeHomeworks: any = [];
-  inactiveHomeworks: any = [];
-  groups: any = [];
+export class GroupsComponent implements OnInit {
   closeResult = "";
-  constructor(private modalService: NgbModal) {}
-  ngOnInit() {
-    // llamar a API y llenar arreglos para hacer dinámico el listado
-  }
+  constructor(private modalService: NgbModal, private router: Router) {}
+
+  ngOnInit(): void {}
+
   open(content) {
     this.modalService
-      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .open(content, { ariaLabelledBy: "modal-basic-title", size: "lg" })
       .result.then(
         (result) => {
           this.closeResult = `Closed with: ${result}`;
@@ -35,5 +34,9 @@ export class DashboardComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  details() {
+    this.router.navigateByUrl("/groups/details");
   }
 }

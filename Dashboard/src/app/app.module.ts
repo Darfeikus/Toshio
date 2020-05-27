@@ -8,7 +8,9 @@ import { AppRoutingModule, routes } from "./app.routing";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { HeaderComponent } from "./shared/header/header.component";
 import { NavigationComponent } from "./shared/navigation/navigation.component";
-import { ContestsDashboardComponent } from './contests/contests-dashboard/contests-dashboard.component';
+import { ContestsDashboardComponent } from "./contests/contests-dashboard/contests-dashboard.component";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -18,14 +20,16 @@ import { ContestsDashboardComponent } from './contests/contests-dashboard/contes
     HeaderComponent,
     LeftNavTemplateComponent,
     NavigationComponent,
-    ContestsDashboardComponent
+    ContestsDashboardComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    NgbModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -6,31 +6,32 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class CompareTextFiles {
-	public static void main(String[] args) throws IOException {
-		Scanner sc = new Scanner(System.in);
+	public static void main(final String[] args) throws IOException {
+		final Scanner sc = new Scanner(System.in);
 
-		String input[] = sc.nextLine().split("#");
+		final String input[] = sc.nextLine().split("#");
 
-		String matricula = input[0];
-		String id = input[1];
-		int numberTestCases = Integer.parseInt(input[2]);
+		final String matricula = input[0];
+		final String id = input[1];
+		final int numberTestCases = Integer.parseInt(input[2]);
 
 		double grade = 0;
 
 		String comments = "\n";
 
-		for (int i = 1;i<=numberTestCases ;i++ ) {
+		for (int i = 1; i <= numberTestCases; i++) {
 
 			BufferedWriter bw = null;
 			FileWriter fw = null;
 
-			BufferedReader reader = new BufferedReader(new FileReader("testCases/"+id+"/retro" + i));
+			final BufferedReader reader = new BufferedReader(new FileReader("testCases/" + id + "/retro" + i));
 
-			BufferedReader reader1 = new BufferedReader(new FileReader("uploads/"+matricula+"/"+id+"/out" + i ));
+			final BufferedReader reader1 = new BufferedReader(
+					new FileReader("uploads/" + matricula + "/" + id + "/out" + i));
 
-			BufferedReader reader2 = new BufferedReader(new FileReader("testCases/"+id+"/out"+ i));
+			final BufferedReader reader2 = new BufferedReader(new FileReader("testCases/" + id + "/out" + i));
 
-			String line = reader.readLine();
+			final String line = reader.readLine();
 
 			String line1 = reader1.readLine();
 
@@ -38,17 +39,12 @@ public class CompareTextFiles {
 
 			boolean areEqual = true;
 
-
-			while (line1 != null || line2 != null)
-			{
-				if(line1 == null || line2 == null)
-				{
+			while (line1 != null || line2 != null) {
+				if (line1 == null || line2 == null) {
 					areEqual = false;
 
 					break;
-				}
-				else if(!line1.equalsIgnoreCase(line2))
-				{
+				} else if (!line1.equalsIgnoreCase(line2)) {
 					areEqual = false;
 
 					break;
@@ -60,27 +56,26 @@ public class CompareTextFiles {
 
 			}
 
-			if(areEqual)
-				grade += 100/numberTestCases;
+			if (areEqual)
+				grade += 100 / numberTestCases;
 			else
 				comments += line + "\n";
-			if(i==numberTestCases){
+			if (i == numberTestCases) {
 				try {
-					String content = ""+grade;
-					fw = new FileWriter("uploads/"+matricula+"/"+id+"/ResultsOut");
+					final String content = "" + grade;
+					fw = new FileWriter("uploads/" + matricula + "/" + id + "/ResultsOut");
 					bw = new BufferedWriter(fw);
 					bw.write(content);
 					bw.write(comments);
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					e.printStackTrace();
-				}
-				finally {
+				} finally {
 					try {
 						if (bw != null)
 							bw.close();
 						if (fw != null)
 							fw.close();
-					} catch (IOException ex) {
+					} catch (final IOException ex) {
 
 						ex.printStackTrace();
 					}

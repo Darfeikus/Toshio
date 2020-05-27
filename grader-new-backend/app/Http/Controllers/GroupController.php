@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
+
+require 'backend-compilador/uploadGroup.php';
+
 
 use App\group;
 use Illuminate\Http\Request;
@@ -17,6 +21,27 @@ class GroupController extends Controller
         //
     }
 
+    public static function createGroup($id,$crn,$name,$termcode){
+        DB::table('groups')->insert([
+            'crn' => $crn,
+            'name' => $name,
+            'term_code' => $termcode,
+            'professor_id' => $id
+        ]);
+
+        DB::table('professor_group')->insert([
+            'professor_id' => $id,
+            'crn' => $crn,
+        ]);
+    }
+    
+    public static function insertStudent($crn,$id){
+        DB::table('student_group')->insert([
+            'user_id' => $id,
+            'crn' => $crn,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -26,6 +51,7 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         //
+        compile();
     }
 
     /**

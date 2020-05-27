@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 //API ROUTES
 Route::post("/submission", 'SubmissionController@store');
+Route::post("/group", 'GroupController@store');
 
 //language routes
 Route::get("/language", 'LanguageController@index');

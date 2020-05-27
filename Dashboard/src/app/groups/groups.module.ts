@@ -4,17 +4,17 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { TabsModule } from "ngx-bootstrap/tabs";
 import { PaginationModule } from "ngx-bootstrap/pagination";
 import { ChartsModule } from "ng2-charts";
-import { AssignmentsComponent } from "./assignments.component";
-import { AssignmentsRoutingModule } from "./assignments-routing/assignments-routing.module";
 import { CommonModule } from "@angular/common";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
-import { AssignmentDetailsComponent } from "./assignment-details/assignment-details.component";
+import { GroupsComponent } from "./groups.component";
+import { GroupsRoutingModule } from "./groups-routing/groups-routing.module";
+import { GroupsDetailsComponent } from './groups-details/groups-details.component';
 @NgModule({
   imports: [
     NgbModule,
     FormsModule,
-    AssignmentsRoutingModule,
+    GroupsRoutingModule,
     CommonModule,
     ChartsModule,
     BsDropdownModule.forRoot(),
@@ -22,7 +22,7 @@ import { AssignmentDetailsComponent } from "./assignment-details/assignment-deta
     PaginationModule.forRoot(),
     AlertModule.forRoot(),
   ],
-  declarations: [AssignmentsComponent, AssignmentDetailsComponent],
+  declarations: [GroupsComponent, GroupsDetailsComponent],
   providers: [],
 })
-export class AssignmentsModule {}
+export class GroupsModule {}
