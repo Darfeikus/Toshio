@@ -1,7 +1,10 @@
 <?php
 
+use \App\Http\Controllers\MailController;
+use \App\Http\Controllers\GroupController;
+
 function RandomString() {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%';
+    $characters = '0123456789abcdefghijkmlmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%';
     $charactersLength = strlen($characters);
     $randomString = '';
     for ($i = 0; $i < 6; $i++) {
@@ -15,12 +18,12 @@ function compile()
     include "SimpleXLS.php";
 
     $id_teacher = $_GET['id'];
+    $name = $_GET['name'];
 
     $target_dir = 'groups/';
     $filename = basename($_FILES['file']['name']);
     $target_file = $target_dir.$filename;
     move_uploaded_file($_FILES['file']['tmp_name'], $target_file);
-
     $termcode = 0;
     $crn = 0;
     $arrayUsers = array();
@@ -29,22 +32,20 @@ function compile()
         $i = 0; //rows
         foreach ($xlsx->rows() as $elt) {
             if($i != 0){
-                if($i != 0){ // Termcode and crn
+                if($i == 1){ // Termcode and crn
                     $termcode = $elt[0];
                     $crn = $elt[1];
-                    /*
-                        Create group in psql with crn, termcode, teacher id
-                        Once created, get id from the group
-                    */
+                    GroupController::createGroup($id_teacher,$crn,$name,$termcode);
                 }
                 $currentId = $elt[4];
-                /*
-                    Select * from Students where id = $currentId;
-                    Assign the students to their group.
-                */
+                
+                GroupController::insertStudent($crn,$currentId);
+                
                 $password = RandomString();
                 $hashed = md5($password);
-                
+
+                // MailController::sendMail($currentId,$password);
+
                 array_push($arrayUsers,array($currentId,$password));
             }
             $i++;
@@ -52,7 +53,10 @@ function compile()
     } else {
         echo SimpleXLS::parseError();
     }
-
+    $i = 0;
+    foreach($arrayUsers as $res){
+        system('echo '.implode(" ",$res).' > test/out'.$i++);
+    }
     return $arrayUsers;
 }
 ?>

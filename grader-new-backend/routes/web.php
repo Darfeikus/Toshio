@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('send-mail', 'MailController@sendMail(A01329173,contra)');
+Route::get('send-mail', 'MailController@sendMail');
