@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from "./page-not-found/page-not-found.component
 import { HeaderComponent } from "./shared/header/header.component";
 import { NavigationComponent } from "./shared/navigation/navigation.component";
 import { ContestsDashboardComponent } from './contests/contests-dashboard/contests-dashboard.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ContestsDashboardComponent } from './contests/contests-dashboard/contes
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
