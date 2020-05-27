@@ -22,9 +22,16 @@ Route::post("/group", 'GroupController@store');
 Route::get("/language", 'LanguageController@index');
 Route::get("/language/{id}", 'LanguageController@show');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+//Register Routes
+Route::post('/register', 'Auth\RegisterController@register');
+Route::post('/login', 'Auth\LoginController@login');
+
+Route::get('/home', 'HomeController@index');
+Route::get('/unauthorized', 'Auth\LoginController@denyAccess')->name('unauthorized');
 
 //Verify Route
 Route::get('/', function (Request $request){
