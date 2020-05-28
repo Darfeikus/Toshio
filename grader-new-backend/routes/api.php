@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::post("/submission", 'SubmissionController@store');
 Route::post("/group", 'GroupController@store');
 Route::post("/assignment", 'AssignmentController@store');
+
+Route::get("/group", 'AssignmentController@index');
+Route::get("/group/{id}", 'AssignmentController@show');
+Route::get("/group/teacher/{id}", 'AssignmentController@showTeacher');
 
 //language routes
 Route::get("/language", 'LanguageController@index');

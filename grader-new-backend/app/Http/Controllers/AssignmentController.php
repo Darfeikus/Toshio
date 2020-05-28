@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use App\assignment;
+use App\group;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 require 'backend-compilador/uploadAssignment.php';
@@ -15,9 +17,11 @@ class AssignmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         //
+        return group::all();
     }
 
     /**
@@ -50,9 +54,31 @@ class AssignmentController extends Controller
      * @param  \App\assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function show(assignment $assignment)
+    public function show(int $group)
     {
         //
+        try{
+            return group::findOrFail($group);
+        }
+        catch(ModelNotFoundException $e){
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage()))
+                , 404)->header('Content-type', 'application/json');
+        }
+    }
+
+    public function showTeacher($id)
+    {
+        //
+        try{
+            $collection = group::all();
+            return $collection->where('professor_id','=',$id);
+        }
+        catch(ModelNotFoundException $e){
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage()))
+                , 404)->header('Content-type', 'application/json');
+        }
     }
 
     /**
