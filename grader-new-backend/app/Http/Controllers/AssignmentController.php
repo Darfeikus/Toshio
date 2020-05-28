@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use App\assignment;
-use App\group;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -21,7 +20,7 @@ class AssignmentController extends Controller
     public function index()
     {
         //
-        return group::all();
+        return assignment::all();
     }
 
     /**
@@ -58,7 +57,7 @@ class AssignmentController extends Controller
     {
         //
         try{
-            return group::findOrFail($group);
+            return assignment::findOrFail($group);
         }
         catch(ModelNotFoundException $e){
             return response(
@@ -67,12 +66,12 @@ class AssignmentController extends Controller
         }
     }
 
-    public function showTeacher($id)
+    public function showAssignment($id)
     {
         //
         try{
-            $collection = group::all();
-            return $collection->where('professor_id','=',$id);
+            $collection = assignment::all();
+            return $collection->where('assignment_id','=',$id);
         }
         catch(ModelNotFoundException $e){
             return response(

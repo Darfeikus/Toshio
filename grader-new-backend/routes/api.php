@@ -18,9 +18,12 @@ Route::post("/submission", 'SubmissionController@store');
 Route::post("/group", 'GroupController@store');
 Route::post("/assignment", 'AssignmentController@store');
 
-Route::get("/group", 'AssignmentController@index');
-Route::get("/group/{id}", 'AssignmentController@show');
-Route::get("/group/teacher/{id}", 'AssignmentController@showTeacher');
+Route::get("/group", 'GroupController@index');
+Route::get("/group/{id}", 'GroupController@show');
+Route::get("/group/teacher/{id}", 'GroupController@showTeacher');
+
+Route::get("/assignment", 'AssignmentController@index');
+Route::get("/assignment/{id}", 'AssignmentController@show');
 
 //language routes
 Route::get("/language", 'LanguageController@index');

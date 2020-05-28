@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 require 'backend-compilador/uploadGroup.php';
@@ -19,6 +20,7 @@ class GroupController extends Controller
     public function index()
     {
         //
+        return group::all();
     }
 
     public static function createGroup($id,$crn,$name,$termcode){
@@ -60,11 +62,33 @@ class GroupController extends Controller
      * @param  \App\group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(group $group)
+    public function show(int $group)
     {
         //
+        try{
+            return group::findOrFail($group);
+        }
+        catch(ModelNotFoundException $e){
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage()))
+                , 404)->header('Content-type', 'application/json');
+        }
     }
 
+    public function showTeacher($id)
+    {
+        //
+        try{
+            $collection = group::all();
+            return $collection->where('professor_id','=',$id);
+        }
+        catch(ModelNotFoundException $e){
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage()))
+                , 404)->header('Content-type', 'application/json');
+        }
+    }
+    
     /**
      * Update the specified resource in storage.
      *
