@@ -19,8 +19,6 @@ function compile()
 
     $id_teacher = $_GET['id'];
     $name = $_POST['name'];
-    // $name = 'Fundamentos';
-    system('echo '.$name.' > name');
     $target_dir = 'groups/';
     $filename = basename($_FILES['file']['name']);
     $target_file = $target_dir.$filename;
@@ -54,9 +52,5 @@ function compile()
     } else {
         echo SimpleXLS::parseError();
     }
-    // $i = 0;
-    // foreach($arrayUsers as $res){
-    //     system('echo '.implode(" ",$res).' > test/out'.$i++);
-    // }
 }
 ?>

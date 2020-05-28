@@ -1,12 +1,13 @@
 <?php
     function compile(){
         $id_student = $_GET['id'];
+        $crn = $_GET['crn'];
         $id_assignment = $_GET['idAss'];
         $lang = $_GET['lang'];
         //File Upload
         
         $folderPath = 'uploads/'.$id_student.'/'.$id_assignment.'/';
-        $testCases = 'testCases/'.$id_assignment.'/';
+        $testCases = 'testCases/'.$crn.'/'.$id_assignment.'/';
         $numberOfTestCases = 10;
 
         if(!file_exists($folderPath)){

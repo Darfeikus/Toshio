@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\assignment;
 use Illuminate\Http\Request;
+
+require 'backend-compilador/uploadAssignment.php';
 
 class AssignmentController extends Controller
 {
@@ -23,9 +26,22 @@ class AssignmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
+     public static function createAssignment($nombre,$crn,$start_date,$end_date,$tries,$language){
+        DB::table('assignments')->insert([
+            'crn' => $crn,
+            'name' => $nombre,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'tries' => $tries,
+            'language' => $language
+        ]);
+    }
+
     public function store(Request $request)
     {
         //
+        compile();
     }
 
     /**
