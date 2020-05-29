@@ -10,11 +10,21 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ["./groups.component.css"],
 })
 export class GroupsComponent implements OnInit {
+  myGroups: object;
+
   myForm = new FormGroup({
-    name: new FormControl(''),
-    file: new FormControl('', [Validators.required]),
+    name: new FormControl('',[Validators.required]),
+    file: new FormControl(''),
     fileSource: new FormControl('', [Validators.required])
   });
+
+  ngOnInit(): void {
+    this.http.get('http://localhost:8000/api/group/teacher/A01329173')
+      .subscribe(res => {
+        this.myGroups = res;
+        console.log(this.myGroups);
+      })
+  }
 
   closeResult = "";
   constructor(private http: HttpClient, private modalService: NgbModal, private router: Router) {}
@@ -41,12 +51,15 @@ export class GroupsComponent implements OnInit {
     this.http.post('http://localhost:8000/api/group?id=A01329173', formData,{responseType: 'text'})
       .subscribe(res => {
         console.log(res);
-        alert('Uploaded Successfully.');
-        location.reload()
+        var json = JSON.parse(res);
+        if(json['error']){
+          alert(json["message"]);
+        }
+        else{
+          location.reload();
+        }
       })
   }
-
-  ngOnInit(): void {}
 
   open(content) {
     this.modalService

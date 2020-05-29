@@ -28,6 +28,7 @@
     "g": "^2.0.1",
     "material-design-icons": "^3.0.1",
     "ng2-charts": "^2.3.0",
+    "ng2-pdf-viewer": "^6.3.0",
     "ngx-bootstrap": "^4.1.1",
     "rxjs": "^6.5.4",
     "rxjs-compat": "^6.0.0-rc.0",
@@ -35,7 +36,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.900.7",
+    "@angular-devkit/build-angular": "^0.901.7",
     "@angular/cli": "^9.0.1",
     "@angular/compiler-cli": "^9.0.0",
     "@types/jasmine": "3.3.12",
