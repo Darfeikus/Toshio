@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use App\assignment;
+use App\group;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -59,6 +60,50 @@ class AssignmentController extends Controller
         //
         try{
             return assignment::findOrFail($group);
+        }
+        catch(ModelNotFoundException $e){
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage()))
+                , 404)->header('Content-type', 'application/json');
+        }
+    }
+
+    public function showTeacher($professor_id)
+    {
+        try{
+            $crn = DB::table('professor_group')->where([
+                ['professor_id', '=',$professor_id],
+            ])->pluck('crn');
+            $json = [];
+            $collection = assignment::all();
+            foreach($crn as $currentCrn){
+                foreach($collection->where('crn','=',$currentCrn) as $assignment){
+                    array_push($json, $assignment);
+                }
+            }
+            return json_encode($json);
+        }
+        catch(ModelNotFoundException $e){
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage()))
+                , 404)->header('Content-type', 'application/json');
+        }
+    }
+
+    public function showStudent($user_id)
+    {
+        try{
+            $crn = DB::table('student_group')->where([
+                ['user_id', '=',$user_id],
+            ])->pluck('crn');
+            $json = [];
+            $collection = assignment::all();
+            foreach($crn as $currentCrn){
+                foreach($collection->where('crn','=',$currentCrn) as $assignment){
+                    array_push($json, $assignment);
+                }
+            }
+            return json_encode($json);
         }
         catch(ModelNotFoundException $e){
             return response(

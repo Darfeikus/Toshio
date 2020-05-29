@@ -87,6 +87,29 @@ class GroupController extends Controller
                 , 404)->header('Content-type', 'application/json');
         }
     }
+
+    public function showStudent($user_id)
+    {
+        //
+        try{
+            $crn = DB::table('student_group')->where([
+                ['user_id', '=',$user_id],
+            ])->pluck('crn');
+            $json = [];
+            $collection = group::all();
+            foreach($crn as $currentCrn){
+                foreach($collection->where('crn','=',$currentCrn) as $group){
+                    array_push($json, $group);
+                }
+            }
+            return json_encode($json);
+        }
+        catch(ModelNotFoundException $e){
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage()))
+                , 404)->header('Content-type', 'application/json');
+        }
+    }
     
     /**
      * Update the specified resource in storage.

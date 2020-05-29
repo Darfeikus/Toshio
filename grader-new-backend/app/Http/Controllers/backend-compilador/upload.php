@@ -5,13 +5,17 @@
         $id_student = $_GET['id'];
         $crn = $_GET['crn'];
         $id_assignment = $_GET['idAss'];
-        $lang = $_GET['lang'];
-        $numberOfTestCases = $_GET['testcases'];
+        $lang = SubmissionController::getLanguage($_GET['lang']);
+        
         //File Upload
         
         $folderPath = 'uploads/'.$id_student.'/'.$id_assignment.'/';
         $testCases = 'testCases/'.$crn.'/'.$id_assignment.'/';
 
+        $fi = new FilesystemIterator($testCases, FilesystemIterator::SKIP_DOTS);
+
+        $numberOfTestCases = iterator_count($fi)/3;
+        
         if(!file_exists($folderPath)){
             mkdir($folderPath,0777,true);
         }
@@ -63,7 +67,7 @@
         
         system('rm '.$folderPath.'out*');
         system('rm '.$folderPath.'input');
-
-        SubmissionController::uploadSubmission($id_assignment,$grade[0],$id_student);
+        $query = SubmissionController::uploadSubmission($id_assignment,$grade[0],$id_student);
+        return $grade[0] == $query[0] ? $result:$query;
     }
 ?>

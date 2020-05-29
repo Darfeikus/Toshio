@@ -27,14 +27,25 @@ class SubmissionController extends Controller
             ['assignment_id', '=',$id],
             ['id', '=',$user_id],
         ])->value('tries_left');
-
+        
         if($try > 0){
             DB::table('submissions')->insert([
                 'assignment_id' => $id,
                 'grade' => $grade,
                 'user_id' => $user_id,
             ]);
+            return  json_encode([$grade]);
         }
+        else{
+            return json_encode(["Maximum number of tries used"]);
+        }
+    }
+
+    public static function getLanguage($id)
+    {
+        return DB::table('languages')->where([
+            ['language_id', '=',$id]
+        ])->value('language');
     }
 
     /**
@@ -46,7 +57,7 @@ class SubmissionController extends Controller
     public function store(Request $request)
     {
         //
-        compile();
+        return compile();
     }
 
     /**
