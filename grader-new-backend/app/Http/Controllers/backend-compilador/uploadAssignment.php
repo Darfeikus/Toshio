@@ -14,6 +14,8 @@ function compile()
     
     system('echo nombre:'.$nombre.' crn:'.$crn.' intentos:'.$intentos.' lenguaje: '.$lenguaje.' '.$fechaApertura.' '.$fechaClausura.' > out');
 
+    $idAss = AssignmentController::createAssignment($nombre,$crn,$fechaApertura,$fechaClausura,$intentos,$lenguaje);
+
     $target_dir = 'testCases/'.$crn.'/';
 
     if (!file_exists($target_dir)) {        
@@ -21,20 +23,19 @@ function compile()
     }
 
     $filename = basename($_FILES['file']['name']);
-    $target_file = $target_dir.$filename;
+    $target_file = $target_dir.$nombre;
     move_uploaded_file($_FILES['file']['tmp_name'], $target_file);
     
     $zip = new ZipArchive;
     $res = $zip->open($target_file);
     
     if ($res === TRUE) {
-        $zip->extractTo($target_dir.$nombre);
+        $zip->extractTo($target_dir.$idAss);
         $zip->close();
     }
     else{
         echo 'extraction error';
     }
 
-    AssignmentController::createAssignment($nombre,$crn,$fechaApertura,$fechaClausura,$intentos,$lenguaje);
 }
 ?>

@@ -14,6 +14,7 @@ public class CompareTextFiles {
 		final String matricula = input[0];
 		final String id = input[1];
 		final int numberTestCases = Integer.parseInt(input[2]);
+		final String crn = input[3];
 
 		double grade = 0;
 
@@ -24,12 +25,12 @@ public class CompareTextFiles {
 			BufferedWriter bw = null;
 			FileWriter fw = null;
 
-			final BufferedReader reader = new BufferedReader(new FileReader("testCases/" + id + "/retro" + i));
+			final BufferedReader reader = new BufferedReader(new FileReader("testCases/" + crn + "/" + id + "/retro" + i));
 
 			final BufferedReader reader1 = new BufferedReader(
 					new FileReader("uploads/" + matricula + "/" + id + "/out" + i));
 
-			final BufferedReader reader2 = new BufferedReader(new FileReader("testCases/" + id + "/out" + i));
+			final BufferedReader reader2 = new BufferedReader(new FileReader("testCases/" + crn + "/" + id + "/out" + i));
 
 			final String line = reader.readLine();
 

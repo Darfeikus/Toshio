@@ -39,6 +39,7 @@ class AssignmentController extends Controller
             'tries' => $tries,
             'language' => $language
         ]);
+        return DB::table('assignments')->get()->first()->assignment_id;
     }
 
     public function store(Request $request)

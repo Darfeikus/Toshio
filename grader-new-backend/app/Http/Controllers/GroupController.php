@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 require 'backend-compilador/uploadGroup.php';
 
-
 use App\group;
 use Illuminate\Http\Request;
 

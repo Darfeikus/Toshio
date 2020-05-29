@@ -1,8 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 require 'backend-compilador/upload.php';
+
+use App\submission;
 use Illuminate\Http\Request;
 
 class SubmissionController extends Controller
@@ -14,7 +18,23 @@ class SubmissionController extends Controller
      */
     public function index()
     {
-        //
+
+    }
+
+    public static function uploadSubmission($id,$grade,$user_id)
+    {
+        $try = DB::table('alumno_submission_intento')->where([
+            ['assignment_id', '=',$id],
+            ['id', '=',$user_id],
+        ])->value('tries_left');
+
+        if($try > 0){
+            DB::table('submissions')->insert([
+                'assignment_id' => $id,
+                'grade' => $grade,
+                'user_id' => $user_id,
+            ]);
+        }
     }
 
     /**
