@@ -69,7 +69,7 @@
             
             <div class="col">
               <div class="form-group">
-                <label for="exampleFormControlFile2">Archivo Test</label>
+                <label for="exampleFormControlFile2">PDF con instrucciones</label>
                   <input
                     id="exampleFormControlFile2"
                     type="file"
@@ -219,7 +219,7 @@
           </div>
         </div>
         
-        <table *ngFor="let assignment of myAssignemnts" class="table table-striped">
+        <table *ngFor="let assignment of myAssignments" class="table table-striped">
           <thead>
             <tr>
               <th>Tarea</th>
@@ -228,10 +228,10 @@
               <th>Administración</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngIf="assignment.active">
             <tr>
               <td>{{assignment.name}}</td>
-              <td>{{assignment.end_date}}</td>
+              <td>{{dateF(assignment.end_date)}}</td>
               <td>{{searchGroup(assignment.crn)}}</td>
               <td>
                 <button type="button" class="btn btn-info">
@@ -275,49 +275,16 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Alumno</th>
               <th>Tarea</th>
+              <th>Fecha Limite</th>
               <th>Materia</th>
-              <th>Calificación</th>
-              <th>Detalles</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Antonio Sánchez</td>
-              <td>Proyecto Final</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>100</td>
-              <td>
-                <button type="button" class="btn btn-dark (click)=details()">
-                  <i
-                    class="fa fa-code"
-                    (click)="details()"
-                    aria-hidden="true"
-                  ></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>Oscar Barbosa</td>
-              <td>Proyecto Final</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>100</td>
-              <td>
-                <button type="button" class="btn btn-dark (click)=details()">
-                  <i
-                    class="fa fa-code"
-                    (click)="details()"
-                    aria-hidden="true"
-                  ></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>André Rodríguez</td>
-              <td>Proyecto Final</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>100</td>
+            <tr *ngFor="let assignment of inactive">
+              <td>{{assignment.name}}</td>
+              <td>{{dateF(assignment.end_date)}}</td>
+              <td>{{searchGroup(assignment.crn)}}</td>
               <td>
                 <button type="button" class="btn btn-dark (click)=details()">
                   <i

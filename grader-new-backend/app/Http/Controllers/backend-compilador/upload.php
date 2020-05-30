@@ -14,7 +14,7 @@
 
         $fi = new FilesystemIterator($testCases, FilesystemIterator::SKIP_DOTS);
 
-        $numberOfTestCases = iterator_count($fi)/3;
+        $numberOfTestCases = intdiv(iterator_count($fi),3);
         
         if(!file_exists($folderPath)){
             mkdir($folderPath,0777,true);

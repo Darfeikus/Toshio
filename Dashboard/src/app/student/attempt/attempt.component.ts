@@ -52,6 +52,7 @@ export class AttemptComponent implements OnInit {
       .subscribe(res => {
         console.log(res[0]);
         alert(res[0]);
+        location.reload();
       })
   }
 

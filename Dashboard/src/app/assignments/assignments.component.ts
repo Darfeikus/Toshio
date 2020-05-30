@@ -24,7 +24,8 @@ export class AssignmentsComponent implements OnInit {
   time = { hour: 0, minute: 0 };
   timeEnd = { hour: 23, minute: 59 };
   myGroups: any;
-  myAssignemnts: any = [];
+  myAssignments: any = [];
+  inactive: any = [];
   languages: object;
 
   ngOnInit(): void {
@@ -41,8 +42,13 @@ export class AssignmentsComponent implements OnInit {
       })
     this.http.get('http://localhost:8000/api/assignment/teacher/A01329173')
       .subscribe(res => {
-        this.myAssignemnts = res;
-        console.log(this.myAssignemnts);
+        this.myAssignments = res;
+        this.myAssignments.forEach(assignment => {
+          if(!assignment.active){
+            this.inactive.push(assignment);
+          }
+        });
+        console.log(this.myAssignments);
       })
   }
 
@@ -153,6 +159,10 @@ export class AssignmentsComponent implements OnInit {
 
   details() {
     this.router.navigateByUrl("/assignments/details");
+  }
+
+  dateF(date){
+    return date.substring(0,19);
   }
 
   open(content) {

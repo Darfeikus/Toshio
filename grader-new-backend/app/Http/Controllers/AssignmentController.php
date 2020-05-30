@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use App\assignment;
+use DateTime;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Mockery\Generator\StringManipulation\Pass\Pass;
@@ -22,7 +23,31 @@ class AssignmentController extends Controller
     public function index()
     {
         //
-        return assignment::all();
+        $query = assignment::all();
+        $date = date("Y-m-d H:i:s");
+        foreach($query as $assignment){
+            if($assignment->end_date < $date){
+                $assignment->active = false;
+                DB::table('assignments')
+                ->where('assignment_id', $assignment->assignment_id)
+                ->update(['active' => false]);
+            }
+        }
+        return $query;
+    }
+
+    public static function getAll(){
+        $query = assignment::all();
+        $date = date("Y-m-d H:i:s");
+        foreach($query as $assignment){
+            if($assignment->end_date < $date){
+                $assignment->active = false;
+                DB::table('assignments')
+                ->where('assignment_id', $assignment->assignment_id)
+                ->update(['active' => false]);
+            }
+        }
+        return $query;
     }
 
     /**
@@ -82,7 +107,7 @@ class AssignmentController extends Controller
                 ['professor_id', '=', $professor_id],
             ])->pluck('crn');
             $json = [];
-            $collection = assignment::all();
+            $collection = $this->getAll();
             foreach ($crn as $currentCrn) {
                 foreach ($collection->where('crn', '=', $currentCrn) as $assignment) {
                     array_push($json, $assignment);
@@ -104,7 +129,7 @@ class AssignmentController extends Controller
                 ['user_id', '=', $user_id],
             ])->pluck('crn');
             $json = [];
-            $collection = assignment::all();
+            $collection = $this->getAll();
             foreach ($crn as $currentCrn) {
                 foreach ($collection->where('crn', '=', $currentCrn) as $assignment) {
                     array_push($json, $assignment);
@@ -123,7 +148,7 @@ class AssignmentController extends Controller
     {
         //
         try {
-            $collection = assignment::all();
+            $collection = $this->getAll();
             return $collection->where('assignment_id', '=', $id);
         } catch (ModelNotFoundException $e) {
             return response(

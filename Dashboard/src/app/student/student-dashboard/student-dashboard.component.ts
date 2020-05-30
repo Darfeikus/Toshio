@@ -17,10 +17,12 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap'
 })
 
 export class StudentDashboardComponent implements OnInit {
-  myAssignemnts: any = [];
+  myAssignments: any = [];
+  mySubmissions: any = [];
+  inactive: any = [];
   myGroups: any = [];
 
-  constructor(private http: HttpClient,private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.http.get('http://localhost:8000/api/group/student/A01732313')
@@ -33,8 +35,29 @@ export class StudentDashboardComponent implements OnInit {
 
     this.http.get('http://localhost:8000/api/assignment/student/A01732313')
       .subscribe(res => {
-        this.myAssignemnts = res;
-        console.log(this.myAssignemnts);
+        this.myAssignments = res;
+        this.myAssignments.forEach(assignment => {
+          if (!assignment.active) {
+            this.inactive.push(assignment);
+          }
+        });
+      })
+    this.http.get('http://localhost:8000/api/submission/A01732313')
+      .subscribe(res => {
+        this.mySubmissions = res;
+        this.myAssignments.forEach(assignment => {
+          this.mySubmissions.forEach(submission => {
+            if(assignment.assignment_id == submission.assignment_id){
+              if(assignment.tries != submission.tries_left){
+                assignment['status']= 'Delivered';
+              }
+              else{
+                assignment['status']= 'Not delivered';
+              }
+            }
+          });
+        });
+        console.log(this.myAssignments);
       })
   }
 
@@ -46,8 +69,12 @@ export class StudentDashboardComponent implements OnInit {
     }
   }
 
+  date(date) {
+    return date.substring(0, 19);
+  }
+
   uploadAttempt(assignment_id): void {
-    this.router.navigateByUrl("/student/attempt?assignment_id="+assignment_id);
-    
+    this.router.navigateByUrl("/student/attempt?assignment_id=" + assignment_id);
+
   }
 }

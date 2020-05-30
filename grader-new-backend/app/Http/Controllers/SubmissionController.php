@@ -18,7 +18,7 @@ class SubmissionController extends Controller
      */
     public function index()
     {
-
+        return submission::all();
     }
 
     public static function uploadSubmission($id,$grade,$user_id)
@@ -68,7 +68,9 @@ class SubmissionController extends Controller
      */
     public function show($id)
     {
-        //
+        return DB::table('alumno_submission_intento')->where([
+            ['id', '=',$id]
+        ])->get();
     }
 
     /**
