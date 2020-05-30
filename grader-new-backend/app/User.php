@@ -17,7 +17,7 @@ class User
 
     function __construct() {
         $client = new Client(
-            'mongodb+srv://onlineGrader:grader2020@clustergrader-apjah.mongodb.net/test?retryWrites=true&w=majority');
+            'mongodb+srv://onlineGrader:grader2020@cluster2-apjah.azure.mongodb.net/test?retryWrites=true&w=majority');
         
         $this->db = $client->onlineGrader;
     }

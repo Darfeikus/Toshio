@@ -4,7 +4,7 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { TabsModule } from "ngx-bootstrap/tabs";
 import { CommonModule } from "@angular/common";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { LoginRoutingModule } from "./login-routing/login-routing.module";
 import { LoginComponent } from "./login.component";
 
@@ -12,6 +12,7 @@ import { LoginComponent } from "./login.component";
   imports: [
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
     LoginRoutingModule,
     CommonModule,
     BsDropdownModule.forRoot(),

@@ -11,6 +11,9 @@ import { NavigationComponent } from "./shared/navigation/navigation.component";
 import { ContestsDashboardComponent } from "./contests/contests-dashboard/contests-dashboard.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CommonModule } from "@angular/common";
+import { FormsModule } from '@angular/forms';
+import { LoginModule } from './login/login.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { CommonModule } from "@angular/common";
     AppRoutingModule,
     RouterModule.forRoot(routes),
     NgbModule,
+    FormsModule,
+    LoginModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
