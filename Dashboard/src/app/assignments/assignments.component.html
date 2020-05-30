@@ -5,6 +5,7 @@
         <h4 class="modal-title" id="modal-basic-title">Crear Tarea</h4>
         <button
           type="button"
+          type="button"
           class="close"
           aria-label="Close"
           (click)="modal.dismiss('Cross click')"
@@ -13,24 +14,31 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        
+        <form [formGroup]="myForm" (ngSubmit)="submit()">
           <div class="form-group">
-            <label for="exampleFormControlInput1">Nombre</label>
+            
+            <label for="nombre">Nombre</label>
+            
             <input
+              formControlName="nombre"
               type="text"
               class="form-control"
-              id="exampleFormControlInput1"
+              id="nombre"
               placeholder="ICA X.X"
+              required
             />
           </div>
           <div class="form-group">
-            <label for="exampleFormControlSelect1">Materia</label>
-            <select class="form-control" id="exampleFormControlSelect1">
-              <option>Estructura de Datos</option>
-              <option>Bases de Datos</option>
-              <option>Bases de Datos Avanzadas</option>
-              <option>Graficas Computacionales</option>
-              <option>Intro a la Computación</option>
+            <label for="exampleFormControlSelect2">Grupo</label>
+            <select class="form-control" id="exampleFormControlSelect2" formControlName="materia" required>
+              <option *ngFor="let group of myGroups" [value]="group.crn">{{group.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect3">Lenguaje</label>
+            <select class="form-control" id="exampleFormControlSelect3" formControlName="lenguaje" required>
+              <option *ngFor="let language of languages" [value]="language.language_id">{{language.language}}</option>
             </select>
           </div>
           <div class="form-group">
@@ -40,29 +48,38 @@
               class="form-control"
               id="exampleFormControlInput2"
               placeholder="0"
+              formControlName="intentos" 
+              required
             />
           </div>
           <div class="row">
+            
             <div class="col">
               <div class="form-group">
-                <label for="exampleFormControlFile1">Carpeta zip</label>
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                />
+                <label for="exampleFormControlFile">Carpeta zip</label>
+                  <input
+                    id="exampleFormControlFile"
+                    type="file"
+                    class="form-control-file"
+                    (change)="onFileChange($event)"
+                    required
+                  />
               </div>
             </div>
+            
             <div class="col">
               <div class="form-group">
-                <label for="exampleFormControlFile1">Archivo Test</label>
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                />
+                <label for="exampleFormControlFile2">Archivo Test</label>
+                  <input
+                    id="exampleFormControlFile2"
+                    type="file"
+                    class="form-control-file"
+                    (change)="onFileChange2($event)"
+                    required
+                  />
               </div>
             </div>
+
           </div>
 
           <div class="row">
@@ -78,9 +95,12 @@
                     [ngModelOptions]="{ standalone: true }"
                     ngbDatepicker
                     #d2="ngbDatepicker"
+                    formControlName="fechaApertura" 
+                    required
                   />
                   <div class="input-group-append">
                     <button
+                      type="button"
                       class="btn btn-outline-secondary"
                       (click)="d2.toggle()"
                       type="button"
@@ -90,6 +110,7 @@
                   </div>
                 </div>
                 <button
+                  type="button"
                   class="btn btn-sm btn-outline-primary mr-2 mt-1"
                   (click)="selectToday()"
                 >
@@ -109,9 +130,12 @@
                     [ngModelOptions]="{ standalone: true }"
                     ngbDatepicker
                     #d="ngbDatepicker"
+                    formControlName="fechaClausura" 
+                    required
                   />
                   <div class="input-group-append">
                     <button
+                      type="button"
                       class="btn btn-outline-secondary"
                       (click)="d.toggle()"
                       type="button"
@@ -121,18 +145,21 @@
                   </div>
                 </div>
                 <button
+                  type="button"
                   class="btn btn-sm btn-outline-primary mr-2 mt-1"
                   (click)="oneDay()"
                 >
                   1 Dia
                 </button>
                 <button
+                  type="button"
                   class="btn btn-sm btn-outline-primary mr-1 mt-1"
                   (click)="threeDays()"
                 >
                   3 Dias
                 </button>
                 <button
+                  type="button"
                   class="btn btn-sm btn-outline-primary mr-1 mt-1"
                   (click)="oneWeek()"
                 >
@@ -161,6 +188,7 @@
               </div>
             </div>
           </div>
+          <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid"> Submit </button>
         </form>
       </div>
 
@@ -181,6 +209,7 @@
           <div class="p-2"><h3>Tareas Activas</h3></div>
           <div class="p-2">
             <button
+              type="button"
               class="btn btn-lg btn-outline-success"
               (click)="open(content)"
             >
@@ -189,7 +218,8 @@
             </button>
           </div>
         </div>
-        <table class="table table-striped">
+        
+        <table *ngFor="let assignment of myAssignemnts" class="table table-striped">
           <thead>
             <tr>
               <th>Tarea</th>
@@ -200,35 +230,9 @@
           </thead>
           <tbody>
             <tr>
-              <td>Proyecto Final</td>
-              <td>31-12-2020 23:59</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>
-                <button type="button" class="btn btn-info">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-danger">
-                  <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>Proyecto Final</td>
-              <td>31-12-2020 23:59</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>
-                <button type="button" class="btn btn-info">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-danger">
-                  <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>Proyecto Final</td>
-              <td>31-12-2020 23:59</td>
-              <td>Bases de Datos Avanzadas</td>
+              <td>{{assignment.name}}</td>
+              <td>{{assignment.end_date}}</td>
+              <td>{{searchGroup(assignment.crn)}}</td>
               <td>
                 <button type="button" class="btn btn-info">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -240,6 +244,7 @@
             </tr>
           </tbody>
         </table>
+        
         <div class="pull-right">
           <nav aria-label="Page navigation example">
             <ul class="pagination">

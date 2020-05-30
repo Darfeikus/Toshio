@@ -2,14 +2,17 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 mt-3">
-                <h1>ICA 2.1</h1>
-                <h4>Fecha de Entrega: Jueves 21 de Mayo de 2020 23:59:00</h4>
+                <h1>{{assignmentinfo.name}}</h1>
+                <h4>Fecha de Entrega: 
+                    {{getDayOfWeek(assignmentinfo.end_date)}}</h4>
             </div>
             <div class="col-12 mt-3">
                 <div class="card">
                     <h5 class="card-header">Descripción</h5>
                     <div class="card-body">
-                        <p class="card-text">Los archivos "prueba6.txt", "prueba7.txt" y "prueba8.txt" contienen errores. </p>
+                        <!-- <embed src="../../../../../grader-new-backend/public/testCases/assignmentinfo.crn/assignmentinfo.assignment_id/rules.pdf" width="800px" height="2100px" /> -->
+                        <embed src="../../../../../grader-new-backend/public/testCases/36882/66/rules.pdf" type="application/pdf" width="100%" height="600px" />
+                        
                     </div>
                 </div>
             </div>
@@ -44,7 +47,7 @@
                                 </div>
                             </div>
                                   
-                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <button class="btn btn-primary" type="submit" [disabled] = "!myForm.valid">Submit </button>
                         </form>
                     </div>
                 </div>

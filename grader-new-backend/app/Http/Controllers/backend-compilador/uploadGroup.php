@@ -20,8 +20,17 @@ function compile()
     $id_teacher = $_GET['id'];
     $name = $_POST['name'];
     $target_dir = 'groups/';
+    
+    
     $filename = basename($_FILES['file']['name']);
     $target_file = $target_dir.$filename;
+    
+    $allowed = array('xls');
+    $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+    if (!in_array($ext, $allowed)) {
+        return json_encode(array('error' => true, 'message' => 'Invalid Format'));
+    }
+
     move_uploaded_file($_FILES['file']['tmp_name'], $target_file);
     $termcode = 0;
     $crn = 0;
@@ -50,7 +59,8 @@ function compile()
             $i++;
         }
     } else {
-        echo SimpleXLS::parseError();
+        return json_encode(array('error' => true, 'message' => SimpleXLS::parseError()));
     }
+    return json_encode(array('error' => false, 'message' => 'Success'));
 }
 ?>

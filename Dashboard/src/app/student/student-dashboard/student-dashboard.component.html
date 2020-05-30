@@ -7,57 +7,25 @@
       <div class="col-md-6 col-sm-12">
         <ul class="list-group">
           <li class="list-group-item active">Próximas tareas</li>
-          <li class="list-group-item">
+          
+          <li *ngFor="let assignment of myAssignemnts" class="list-group-item">            
             <div class="row">
               <div class="col-8">
-                <h5>ICA 2.1</h5>
-                <h6>Estructura de Datos</h6>
-                <small>21/05/2020</small>
+                <h5>{{assignment.name}}</h5>
+                <h6>{{searchGroup(assignment.crn)}}</h6>
+                <small>{{assignment.end_date}}</small>
               </div>
               <div class="col-4">
                 <button
                   class="btn btn-outline-primary"
-                  (click)="uploadAttempt()"
+                  (click)="uploadAttempt(assignment.assignment_id)"
                 >
                   Subir
                 </button>
               </div>
             </div>
           </li>
-          <li class="list-group-item">
-            <div class="row">
-              <div class="col-8">
-                <h5>ICA 2.1</h5>
-                <h6>Estructura de Datos</h6>
-                <small>21/05/2020</small>
-              </div>
-              <div class="col-4">
-                <button
-                  class="btn btn-outline-primary"
-                  (click)="uploadAttempt()"
-                >
-                  Subir
-                </button>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <div class="col-8">
-                <h5>ICA 2.1</h5>
-                <h6>Estructura de Datos</h6>
-                <small>21/05/2020</small>
-              </div>
-              <div class="col-4">
-                <button
-                  class="btn btn-outline-primary"
-                  (click)="uploadAttempt()"
-                >
-                  Subir
-                </button>
-              </div>
-            </div>
-          </li>
+          
           <li class="list-group-item">
             <div class="row">
               <button class="btn btn-link btn-block">Ver Todo</button>
