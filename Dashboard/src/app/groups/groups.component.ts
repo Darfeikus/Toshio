@@ -51,7 +51,7 @@ export class GroupsComponent implements OnInit {
 
     this.http.post('http://localhost:8000/api/group?id=A01329173', formData)
       .subscribe(res => {
-        // console.log(res);
+        console.log(res);
         if(res['error']){
           alert(res["message"]);
         }
@@ -84,8 +84,21 @@ export class GroupsComponent implements OnInit {
     }
   }
 
+  delete($crn){
+
+    this.http.get('http://localhost:8000/api/group/delete/'+$crn)
+      .subscribe(res => {
+        if(res){
+          location.reload();
+        }
+        else{
+          alert("There was a problem while deleting")
+        }
+      });
+  }
+
   details() {
     this.router.navigateByUrl("/groups/details");
   }
-  
+
 }

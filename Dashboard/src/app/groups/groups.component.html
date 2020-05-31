@@ -3,12 +3,7 @@
     <ng-template #content let-modal>
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Crear Grupo</h4>
-        <button
-          type="button"
-          class="close"
-          aria-label="Close"
-          (click)="modal.dismiss('Cross click')"
-        >
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -17,58 +12,41 @@
           <div class="form-group">
 
             <label for="name">Name</label>
-            
-            <input 
-              formControlName="name"
-              id="name" 
-              type="text" 
-              class="form-control"
-              required
-            />
-            
+
+            <input formControlName="name" id="name" type="text" class="form-control" required />
+
             <label for="exampleFormControlFile1">Nota: Archivo .xls</label>
-            
-            <input
-              id="exampleFormControlFile1"
-              type="file"
-              class="form-control-file"
-              (change)="onFileChange($event)"
-              required
-            />
-            
+
+            <input id="exampleFormControlFile1" type="file" class="form-control-file" (change)="onFileChange($event)"
+              required />
+
             <small id="passwordHelpBlock" class="form-text text-muted">
               Se le enviará correo con su contraseña a todos los alumnos que no
               estén registrados previamente.
             </small>
-          
+
           </div>
 
           <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid"> Submit </button>
-          
+
         </form>
       </div>
 
       <div class="modal-footer">
-        <button
-          type="button"
-          ngbAutofocus
-          class="btn btn-outline-dark"
-          (click)="modal.close('Save click')"
-        >
-          Crear
+        <button type="button" ngbAutofocus class="btn btn-outline-dark" (click)="modal.close('Save click')">
+          Cerrar
         </button>
       </div>
     </ng-template>
-    
+
     <div class="row row-stat">
       <div class="table-responsive m-3">
         <div class="d-flex justify-content-between">
-          <div class="p-2"><h3>Mis Grupos</h3></div>
           <div class="p-2">
-            <button
-              class="btn btn-lg btn-outline-success"
-              (click)="open(content)"
-            >
+            <h3>Mis Grupos</h3>
+          </div>
+          <div class="p-2">
+            <button class="btn btn-lg btn-outline-success" (click)="open(content)">
               <i class="fa fa-file-excel-o" aria-hidden="true"></i>
               Crear Grupo
             </button>
@@ -91,10 +69,35 @@
               <td>{{group.crn}}</td>
               <td>{{group.term_code}}</td>
               <td>
-                <span style="font-size: 1em; color: Tomato;">
-                  <i class="fa fa-window-close-o" aria-hidden="true"></i>
-                </span>
+                <button type="button" ngbAutofocus class="btn btn-danger"
+                (click)="open(content)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+                <ng-template #content let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Eliminar Grupo</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h3>Esta seguro de que desa eliminar el grupo de?</h3>
+                    <br>
+                    <h2 style="color:blue;">{{group.name}}</h2>
+                    <br>
+                    <h5 style="color:red;">Una vez realizada esta accion todas las tareas y actividades seran eliminadas y no se podran recuperar</h5>
+                    <br>
+                    <button type="button" ngbAutofocus class="btn btn-danger" (click)="delete(group.crn)">
+                      Eliminar grupo
+                    </button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" ngbAutofocus class="btn btn-outline-dark" (click)="modal.close('Save click')">
+                      Cerrar
+                    </button>
+                  </div>
+                </ng-template>
               </td>
+
             </tr>
           </tbody>
         </table>

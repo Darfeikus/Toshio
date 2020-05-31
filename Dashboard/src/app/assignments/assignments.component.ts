@@ -176,6 +176,20 @@ export class AssignmentsComponent implements OnInit {
       );
   }
 
+  delete($id){
+
+    this.http.get('http://localhost:8000/api/assignment/delete/'+$id)
+      .subscribe(res => {
+        console.log(res);
+        if(res){
+          location.reload();
+        }
+        else{
+          alert("There was a problem while deleting")
+        }
+      });
+  }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return "by pressing ESC";

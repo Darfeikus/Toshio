@@ -42,10 +42,10 @@ class AssignmentController extends Controller
         return $query;
     }
 
-    public static function getAll(){
+    public static function confirmQuery($query){
         date_default_timezone_set('America/Mexico_City');
-        $query = assignment::all();
         $date = date("Y-m-d H:i:s");
+
         foreach($query as $assignment){
             
             $active = false;
@@ -59,6 +59,7 @@ class AssignmentController extends Controller
             ->where('assignment_id', $assignment->assignment_id)
             ->update(['active' => $active]);
         }
+        
         return $query;
     }
 
@@ -69,9 +70,17 @@ class AssignmentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public static function delete($idAss)
+    public function delete($id)
     {
-        DB::table('assignments')->where('assignment_id', '=', $idAss)->delete();
+        //
+        try {
+            return DB::table('assignments')->where('assignment_id', '=', $id)->delete();
+        } catch (ModelNotFoundException $e) {
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage())),
+                404
+            )->header('Content-type', 'application/json');
+        }
     }
 
     public static function createAssignment($nombre, $crn, $start_date, $end_date, $tries, $language, $runtime)
@@ -105,7 +114,7 @@ class AssignmentController extends Controller
     {
         //
         try {
-            return DB::table('assignments')
+            $query = DB::table('assignments')
             ->join('groups', function ($join) use ($assignment){
                 $join->on('groups.crn', '=', 'assignments.crn')
                     ->where('assignments.assignment_id', '=', $assignment);
@@ -113,6 +122,7 @@ class AssignmentController extends Controller
             ->join('languages','languages.language_id','=','assignments.language')
             ->select('groups.name as group_name', 'assignments.*','languages.*')
             ->get();
+            return AssignmentController::confirmQuery($query);
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -124,7 +134,7 @@ class AssignmentController extends Controller
     public function showTeacher($professor_id)
     {
         try {
-            return DB::table('professor_group')
+            $query = DB::table('professor_group')
             ->join('assignments', function ($join) use ($professor_id){
                 $join->on('professor_group.crn', '=', 'assignments.crn')
                     ->where('professor_group.professor_id', '=', $professor_id);
@@ -133,6 +143,7 @@ class AssignmentController extends Controller
             ->join('languages','languages.language_id','=','assignments.language')
             ->select('groups.name as group_name', 'assignments.*','professor_group.*','languages.*')
             ->get();
+            return AssignmentController::confirmQuery($query);
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -144,7 +155,7 @@ class AssignmentController extends Controller
     public function showStudent($user_id)
     {
         try {
-            return DB::table('student_group')
+            $query = DB::table('student_group')
                 ->join('assignments', function ($join) use ($user_id){
                     $join->on('student_group.crn', '=', 'assignments.crn')
                         ->where('student_group.user_id', '=', $user_id);
@@ -153,6 +164,7 @@ class AssignmentController extends Controller
                 ->join('languages','languages.language_id','=','assignments.language')
                 ->select('groups.name as group_name', 'assignments.*','student_group.*','languages.*')
                 ->get();
+            return AssignmentController::confirmQuery($query);
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),

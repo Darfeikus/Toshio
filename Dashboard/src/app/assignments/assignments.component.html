@@ -258,9 +258,33 @@
                 <button type="button" class="btn btn-info">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-danger">
-                  <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </button>
+                <button type="button" ngbAutofocus class="btn btn-danger"
+                (click)="open(content)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+                <ng-template #content let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Eliminar actividad</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h3>Esta seguro de que desa eliminar la actividad?</h3>
+                    <br>
+                    <h2 style="color:blue;">{{assignment.name}}</h2>
+                    <br>
+                    <h5 style="color:red;">Una vez realizada esta accion todos lo relacionado con la actividad sera eliminado</h5>
+                    <br>
+                    <button type="button" ngbAutofocus class="btn btn-danger" (click)="delete(assignment.assignment_id)">
+                      Borrar actividad
+                    </button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" ngbAutofocus class="btn btn-outline-dark" (click)="modal.close('Save click')">
+                      Cerrar
+                    </button>
+                  </div>
+                </ng-template>
               </td>
             </tr>
           </tbody>
@@ -315,9 +339,33 @@
                 <button type="button" class="btn btn-info">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-danger">
-                  <i class="fa fa-trash-o" aria-hidden="true"></i>
-                </button>
+                <button type="button" ngbAutofocus class="btn btn-danger"
+                (click)="open(content)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+                <ng-template #content let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Eliminar Grupo</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h3>Esta seguro de que desa eliminar el grupo de?</h3>
+                    <br>
+                    <h2 style="color:blue;">{{group.name}}</h2>
+                    <br>
+                    <h5 style="color:red;">Una vez realizada esta accion todas las tareas y actividades seran eliminadas y no se podran recuperar</h5>
+                    <br>
+                    <button type="button" ngbAutofocus class="btn btn-danger" (click)="delete(group.crn)">
+                      Eliminar grupo
+                    </button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" ngbAutofocus class="btn btn-outline-dark" (click)="modal.close('Save click')">
+                      Cerrar
+                    </button>
+                  </div>
+                </ng-template>
               </td>
               <!-- <td>
                 <button type="button" class="btn btn-dark (click)=details()">

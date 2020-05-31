@@ -110,6 +110,19 @@ class GroupController extends Controller
         }
     }
 
+    public function delete($id)
+    {
+        //
+        try {
+            return DB::table('groups')->where('crn', '=', $id)->delete();
+        } catch (ModelNotFoundException $e) {
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage())),
+                404
+            )->header('Content-type', 'application/json');
+        }
+    }
+
     public function showStudent($user_id)
     {
         try {
