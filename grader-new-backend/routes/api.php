@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::post("/submission", 'SubmissionController@store');
 Route::post("/group", 'GroupController@store');
 Route::post("/assignment", 'AssignmentController@store');
+Route::post("/assignment/update", 'AssignmentController@storeUpdate');
 
 Route::get("/submission", 'SubmissionController@index');
 Route::get("/submission/{id}", 'SubmissionController@show'); //Shows all submissions from the student

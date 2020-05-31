@@ -1,5 +1,6 @@
 <div class="" id="page-wrapper">
   <div class="container-fluid">
+    
     <ng-template #content let-modal>
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Crear Tarea</h4>
@@ -13,8 +14,9 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      
       <div class="modal-body">
-        
+        <!-- Submit FORM -->
         <form [formGroup]="myForm" (ngSubmit)="submit()">
           <div class="form-group">
             
@@ -31,13 +33,13 @@
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect2">Grupo</label>
-            <select class="form-control" id="exampleFormControlSelect2" formControlName="materia" required>
+            <select class="form-control" id="exampleFormControlSelect2" formControlName="materia">
               <option *ngFor="let group of myGroups" [value]="group.crn">{{group.name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect3">Lenguaje</label>
-            <select class="form-control" id="exampleFormControlSelect3" formControlName="lenguaje" required>
+            <select class="form-control" id="exampleFormControlSelect3" formControlName="lenguaje" >
               <option *ngFor="let language of languages" [value]="language.language_id">{{language.language}}</option>
             </select>
           </div>
@@ -48,7 +50,6 @@
                 <input
                 type="number"
                 class="form-control"
-                id="exampleFormControlInput2"
                 placeholder="3"
                 formControlName="intentos" 
                 min = "0"
@@ -62,7 +63,6 @@
                 <input
                 type="number"
                 class="form-control"
-                id="exampleFormControlInput2"
                 formControlName="runtime"
                 placeholder="10.00" step="1.00" min="0.00" max="99.99"
                 required
@@ -220,6 +220,7 @@
         </button>
       </div>
     </ng-template>
+
     <div class="row row-stat">
       <div class="table-responsive m-3">
         <div class="d-flex justify-content-between">
@@ -255,11 +256,237 @@
               <td>{{assignment.language}}</td>
               <td>{{assignment.group_name}}</td>
               <td>
-                <button type="button" class="btn btn-info">
+                <button type="button" class="btn btn-info" (click)="openC(content2, assignment)">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </button>
-                <button type="button" ngbAutofocus class="btn btn-danger"
-                (click)="open(content)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                
+                <ng-template #content2 let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Editar Tarea</h4>
+                    <button
+                      type="button"
+                      type="button"
+                      class="close"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    
+                    <form [formGroup]="myForm" (ngSubmit)="update(assignment.assignment_id)">
+                      
+                      <div class="form-group">
+                        
+                        <label for="nombre">Nombre</label>
+                        
+                        <input
+                          formControlName="nombre"
+                          type="text"
+                          class="form-control"
+                          id="nombre"
+                          [ngModel]="assignment.name"
+                          required
+                        />
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect2">Grupo</label>
+                        <select  class="form-control" id="exampleFormControlSelect2" formControlName="materia">
+                          <option value="" selected>{{assignment.group_name}}</option>
+                          <option *ngFor="let group of myGroups" [value]="group.crn">{{group.name}}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect3">Lenguaje</label>
+                        <select class="form-control" id="exampleFormControlSelect3" formControlName="lenguaje">
+                          <option value="" selected>{{assignment.language}}</option>
+                          <option *ngFor="let language of languages" [value]="language.language_id">{{language.language}}</option>
+                        </select>
+                      </div>
+                      <div class="row">  
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlInput1">Intentos</label>
+                            <input
+                            type="number"
+                            class="form-control"
+                            placeholder="3"
+                            formControlName="intentos" 
+                            min = "0"
+                            required
+                            [ngModel]="assignment.tries"
+                            />
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlInput1">Runtime (segundos)</label>
+                            <input
+                            type="number"
+                            class="form-control"
+                            formControlName="runtime"
+                            placeholder="10.00" step="1.00" min="0.00" max="99.99"
+                            [ngModel]="assignment.runtime"
+                            required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                        <div class="row">  
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile">Carpeta zip</label>
+                              <input
+                                id="exampleFormControlFile"
+                                type="file"
+                                class="form-control-file"
+                                (change)="onFileChange($event)"
+                                required
+                              />
+                          </div>
+                        </div>
+                        
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile2">PDF con instrucciones</label>
+                              <input
+                                id="exampleFormControlFile2"
+                                type="file"
+                                class="form-control-file"
+                                (change)="onFileChange2($event)"
+                                required
+                              />
+                          </div>
+                        </div>
+            
+                      </div>
+            
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="datePicker1">Fecha Apertura</label>
+                            <div class="input-group">
+                              <input
+                                class="form-control"
+                                placeholder="yyyy-mm-dd"
+                                name="dp"
+                                [(ngModel)]="dateOpen"
+                                [ngModelOptions]="{ standalone: true }"
+                                ngbDatepicker
+                                #d2="ngbDatepicker"
+                                formControlName="fechaApertura" 
+                                required
+                              />
+                              <div class="input-group-append">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-secondary"
+                                  (click)="d2.toggle()"
+                                  type="button"
+                                >
+                                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                              (click)="selectToday()"
+                            >
+                              Hoy
+                            </button>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="datePicker2">Fecha Clausura</label>
+                            <div class="input-group">
+                              <input
+                                class="form-control"
+                                placeholder="yyyy-mm-dd"
+                                name="dp"
+                                [(ngModel)]="dateClose"
+                                [ngModelOptions]="{ standalone: true }"
+                                ngbDatepicker
+                                #d="ngbDatepicker"
+                                formControlName="fechaClausura" 
+                                required
+                              />
+                              <div class="input-group-append">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-secondary"
+                                  (click)="d.toggle()"
+                                  type="button"
+                                >
+                                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                              (click)="oneDay()"
+                            >
+                              1 Dia
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                              (click)="threeDays()"
+                            >
+                              3 Dias
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                              (click)="oneWeek()"
+                            >
+                              1 Semana
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile1">Hora Apertura</label>
+                            <ngb-timepicker
+                              [(ngModel)]="time"
+                              [ngModelOptions]="{ standalone: true }"
+                            ></ngb-timepicker>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile1">Hora Clausura</label>
+                            <ngb-timepicker
+                              [(ngModel)]="timeEnd"
+                              [ngModelOptions]="{ standalone: true }"
+                            ></ngb-timepicker>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid"> Submit </button>
+                    </form>
+                  </div>
+            
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      ngbAutofocus
+                      class="btn btn-outline-dark"
+                      (click)="modal.close('Save click')"
+                    >
+                      Guardar
+                    </button>
+                  </div>
+                </ng-template>
+                
+                <button type="button" ngbAutofocus class="btn btn-danger" (click)="open(content)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i></button>
 
                 <ng-template #content let-modal>
                   <div class="modal-header">
@@ -285,6 +512,7 @@
                     </button>
                   </div>
                 </ng-template>
+
               </td>
             </tr>
           </tbody>
@@ -312,8 +540,9 @@
           </nav>
         </div>
       </div>
-    </div>
+      </div>
     <hr />
+
     <div class="row row-stat">
       <div class="table-responsive m-3">
         <h3>Tareas Inactivas</h3>
@@ -336,28 +565,255 @@
               <td>{{assignment.language}}</td>
               <td>{{assignment.group_name}}</td>
               <td>
-                <button type="button" class="btn btn-info">
+                
+                <button type="button" class="btn btn-info" (click)="openC(content2, assignment)">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </button>
-                <button type="button" ngbAutofocus class="btn btn-danger"
-                (click)="open(content)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                
+                <ng-template #content2 let-modal>
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Editar Tarea</h4>
+                    <button
+                      type="button"
+                      type="button"
+                      class="close"
+                      aria-label="Close"
+                      (click)="modal.dismiss('Cross click')"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    
+                    <form [formGroup]="myForm" (ngSubmit)="update(assignment.assignment_id)">
+                      
+                      <div class="form-group">
+                        
+                        <label for="nombre">Nombre</label>
+                        
+                        <input
+                          formControlName="nombre"
+                          type="text"
+                          class="form-control"
+                          id="nombre"
+                          [ngModel]="assignment.name"
+                          required
+                        />
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect2">Grupo</label>
+                        <select  class="form-control" id="exampleFormControlSelect2" formControlName="materia">
+                          <option value="" selected>{{assignment.group_name}}</option>
+                          <option *ngFor="let group of myGroups" [value]="group.crn">{{group.name}}</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect3">Lenguaje</label>
+                        <select class="form-control" id="exampleFormControlSelect3" formControlName="lenguaje">
+                          <option value="" selected>{{assignment.language}}</option>
+                          <option *ngFor="let language of languages" [value]="language.language_id">{{language.language}}</option>
+                        </select>
+                      </div>
+                      <div class="row">  
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlInput1">Intentos</label>
+                            <input
+                            type="number"
+                            class="form-control"
+                            placeholder="3"
+                            formControlName="intentos" 
+                            min = "0"
+                            required
+                            [ngModel]="assignment.tries"
+                            />
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlInput1">Runtime (segundos)</label>
+                            <input
+                            type="number"
+                            class="form-control"
+                            formControlName="runtime"
+                            placeholder="10.00" step="1.00" min="0.00" max="99.99"
+                            [ngModel]="assignment.runtime"
+                            required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                        <div class="row">  
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile">Carpeta zip</label>
+                              <input
+                                id="exampleFormControlFile"
+                                type="file"
+                                class="form-control-file"
+                                (change)="onFileChange($event)"
+                                required
+                              />
+                          </div>
+                        </div>
+                        
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile2">PDF con instrucciones</label>
+                              <input
+                                id="exampleFormControlFile2"
+                                type="file"
+                                class="form-control-file"
+                                (change)="onFileChange2($event)"
+                                required
+                              />
+                          </div>
+                        </div>
+            
+                      </div>
+            
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="datePicker1">Fecha Apertura</label>
+                            <div class="input-group">
+                              <input
+                                class="form-control"
+                                placeholder="yyyy-mm-dd"
+                                name="dp"
+                                [(ngModel)]="dateOpen"
+                                [ngModelOptions]="{ standalone: true }"
+                                ngbDatepicker
+                                #d2="ngbDatepicker"
+                                formControlName="fechaApertura" 
+                                required
+                              />
+                              <div class="input-group-append">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-secondary"
+                                  (click)="d2.toggle()"
+                                  type="button"
+                                >
+                                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                              (click)="selectToday()"
+                            >
+                              Hoy
+                            </button>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="datePicker2">Fecha Clausura</label>
+                            <div class="input-group">
+                              <input
+                                class="form-control"
+                                placeholder="yyyy-mm-dd"
+                                name="dp"
+                                [(ngModel)]="dateClose"
+                                [ngModelOptions]="{ standalone: true }"
+                                ngbDatepicker
+                                #d="ngbDatepicker"
+                                formControlName="fechaClausura" 
+                                required
+                              />
+                              <div class="input-group-append">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-secondary"
+                                  (click)="d.toggle()"
+                                  type="button"
+                                >
+                                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-2 mt-1"
+                              (click)="oneDay()"
+                            >
+                              1 Dia
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                              (click)="threeDays()"
+                            >
+                              3 Dias
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary mr-1 mt-1"
+                              (click)="oneWeek()"
+                            >
+                              1 Semana
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile1">Hora Apertura</label>
+                            <ngb-timepicker
+                              [(ngModel)]="time"
+                              [ngModelOptions]="{ standalone: true }"
+                            ></ngb-timepicker>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="exampleFormControlFile1">Hora Clausura</label>
+                            <ngb-timepicker
+                              [(ngModel)]="timeEnd"
+                              [ngModelOptions]="{ standalone: true }"
+                            ></ngb-timepicker>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="btn btn-primary" type="submit" [disabled]="!myForm.valid"> Submit </button>
+                    </form>
+                  </div>
+            
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      ngbAutofocus
+                      class="btn btn-outline-dark"
+                      (click)="modal.close('Save click')"
+                    >
+                      Guardar
+                    </button>
+                  </div>
+                </ng-template>
+
+                <button type="button" ngbAutofocus class="btn btn-danger" (click)="open(content)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i></button>
 
                 <ng-template #content let-modal>
                   <div class="modal-header">
-                    <h4 class="modal-title" id="modal-basic-title">Eliminar Grupo</h4>
+                    <h4 class="modal-title" id="modal-basic-title">Eliminar actividad</h4>
                     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
-                    <h3>Esta seguro de que desa eliminar el grupo de?</h3>
+                    <h3>Esta seguro de que desa eliminar la actividad?</h3>
                     <br>
-                    <h2 style="color:blue;">{{group.name}}</h2>
+                    <h2 style="color:blue;">{{assignment.name}}</h2>
                     <br>
-                    <h5 style="color:red;">Una vez realizada esta accion todas las tareas y actividades seran eliminadas y no se podran recuperar</h5>
+                    <h5 style="color:red;">Una vez realizada esta accion todos lo relacionado con la actividad sera eliminado</h5>
                     <br>
-                    <button type="button" ngbAutofocus class="btn btn-danger" (click)="delete(group.crn)">
-                      Eliminar grupo
+                    <button type="button" ngbAutofocus class="btn btn-danger" (click)="delete(assignment.assignment_id)">
+                      Borrar actividad
                     </button>
                   </div>
                   <div class="modal-footer">
@@ -366,16 +822,8 @@
                     </button>
                   </div>
                 </ng-template>
+
               </td>
-              <!-- <td>
-                <button type="button" class="btn btn-dark (click)=details()">
-                  <i
-                    class="fa fa-code"
-                    (click)="details()"
-                    aria-hidden="true"
-                  ></i>
-                </button>
-              </td> -->
             </tr>
           </tbody>
         </table>

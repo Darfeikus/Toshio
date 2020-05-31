@@ -70,7 +70,7 @@ class AssignmentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function delete($id)
+    public static function delete($id)
     {
         //
         try {
@@ -83,9 +83,23 @@ class AssignmentController extends Controller
         }
     }
 
+    public static function update($id,$nombre, $crn, $start_date, $end_date, $tries, $language, $runtime)
+    {
+        return DB::table('assignments')
+              ->where('assignment_id', $id)
+              ->update([
+                'crn' => $crn,
+                'name' => $nombre,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'tries' => $tries,
+                'language' => $language,
+                'runtime' => $runtime 
+                ]);
+    }
+
     public static function createAssignment($nombre, $crn, $start_date, $end_date, $tries, $language, $runtime)
     {
-        system('echo '.$runtime.' > out');
         $data = assignment::create([
             'crn' => $crn,
             'name' => $nombre,
@@ -104,13 +118,18 @@ class AssignmentController extends Controller
         return compile();
     }
 
+    public function storeUpdate(Request $request)
+    {
+        //
+        return compileUpdate();
+    }
     /**
      * Display the specified resource.
      *
      * @param  \App\assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function show(int $assignment)
+    public static function show(int $assignment)
     {
         //
         try {
@@ -131,7 +150,7 @@ class AssignmentController extends Controller
         }
     }
 
-    public function showTeacher($professor_id)
+    public static function showTeacher($professor_id)
     {
         try {
             $query = DB::table('professor_group')
@@ -194,10 +213,6 @@ class AssignmentController extends Controller
      * @param  \App\assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, assignment $assignment)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
