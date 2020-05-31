@@ -22,7 +22,7 @@ export class GroupsComponent implements OnInit {
     this.http.get('http://localhost:8000/api/group/teacher/A01329173')
       .subscribe(res => {
         this.myGroups = res;
-        console.log(this.myGroups);
+        // console.log(this.myGroups);
       })
   }
 
@@ -48,12 +48,11 @@ export class GroupsComponent implements OnInit {
     formData.append('file', this.myForm.get('fileSource').value);
     formData.append('name',this.myForm.get('name').value);
 
-    this.http.post('http://localhost:8000/api/group?id=A01329173', formData,{responseType: 'text'})
+    this.http.post('http://localhost:8000/api/group?id=A01329173', formData)
       .subscribe(res => {
-        console.log(res);
-        var json = JSON.parse(res);
-        if(json['error']){
-          alert(json["message"]);
+        // console.log(res);
+        if(res['error']){
+          alert(res["message"]);
         }
         else{
           location.reload();

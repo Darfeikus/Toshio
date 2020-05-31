@@ -30,7 +30,7 @@ export class StudentDashboardComponent implements OnInit {
         (res as any).forEach(grupo => {
           this.myGroups.push(grupo);
         });
-        console.log(this.myGroups);
+        // console.log(this.myGroups);
       })
 
     this.http.get('http://localhost:8000/api/assignment/student/A01732313')
@@ -48,17 +48,21 @@ export class StudentDashboardComponent implements OnInit {
         this.myAssignments.forEach(assignment => {
           this.mySubmissions.forEach(submission => {
             if(assignment.assignment_id == submission.assignment_id){
-              if(assignment.tries != submission.tries_left){
-                assignment['status']= 'Delivered';
+              if (assignment.tries == submission.tries_left) {
+                assignment['status'] = !submission.grade ? 'Not delivered':'0/100';
               }
-              else{
-                assignment['status']= 'Not delivered';
+              else {
+                assignment['status'] = submission.grade + '/100';
               }
             }
           });
         });
-        console.log(this.myAssignments);
+        // console.log(this.myAssignments);
       })
+  }
+
+  overdue(end_date){
+    return new Date(end_date) < new Date();
   }
 
   searchGroup(crn) {
@@ -75,6 +79,5 @@ export class StudentDashboardComponent implements OnInit {
 
   uploadAttempt(assignment_id): void {
     this.router.navigateByUrl("/student/attempt?assignment_id=" + assignment_id);
-
   }
 }

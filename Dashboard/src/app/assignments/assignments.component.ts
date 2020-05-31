@@ -33,12 +33,12 @@ export class AssignmentsComponent implements OnInit {
     this.http.get('http://localhost:8000/api/group/teacher/A01329173')
       .subscribe(res => {
         this.myGroups = res;
-        console.log(this.myGroups);
+        // console.log(this.myGroups);
       })
     this.http.get('http://localhost:8000/api/language')
       .subscribe(res => {
         this.languages = res;
-        console.log(this.languages);
+        // console.log(this.languages);
       })
     this.http.get('http://localhost:8000/api/assignment/teacher/A01329173')
       .subscribe(res => {
@@ -48,7 +48,7 @@ export class AssignmentsComponent implements OnInit {
             this.inactive.push(assignment);
           }
         });
-        console.log(this.myAssignments);
+        // console.log(this.myAssignments);
       })
   }
 
@@ -63,7 +63,8 @@ export class AssignmentsComponent implements OnInit {
   myForm = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
     materia: new FormControl('', [Validators.required]),
-    intentos: new FormControl('', [Validators.required]),
+    intentos: new FormControl('', [Validators.required,Validators.min(0)]),
+    runtime: new FormControl('', [Validators.required,Validators.min(0.00),Validators.max(99.99)]),
     lenguaje: new FormControl('', [Validators.required]),
     fechaApertura: new FormControl('', [Validators.required]),
     fechaClausura: new FormControl('', [Validators.required]),
@@ -105,6 +106,10 @@ export class AssignmentsComponent implements OnInit {
     }
   }
 
+  setTwoNumberDecimal(el) {
+    el.value = parseFloat(el.value).toFixed(2);
+  };
+
   submit() {
     if (this.myForm.valid) {
       const formData = new FormData();
@@ -113,6 +118,7 @@ export class AssignmentsComponent implements OnInit {
       formData.append('nombre', this.myForm.get('nombre').value);
       formData.append('materia', this.myForm.get('materia').value);
       formData.append('intentos', this.myForm.get('intentos').value);
+      formData.append('runtime', this.myForm.get('runtime').value);
       formData.append('lenguaje', this.myForm.get('lenguaje').value);
       formData.append('fechaApertura', this.parserFormatter.format(this.dateOpen));
       formData.append('fechaClausura', this.parserFormatter.format(this.dateClose));
@@ -121,7 +127,7 @@ export class AssignmentsComponent implements OnInit {
 
       this.http.post('http://localhost:8000/api/assignment?id=A0132973', formData, { responseType: 'text' })
         .subscribe(res => {
-          console.log(res);
+          // console.log(res);
           var json = JSON.parse(res);
           if (json['error']) {
             alert(json["message"]);

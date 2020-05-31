@@ -41,19 +41,37 @@
               <option *ngFor="let language of languages" [value]="language.language_id">{{language.language}}</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Intentos</label>
-            <input
-              type="number"
-              class="form-control"
-              id="exampleFormControlInput2"
-              placeholder="0"
-              formControlName="intentos" 
-              required
-            />
+          <div class="row">  
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Intentos</label>
+                <input
+                type="number"
+                class="form-control"
+                id="exampleFormControlInput2"
+                placeholder="0"
+                formControlName="intentos" 
+                min = "0"
+                required
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Runtime (segundos)</label>
+                <input
+                type="number"
+                class="form-control"
+                id="exampleFormControlInput2"
+                placeholder="0"
+                formControlName="runtime"
+                placeholder="0.00" step="1.00" min="0.00" max="99.99"
+                required
+                />
+              </div>
+            </div>
           </div>
-          <div class="row">
-            
+            <div class="row">  
             <div class="col">
               <div class="form-group">
                 <label for="exampleFormControlFile">Carpeta zip</label>
@@ -219,18 +237,20 @@
           </div>
         </div>
         
-        <table *ngFor="let assignment of myAssignments" class="table table-striped">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th>Tarea</th>
+              <th>Fecha Inicial</th>
               <th>Fecha Límite</th>
               <th>Materia</th>
               <th>Administración</th>
             </tr>
           </thead>
-          <tbody *ngIf="assignment.active">
-            <tr>
+          <tbody *ngFor="let assignment of myAssignments" >
+            <tr *ngIf="assignment.active">
               <td>{{assignment.name}}</td>
+              <td>{{dateF(assignment.start_date)}}</td>
               <td>{{dateF(assignment.end_date)}}</td>
               <td>{{searchGroup(assignment.crn)}}</td>
               <td>
@@ -276,6 +296,7 @@
           <thead>
             <tr>
               <th>Tarea</th>
+              <th>Fecha Inicial</th>
               <th>Fecha Limite</th>
               <th>Materia</th>
             </tr>
@@ -283,6 +304,7 @@
           <tbody>
             <tr *ngFor="let assignment of inactive">
               <td>{{assignment.name}}</td>
+              <td>{{dateF(assignment.start_date)}}</td>
               <td>{{dateF(assignment.end_date)}}</td>
               <td>{{searchGroup(assignment.crn)}}</td>
               <td>

@@ -23,29 +23,41 @@ class AssignmentController extends Controller
     public function index()
     {
         //
+        date_default_timezone_set('America/Mexico_City');
         $query = assignment::all();
         $date = date("Y-m-d H:i:s");
         foreach($query as $assignment){
-            if($assignment->end_date < $date){
-                $assignment->active = false;
-                DB::table('assignments')
-                ->where('assignment_id', $assignment->assignment_id)
-                ->update(['active' => false]);
+            
+            $active = false;
+
+            if($assignment->end_date > $date && $assignment->start_date < $date){
+                $active = true;
             }
+
+            $assignment->active = $active;
+            DB::table('assignments')
+            ->where('assignment_id', $assignment->assignment_id)
+            ->update(['active' => $active]);
         }
         return $query;
     }
 
     public static function getAll(){
+        date_default_timezone_set('America/Mexico_City');
         $query = assignment::all();
         $date = date("Y-m-d H:i:s");
         foreach($query as $assignment){
-            if($assignment->end_date < $date){
-                $assignment->active = false;
-                DB::table('assignments')
-                ->where('assignment_id', $assignment->assignment_id)
-                ->update(['active' => false]);
+            
+            $active = false;
+
+            if($assignment->end_date > $date && $assignment->start_date < $date){
+                $active = true;
             }
+
+            $assignment->active = $active;
+            DB::table('assignments')
+            ->where('assignment_id', $assignment->assignment_id)
+            ->update(['active' => $active]);
         }
         return $query;
     }
@@ -62,15 +74,17 @@ class AssignmentController extends Controller
         DB::table('assignments')->where('assignment_id', '=', $idAss)->delete();
     }
 
-    public static function createAssignment($nombre, $crn, $start_date, $end_date, $tries, $language)
+    public static function createAssignment($nombre, $crn, $start_date, $end_date, $tries, $language, $runtime)
     {
+        system('echo '.$runtime.' > out');
         $data = assignment::create([
             'crn' => $crn,
             'name' => $nombre,
             'start_date' => $start_date,
             'end_date' => $end_date,
             'tries' => $tries,
-            'language' => $language
+            'language' => $language,
+            'runtime' => $runtime
         ]);
         return $data->assignment_id;
     }

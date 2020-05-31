@@ -18,12 +18,16 @@ export class AttemptComponent implements OnInit {
 
   myForm = new FormGroup({
     file: new FormControl(''),
-    fileSource: new FormControl('', [Validators.required])
+    fileSource: new FormControl('', [Validators.required]),
   });
 
   pdfSrc = "";
   assignment_id = 0;
   assignmentinfo: any = [];
+  len = "";
+  extension = "";
+  mySubmissions: any = [];
+  labels: string[] = [];
 
   constructor(private http: HttpClient, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
@@ -48,27 +52,71 @@ export class AttemptComponent implements OnInit {
   submit() {
     const formData = new FormData();
     formData.append('file', this.myForm.get('fileSource').value);
-    this.http.post('http://localhost:8000/api/submission?id=A01732313&idAss=' + this.assignment_id + '&lang=' + this.assignmentinfo.language + '&crn=' + this.assignmentinfo.crn, formData)
+    formData.append('assignment_id', this.assignment_id.toString());
+    formData.append('lang', this.extension);
+    formData.append('crn', this.assignmentinfo.crn);
+    formData.append('runtime', this.assignmentinfo.runtime);
+
+    this.http.post('http://localhost:8000/api/submission?id=A01732313', formData)
       .subscribe(res => {
-        console.log(res[0]);
-        alert(res[0]);
-        location.reload();
-      })
+        console.log(res);
+        if (res['error']) {
+          alert(res["message"]);
+        }
+        else {
+          for (let index = 0; index < Object.keys(res).length; index++) {
+            this.labels.push(res[index]);
+          }
+        }
+      }, err => {
+        console.log(err);
+        if (err['status'] == 413) {
+          alert('File too large');
+        }
+      }
+      );
   }
 
   ngOnInit(): void {
     this.http.get('http://localhost:8000/api/assignment/' + this.assignment_id).subscribe(res => {
       this.assignmentinfo = res;
-      // this.pdfSrc = "http://localhost:8000/public/rules.pdf";
-      
+      this.http.get('http://localhost:8000/api/language/' + this.assignmentinfo.language).subscribe(res => {
+        this.extension = res['language'];
+        switch (res['language']) {
+          case 'c':
+            this.len = "C";
+            break;
+          case 'java':
+            this.len = "Java";
+            break;
+          case 'py':
+            this.len = "Python3";
+            break;
+        }
+      });
     });
+    this.http.get('http://localhost:8000/api/submission/A01732313')
+      .subscribe(res => {
+        this.mySubmissions = res;
+        this.mySubmissions.forEach(submission => {
+          if (this.assignmentinfo.assignment_id == submission.assignment_id) {
+            if (this.assignmentinfo.tries == submission.tries_left) {
+              this.assignmentinfo['status'] = 'Not delivered';
+            }
+            else {
+              this.assignmentinfo['status'] = submission.grade + '/100';
+            }
+          }
+        });
+        console.log(this.assignmentinfo);
+      });
   }
 
   getDayOfWeek(d) {
     const date = new Date(d);
     const day = isNaN(date.getDay()) ? null :
       ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'][date.getDay()];
-    return day + " " + date.getDay().toString() + " de " + this.mes(date.getMonth()) + " de " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+    return day + " " + date.getDate() + " de " + this.mes(date.getMonth()) + " de " + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
   }
 
   mes(num) {

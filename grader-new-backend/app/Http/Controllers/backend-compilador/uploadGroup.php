@@ -31,7 +31,10 @@ function compile()
         return json_encode(array('error' => true, 'message' => 'Invalid Format'));
     }
 
-    move_uploaded_file($_FILES['file']['tmp_name'], $target_file);
+    if(!move_uploaded_file($_FILES['file']['tmp_name'], $target_file)){
+        return json_encode(array('error' => true, 'message' => 'Error uploading file'));
+    }
+    
     $termcode = 0;
     $crn = 0;
     $arrayUsers = array();

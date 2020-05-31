@@ -39,7 +39,7 @@
         <ul class="list-group">
           <li class="list-group-item active">Entregas pasadas</li>
           <li class="list-group-item" *ngFor="let assignment of inactive">
-            <div class="row">
+            <div class="row" *ngIf="overdue(assignment.end_date)">
               <div class="col-8">
                 <h5>{{assignment.name}}</h5>
                 <h6>{{searchGroup(assignment.crn)}}</h6>

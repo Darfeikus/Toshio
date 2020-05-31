@@ -4,12 +4,12 @@ use \App\Http\Controllers\AssignmentController;
 
 function compile()
 {
-    $id_teacher = $_GET['id'];
     $nombre = $_POST['nombre'];
     $lenguaje = $_POST['lenguaje'];
     $crn = $_POST['materia'];
     $intentos = $_POST['intentos'];
-    $fechaApertura = $_POST['fechaApertura'].' '.$horaApertura = $_POST['horaApertura'];;
+    $runtime = $_POST['runtime'];
+    $fechaApertura = $_POST['fechaApertura'].' '.$horaApertura = $_POST['horaApertura'];
     $fechaClausura = $_POST['fechaClausura'].' '.$horaClausura = $_POST['horaClausura'];    
 
     $allowed1 = array('zip');
@@ -22,7 +22,7 @@ function compile()
         return json_encode(array('error' => true, 'message' => 'Invalid Format'));
     }
 
-    $idAss = AssignmentController::createAssignment($nombre,$crn,$fechaApertura,$fechaClausura,$intentos,$lenguaje);
+    $idAss = AssignmentController::createAssignment($nombre,$crn,$fechaApertura,$fechaClausura,$intentos,$lenguaje,$runtime);
         
     try{
         $target_dir = 'testCases/'.$crn.'/'.$idAss.'/';

@@ -7,25 +7,18 @@
                     {{getDayOfWeek(assignmentinfo.end_date)}}</h4>
             </div>
             <div class="col-12 mt-3">
+                <h4 *ngIf="!labels.length" >Estatus: {{assignmentinfo.status}}</h4>
+                <h4 *ngIf="labels.length" >Estatus: {{labels[0]}}</h4>
+                <h6>Lenguaje: <label style="color:blue;">{{len}}</label></h6>
+                <h6>Runtime: <label style="color:blue;">{{assignmentinfo.runtime}}s</label></h6>
+            </div>
+            <div class="col-12 mt-3">
                 <div class="card">
                     <h5 class="card-header">Descripción</h5>
                     <div class="card-body">
                         <!-- <embed src="../../../../../grader-new-backend/public/testCases/assignmentinfo.crn/assignmentinfo.assignment_id/rules.pdf" width="800px" height="2100px" /> -->
                         <embed src="../../../../../grader-new-backend/public/testCases/36882/66/rules.pdf" type="application/pdf" width="100%" height="300px" />
                         
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 mt-3">
-                <div class="card">
-                    <h5 class="card-header">Archivos Adjuntos</h5>
-                    <div class="card-body">
-                        <p class="card-text"><a href="#">ICA 2_1.txt</a></p>
-                        <p class="card-text"><a href="#">Prueba1.txt</a></p>
-                        <p class="card-text"><a href="#">Prueba2.txt</a></p>
-                        <p class="card-text"><a href="#">Prueba3.txt</a></p>
-                        <p class="card-text"><a href="#">Prueba4.txt</a></p>
-                        <p class="card-text"><a href="#">Prueba5.txt</a></p>
                     </div>
                 </div>
             </div>
@@ -49,6 +42,14 @@
                                   
                             <button class="btn btn-primary" type="submit" [disabled] = "!myForm.valid">Submit </button>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <h5 *ngIf="labels.length" class="card-header">Retroalimentación</h5>
+                <div class="card" style="height: 50%;overflow: scroll;">
+                    <div class="card-body" *ngFor="let label of labels">
+                        <label>{{label}}</label>
                     </div>
                 </div>
             </div>
