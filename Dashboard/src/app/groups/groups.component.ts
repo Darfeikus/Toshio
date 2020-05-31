@@ -18,6 +18,8 @@ export class GroupsComponent implements OnInit {
     fileSource: new FormControl('', [Validators.required])
   });
 
+  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router) {}
+  
   ngOnInit(): void {
     this.http.get('http://localhost:8000/api/group/teacher/A01329173')
       .subscribe(res => {
@@ -27,7 +29,6 @@ export class GroupsComponent implements OnInit {
   }
 
   closeResult = "";
-  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router) {}
 
   get f() {
     return this.myForm.controls;

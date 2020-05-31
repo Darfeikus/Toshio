@@ -29,8 +29,10 @@ class SubmissionController extends Controller
                 ]);
             })            
             ->join('languages','languages.language_id','=','assignments.language')
-            ->select('assignments.*','alumno_submission_intento.*','languages.*','submissions.updated_at')
-            ->orderBy('submissions.updated_at','asc')
+            ->join('groups','groups.crn','=','assignments.crn')
+            ->select('groups.name as group_name','assignments.*','alumno_submission_intento.*','languages.*','submissions.updated_at','submissions.grade')
+            ->orderBy('submissions.updated_at','desc')
+            ->limit(50)
             ->get();
     }
 
@@ -79,6 +81,13 @@ class SubmissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function showAssignment($id)
+    {
+        return DB::table('alumno_submission_intento')->where('assignment_id','=',$id)->get();
+            
+    }
+
     public function show($id)
     {
         return DB::table('alumno_submission_intento')
@@ -93,8 +102,10 @@ class SubmissionController extends Controller
                 ]);
             })            
             ->join('languages','languages.language_id','=','assignments.language')
-            ->select('assignments.*','alumno_submission_intento.*','languages.*','submissions.updated_at')
-            ->orderBy('submissions.updated_at','asc')
+            ->join('groups','groups.crn','=','assignments.crn')
+            ->select('groups.name as group_name','assignments.*','alumno_submission_intento.*','languages.*','submissions.updated_at','submissions.grade')
+            ->orderBy('submissions.updated_at','desc')
+            ->limit(50)
             ->get();
     }
 

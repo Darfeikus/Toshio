@@ -1,7 +1,7 @@
 <div class="" id="page-wrapper">
   <div class="container-fluid">
     <div class="row row-stat">
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <div class="panel noborder">
           <div class="panel-heading noborder">
             <div class="media-body">
@@ -19,16 +19,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>ICA 2.3</td>
-                      <td>Estructura de Datos</td>
+                    <tr *ngFor="let assignment of myAssignments">
+                      <td>{{assignment.name}}</td>
+                      <td>{{assignment.group_name}}</td>
                       <td>
                         <i
                           class="fa fa-long-arrow-right"
                           aria-hidden="true"
+                          (click)="details(assignment.assignment_id)"
                         ></i>
                       </td>
                     </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -58,7 +60,7 @@
         </div>
       </div>
 
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <div class="panel noborder">
           <div class="panel-heading noborder">
             <div class="media-body">
@@ -76,110 +78,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>ICA 2.2</td>
-                      <td>Estructura de Datos</td>
+                    <tr *ngFor="let assignment of inactive">
+                      <td>{{assignment.name}}</td>
+                      <td>{{assignment.group_name}}</td>
                       <td>
                         <i
                           class="fa fa-long-arrow-right"
                           aria-hidden="true"
-                        ></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ICA 2.4</td>
-                      <td>Bases de Datos Avanzadas</td>
-                      <td>
-                        <i
-                          class="fa fa-long-arrow-right"
-                          aria-hidden="true"
-                        ></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>ICA 2.1</td>
-                      <td>Gráficas Computacionales</td>
-                      <td>
-                        <i
-                          class="fa fa-long-arrow-right"
-                          aria-hidden="true"
-                        ></i>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="pull-right">
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination">
-                    <li class="page-item">
-                      <a class="page-link" href="#"><<</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">>></a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4">
-        <div class="panel noborder">
-          <div class="panel-heading noborder">
-            <div class="media-body">
-              <h1 class="mt5">Grupos</h1>
-            </div>
-            <hr />
-            <div class="clearfix mt20">
-              <div class="table-responsive">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Nombre</th>
-                      <th>Alumnos</th>
-                      <th>Detalles</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Estructura de Datos 1</td>
-                      <td>35</td>
-                      <td>
-                        <i
-                          class="fa fa-long-arrow-right"
-                          aria-hidden="true"
-                        ></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Estructura de Datos 2</td>
-                      <td>26</td>
-                      <td>
-                        <i
-                          class="fa fa-long-arrow-right"
-                          aria-hidden="true"
-                        ></i>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Gráficas Computacionales</td>
-                      <td>24</td>
-                      <td>
-                        <i
-                          class="fa fa-long-arrow-right"
-                          aria-hidden="true"
+                          (click)="details(assignment.assignment_id)"
                         ></i>
                       </td>
                     </tr>
@@ -214,7 +120,7 @@
     </div>
     <hr />
     <div class="row">
-      <div class="table-responsive m-3">
+      <div class="table-responsive m-2">
         <div class="media-body">
           <h1 class="mt5">Últimas tareas calificadas</h1>
         </div>
@@ -225,36 +131,14 @@
               <th>Tarea</th>
               <th>Materia</th>
               <th>Calificación</th>
-              <th>Detalles</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Antonio Sánchez</td>
-              <td>Proyecto Final</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>100</td>
-              <td>
-                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>Oscar Barbosa</td>
-              <td>Proyecto Final</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>100</td>
-              <td>
-                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-              </td>
-            </tr>
-            <tr>
-              <td>André Rodríguez</td>
-              <td>Proyecto Final</td>
-              <td>Bases de Datos Avanzadas</td>
-              <td>100</td>
-              <td>
-                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-              </td>
+            <tr *ngFor="let submission of submissions">
+              <td>{{submission.id}}</td>
+              <td>{{submission.name}}</td>
+              <td>{{submission.group_name}}</td>
+              <td>{{submission.grade}}</td>
             </tr>
           </tbody>
         </table>

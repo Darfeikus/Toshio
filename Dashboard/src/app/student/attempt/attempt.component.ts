@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-attempt',
@@ -29,7 +30,7 @@ export class AttemptComponent implements OnInit {
   mySubmissions: any = [];
   labels: string[] = [];
 
-  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute) {
+  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute,  private router: Router) {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.assignment_id = params.assignment_id;
     });
@@ -78,14 +79,31 @@ export class AttemptComponent implements OnInit {
       );
   }
 
+  indexOfObj(array, attr, value) {
+    for(var i = 0; i < array.length; i++) {
+        if(array[i][attr] === value) {
+            return i;
+        }
+    }
+    return -1;
+  }
+
   ngOnInit(): void {
-    this.http.get('http://localhost:8000/api/submission/A01732313')
+    const date = new Date();
+    
+    this.http.get('http://localhost:8000/api/submission/assignment/' + this.assignment_id)
       .subscribe(res => {
-        this.mySubmissions = res;
+        var index = this.indexOfObj(res,'id','A01732313');
+        if(index<0){
+          this.router.navigateByUrl("/student");
+        }
       });
 
     this.http.get('http://localhost:8000/api/assignment/' + this.assignment_id).subscribe(res => {
       this.assignmentinfo = res[0];
+      if(new Date(this.assignmentinfo.start_date) > date || date > new Date(this.assignmentinfo.end_date)){
+        this.router.navigateByUrl("/student");
+      }
       var index = this.mySubmissions.findIndex(x => x.assignment_id == this.assignmentinfo.assignment_id);
       if(index != -1){
         this.assignmentinfo['status'] = this.mySubmissions[index].grade + "/100";

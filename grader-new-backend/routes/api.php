@@ -20,6 +20,7 @@ Route::post("/assignment", 'AssignmentController@store');
 
 Route::get("/submission", 'SubmissionController@index');
 Route::get("/submission/{id}", 'SubmissionController@show'); //Shows all submissions from the student
+Route::get("/submission/assignment/{id}", 'SubmissionController@showAssignment');
 
 Route::get("/group", 'GroupController@index');
 Route::get("/group/test", 'GroupController@test');
