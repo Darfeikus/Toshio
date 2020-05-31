@@ -9,14 +9,14 @@
             <div class="col-12 mt-3">
                 <h4 *ngIf="!labels.length" >Estatus: {{assignmentinfo.status}}</h4>
                 <h4 *ngIf="labels.length" >Estatus: {{labels[0]}}</h4>
-                <h6>Lenguaje: <label style="color:blue;">{{len}}</label></h6>
-                <h6>Runtime: <label style="color:blue;">{{assignmentinfo.runtime}}s</label></h6>
+                <h6>Lenguaje: <label style="color:blue;">{{assignmentinfo.language}}</label></h6>
+                <h6>Runtime: <label style="color:blue;">{{assignmentinfo.runtime}}</label></h6>
             </div>
             <div class="col-12 mt-3">
                 <div class="card">
                     <h5 class="card-header">Descripción</h5>
                     <div class="card-body">
-                        <embed src="localhost:8000/rules.pdf" width="800px" height="2100px" />
+                        <!-- <embed src="localhost:8000/rules.pdf" width="800px" height="2100px" /> -->
                     </div>
                 </div>
             </div>

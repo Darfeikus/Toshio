@@ -65,14 +65,6 @@ export class StudentDashboardComponent implements OnInit {
     return new Date(end_date) < new Date();
   }
 
-  searchGroup(crn) {
-    for (var i = 0; i < this.myGroups.length; i++) {
-      if (this.myGroups[i]['crn'].toString() == crn) {
-        return this.myGroups[i]['name'];
-      }
-    }
-  }
-
   date(date) {
     return date.substring(0, 19);
   }

@@ -53,7 +53,7 @@ export class AttemptComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.myForm.get('fileSource').value);
     formData.append('assignment_id', this.assignment_id.toString());
-    formData.append('lang', this.extension);
+    formData.append('lang', this.assignmentinfo.extension);
     formData.append('crn', this.assignmentinfo.crn);
     formData.append('runtime', this.assignmentinfo.runtime);
 
@@ -79,21 +79,7 @@ export class AttemptComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get('http://localhost:8000/api/assignment/' + this.assignment_id).subscribe(res => {
-      this.assignmentinfo = res;
-      this.http.get('http://localhost:8000/api/language/' + this.assignmentinfo.language).subscribe(res => {
-        this.extension = res['language'];
-        switch (res['language']) {
-          case 'c':
-            this.len = "C";
-            break;
-          case 'java':
-            this.len = "Java";
-            break;
-          case 'py':
-            this.len = "Python3";
-            break;
-        }
-      });
+      this.assignmentinfo = res[0];
     });
     this.http.get('http://localhost:8000/api/submission/A01732313')
       .subscribe(res => {

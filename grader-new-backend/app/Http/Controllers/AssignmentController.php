@@ -101,11 +101,18 @@ class AssignmentController extends Controller
      * @param  \App\assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function show(int $group)
+    public function show(int $assignment)
     {
         //
         try {
-            return assignment::findOrFail($group);
+            return DB::table('assignments')
+            ->join('groups', function ($join) use ($assignment){
+                $join->on('groups.crn', '=', 'assignments.crn')
+                    ->where('assignments.assignment_id', '=', $assignment);
+            })
+            ->join('languages','languages.language_id','=','assignments.language')
+            ->select('groups.name as group_name', 'assignments.*','languages.*')
+            ->get();
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -118,11 +125,13 @@ class AssignmentController extends Controller
     {
         try {
             return DB::table('professor_group')
-                ->join('assignments', function ($join) use ($professor_id){
-                    $join->on('professor_group.crn', '=', 'assignments.crn')
-                        ->where('professor_group.professor_id', '=', $professor_id);
-                })
-                ->get();
+            ->join('assignments', function ($join) use ($professor_id){
+                $join->on('professor_group.crn', '=', 'assignments.crn')
+                    ->where('professor_group.professor_id', '=', $professor_id);
+            })
+            ->join('groups','professor_group.crn','=','groups.crn')
+            ->select('groups.name as group_name', 'assignments.*','professor_group.*')
+            ->get();
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -139,6 +148,8 @@ class AssignmentController extends Controller
                     $join->on('student_group.crn', '=', 'assignments.crn')
                         ->where('student_group.user_id', '=', $user_id);
                 })
+                ->join('groups','student_group.crn','=','groups.crn')
+                ->select('groups.name as group_name', 'assignments.*','student_group.*')
                 ->get();
         } catch (ModelNotFoundException $e) {
             return response(

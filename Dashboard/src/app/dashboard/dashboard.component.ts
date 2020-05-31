@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Router } from "@angular/router";
+import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
@@ -8,10 +12,35 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 export class DashboardComponent implements OnInit {
   activeHomeworks: any = [];
   inactiveHomeworks: any = [];
-  groups: any = [];
+  myGroups: any = [];
+  myAssignments: any = [];
+  inactive: any = [];
+  languages: object;
   closeResult = "";
-  constructor(private modalService: NgbModal) {}
+  
+  constructor(private modalService: NgbModal, private http: HttpClient) {}
+
   ngOnInit() {
+    this.http.get('http://localhost:8000/api/group/teacher/A01329173')
+      .subscribe(res => {
+        this.myGroups = res;
+        console.log(this.myGroups);
+      })
+    this.http.get('http://localhost:8000/api/language')
+      .subscribe(res => {
+        this.languages = res;
+        console.log(this.languages);
+      })
+    this.http.get('http://localhost:8000/api/assignment/teacher/A01329173')
+      .subscribe(res => {
+        this.myAssignments = res;
+        this.myAssignments.forEach(assignment => {
+          if(!assignment.active){
+            this.inactive.push(assignment);
+          }
+        });
+        console.log(this.myAssignments);
+      })
     // llamar a API y llenar arreglos para hacer dinámico el listado
   }
   open(content) {

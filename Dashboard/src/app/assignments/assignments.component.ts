@@ -52,14 +52,6 @@ export class AssignmentsComponent implements OnInit {
       })
   }
 
-  searchGroup(crn) {
-    for (var i = 0; i < this.myGroups.length; i++) {
-      if (this.myGroups[i]['crn'].toString() == crn) {
-        return this.myGroups[i]['name'];
-      }
-    }
-  }
-
   myForm = new FormGroup({
     nombre: new FormControl('', [Validators.required]),
     materia: new FormControl('', [Validators.required]),

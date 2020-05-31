@@ -17,6 +17,26 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function test()
+    {
+        $_SESSION['id'] = 'A01329173';
+        $array = array(
+            "Hello" => $_SESSION['id'],
+        );
+        return json_encode($array);
+    }
+
+
+    public function showTeacherL()
+    {
+        //
+        $array = array(
+            "Hello" => $_SESSION['id'],
+        );
+        return json_encode($array);
+    }
+
     public function index()
     {
         //

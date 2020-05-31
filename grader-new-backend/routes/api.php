@@ -22,6 +22,8 @@ Route::get("/submission", 'SubmissionController@index');
 Route::get("/submission/{id}", 'SubmissionController@show'); //Shows all submissions from the student
 
 Route::get("/group", 'GroupController@index');
+Route::get("/group/test", 'GroupController@test');
+Route::get("/group/teacherl", 'GroupController@showTeacherL');
 Route::get("/group/{id}", 'GroupController@show');
 Route::get("/group/teacher/{id}", 'GroupController@showTeacher');
 Route::get("/group/student/{id}", 'GroupController@showStudent');
