@@ -5,7 +5,7 @@
 -- Dumped from database version 12.2 (Ubuntu 12.2-2.pgdg19.10+1)
 -- Dumped by pg_dump version 12.2 (Ubuntu 12.2-2.pgdg19.10+1)
 
--- Started on 2020-05-30 22:30:11 CDT
+-- Started on 2020-05-31 02:47:18 CDT
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -427,52 +427,52 @@ CREATE TRIGGER before_insert_assignments_activate BEFORE INSERT ON public.assign
 
 
 --
--- TOC entry 3136 (class 2606 OID 16793)
+-- TOC entry 3136 (class 2606 OID 18361)
 -- Name: submissions assignment-id-submission; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.submissions
-    ADD CONSTRAINT "assignment-id-submission" FOREIGN KEY (assignment_id) REFERENCES public.assignments(assignment_id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT "assignment-id-submission" FOREIGN KEY (assignment_id) REFERENCES public.assignments(assignment_id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 3132 (class 2606 OID 16798)
+-- TOC entry 3133 (class 2606 OID 18351)
 -- Name: assignments crn-assignments; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.assignments
-    ADD CONSTRAINT "crn-assignments" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+    ADD CONSTRAINT "crn-assignments" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 3134 (class 2606 OID 16803)
+-- TOC entry 3134 (class 2606 OID 18341)
 -- Name: professor_group crn-professor-group; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.professor_group
-    ADD CONSTRAINT "crn-professor-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+    ADD CONSTRAINT "crn-professor-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 3135 (class 2606 OID 16808)
+-- TOC entry 3135 (class 2606 OID 18356)
 -- Name: student_group crn-student-group; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.student_group
-    ADD CONSTRAINT "crn-student-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE RESTRICT NOT VALID;
+    ADD CONSTRAINT "crn-student-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 3137 (class 2606 OID 17384)
+-- TOC entry 3137 (class 2606 OID 18346)
 -- Name: alumno_submission_intento id_assignment_tries; Type: FK CONSTRAINT; Schema: public; Owner: darfeikus
 --
 
 ALTER TABLE ONLY public.alumno_submission_intento
-    ADD CONSTRAINT id_assignment_tries FOREIGN KEY (assignment_id) REFERENCES public.assignments(assignment_id);
+    ADD CONSTRAINT id_assignment_tries FOREIGN KEY (assignment_id) REFERENCES public.assignments(assignment_id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
--- TOC entry 3133 (class 2606 OID 16813)
+-- TOC entry 3132 (class 2606 OID 16813)
 -- Name: assignments language-assignments; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -480,7 +480,7 @@ ALTER TABLE ONLY public.assignments
     ADD CONSTRAINT "language-assignments" FOREIGN KEY (language) REFERENCES public.languages(language_id);
 
 
--- Completed on 2020-05-30 22:30:11 CDT
+-- Completed on 2020-05-31 02:47:18 CDT
 
 --
 -- PostgreSQL database dump complete
