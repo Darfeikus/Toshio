@@ -117,17 +117,12 @@ class AssignmentController extends Controller
     public function showTeacher($professor_id)
     {
         try {
-            $crn = DB::table('professor_group')->where([
-                ['professor_id', '=', $professor_id],
-            ])->pluck('crn');
-            $json = [];
-            $collection = $this->getAll();
-            foreach ($crn as $currentCrn) {
-                foreach ($collection->where('crn', '=', $currentCrn) as $assignment) {
-                    array_push($json, $assignment);
-                }
-            }
-            return json_encode($json);
+            return DB::table('professor_group')
+                ->join('assignments', function ($join) use ($professor_id){
+                    $join->on('professor_group.crn', '=', 'assignments.crn')
+                        ->where('professor_group.professor_id', '=', $professor_id);
+                })
+                ->get();
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -139,17 +134,12 @@ class AssignmentController extends Controller
     public function showStudent($user_id)
     {
         try {
-            $crn = DB::table('student_group')->where([
-                ['user_id', '=', $user_id],
-            ])->pluck('crn');
-            $json = [];
-            $collection = $this->getAll();
-            foreach ($crn as $currentCrn) {
-                foreach ($collection->where('crn', '=', $currentCrn) as $assignment) {
-                    array_push($json, $assignment);
-                }
-            }
-            return json_encode($json);
+            return DB::table('student_group')
+                ->join('assignments', function ($join) use ($user_id){
+                    $join->on('student_group.crn', '=', 'assignments.crn')
+                        ->where('student_group.user_id', '=', $user_id);
+                })
+                ->get();
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
