@@ -243,6 +243,7 @@
               <th>Fecha Inicial</th>
               <th>Fecha Límite</th>
               <th>Materia</th>
+              <th>Lenguaje</th>
               <th>Administración</th>
             </tr>
           </thead>
@@ -251,6 +252,7 @@
               <td>{{assignment.name}}</td>
               <td>{{dateF(assignment.start_date)}}</td>
               <td>{{dateF(assignment.end_date)}}</td>
+              <td>{{assignment.language}}</td>
               <td>{{assignment.group_name}}</td>
               <td>
                 <button type="button" class="btn btn-info">
@@ -297,7 +299,9 @@
               <th>Tarea</th>
               <th>Fecha Inicial</th>
               <th>Fecha Limite</th>
+              <th>Lenguaje</th>
               <th>Materia</th>
+              <th>Administración</th>
             </tr>
           </thead>
           <tbody>
@@ -305,8 +309,17 @@
               <td>{{assignment.name}}</td>
               <td>{{dateF(assignment.start_date)}}</td>
               <td>{{dateF(assignment.end_date)}}</td>
+              <td>{{assignment.language}}</td>
               <td>{{assignment.group_name}}</td>
               <td>
+                <button type="button" class="btn btn-info">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-danger">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </td>
+              <!-- <td>
                 <button type="button" class="btn btn-dark (click)=details()">
                   <i
                     class="fa fa-code"
@@ -314,7 +327,7 @@
                     aria-hidden="true"
                   ></i>
                 </button>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

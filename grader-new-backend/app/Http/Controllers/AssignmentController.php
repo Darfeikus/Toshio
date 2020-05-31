@@ -130,7 +130,8 @@ class AssignmentController extends Controller
                     ->where('professor_group.professor_id', '=', $professor_id);
             })
             ->join('groups','professor_group.crn','=','groups.crn')
-            ->select('groups.name as group_name', 'assignments.*','professor_group.*')
+            ->join('languages','languages.language_id','=','assignments.language')
+            ->select('groups.name as group_name', 'assignments.*','professor_group.*','languages.*')
             ->get();
         } catch (ModelNotFoundException $e) {
             return response(
@@ -149,7 +150,8 @@ class AssignmentController extends Controller
                         ->where('student_group.user_id', '=', $user_id);
                 })
                 ->join('groups','student_group.crn','=','groups.crn')
-                ->select('groups.name as group_name', 'assignments.*','student_group.*')
+                ->join('languages','languages.language_id','=','assignments.language')
+                ->select('groups.name as group_name', 'assignments.*','student_group.*','languages.*')
                 ->get();
         } catch (ModelNotFoundException $e) {
             return response(

@@ -42,7 +42,7 @@
             <div class="row" *ngIf="overdue(assignment.end_date)">
               <div class="col-8">
                 <h5>{{assignment.name}}</h5>
-                <h6>{{searchGroup(assignment.crn)}}</h6>
+                <h6>{{assignment.group_name}}</h6>
                 <small>{{assignment.status}}</small>
                 <br>
                 <small>{{date(assignment.end_date)}}</small>

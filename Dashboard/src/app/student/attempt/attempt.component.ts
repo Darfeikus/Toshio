@@ -62,6 +62,7 @@ export class AttemptComponent implements OnInit {
         console.log(res);
         if (res['error']) {
           alert(res["message"]);
+          this.assignmentinfo['status'] = '0.00';
         }
         else {
           for (let index = 0; index < Object.keys(res).length; index++) {
@@ -78,24 +79,21 @@ export class AttemptComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get('http://localhost:8000/api/assignment/' + this.assignment_id).subscribe(res => {
-      this.assignmentinfo = res[0];
-    });
     this.http.get('http://localhost:8000/api/submission/A01732313')
       .subscribe(res => {
         this.mySubmissions = res;
-        this.mySubmissions.forEach(submission => {
-          if (this.assignmentinfo.assignment_id == submission.assignment_id) {
-            if (this.assignmentinfo.tries == submission.tries_left) {
-              this.assignmentinfo['status'] = 'Not delivered';
-            }
-            else {
-              this.assignmentinfo['status'] = submission.grade + '/100';
-            }
-          }
-        });
-        console.log(this.assignmentinfo);
       });
+
+    this.http.get('http://localhost:8000/api/assignment/' + this.assignment_id).subscribe(res => {
+      this.assignmentinfo = res[0];
+      var index = this.mySubmissions.findIndex(x => x.assignment_id == this.assignmentinfo.assignment_id);
+      if(index != -1){
+        this.assignmentinfo['status'] = this.mySubmissions[index].grade + "/100";
+      }
+      else{
+        this.assignmentinfo['status'] = "Sin entregar";
+      }
+    });
   }
 
   getDayOfWeek(d) {

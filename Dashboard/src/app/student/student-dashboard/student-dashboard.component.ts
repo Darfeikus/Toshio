@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap'
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: "app-student-dashboard",
@@ -25,18 +26,11 @@ export class StudentDashboardComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
-    this.http.get('http://localhost:8000/api/group/student/A01732313')
-      .subscribe(res => {
-        (res as any).forEach(grupo => {
-          this.myGroups.push(grupo);
-        });
-        // console.log(this.myGroups);
-      })
-
     this.http.get('http://localhost:8000/api/assignment/student/A01732313')
       .subscribe(res => {
         this.myAssignments = res;
         this.myAssignments.forEach(assignment => {
+          assignment['status'] = 'Sin entregar';
           if (!assignment.active) {
             this.inactive.push(assignment);
           }
@@ -45,23 +39,14 @@ export class StudentDashboardComponent implements OnInit {
     this.http.get('http://localhost:8000/api/submission/A01732313')
       .subscribe(res => {
         this.mySubmissions = res;
-        this.myAssignments.forEach(assignment => {
-          this.mySubmissions.forEach(submission => {
-            if(assignment.assignment_id == submission.assignment_id){
-              if (assignment.tries == submission.tries_left) {
-                assignment['status'] = !submission.grade ? 'Not delivered':'0/100';
-              }
-              else {
-                assignment['status'] = submission.grade + '/100';
-              }
-            }
-          });
+        this.mySubmissions.forEach(submission => {
+          var index = this.myAssignments.findIndex(x => x.assignment_id == submission.assignment_id);
+          this.myAssignments[index]['status'] = submission.grade+"/100";
         });
-        // console.log(this.myAssignments);
       })
   }
 
-  overdue(end_date){
+  overdue(end_date) {
     return new Date(end_date) < new Date();
   }
 

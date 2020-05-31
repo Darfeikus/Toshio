@@ -26,11 +26,6 @@ export class DashboardComponent implements OnInit {
         this.myGroups = res;
         console.log(this.myGroups);
       })
-    this.http.get('http://localhost:8000/api/language')
-      .subscribe(res => {
-        this.languages = res;
-        console.log(this.languages);
-      })
     this.http.get('http://localhost:8000/api/assignment/teacher/A01329173')
       .subscribe(res => {
         this.myAssignments = res;

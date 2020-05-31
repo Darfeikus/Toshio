@@ -18,7 +18,19 @@ class SubmissionController extends Controller
      */
     public function index()
     {
-        return submission::all();
+        return DB::table('alumno_submission_intento')
+            ->join('submissions', function ($join){
+                $join->on('submissions.assignment_id', '=', 'alumno_submission_intento.assignment_id');
+            })
+            ->join('assignments', function ($join) {
+                $join->on([
+                    ['assignments.tries','>','alumno_submission_intento.tries_left'],
+                    ['assignments.assignment_id','=','alumno_submission_intento.assignment_id'],
+                ]);
+            })            
+            ->join('languages','languages.language_id','=','assignments.language')
+            ->select('assignments.*','alumno_submission_intento.*','languages.*')
+            ->get();
     }
 
     public static function uploadSubmission($id,$grade,$user_id)
@@ -68,9 +80,20 @@ class SubmissionController extends Controller
      */
     public function show($id)
     {
-        return DB::table('alumno_submission_intento')->where([
-            ['id', '=',$id]
-        ])->get();
+        return DB::table('alumno_submission_intento')
+            ->join('submissions', function ($join) use ($id){
+                $join->on('submissions.assignment_id', '=', 'alumno_submission_intento.assignment_id')
+                ->where('alumno_submission_intento.id','=',$id);
+            })
+            ->join('assignments', function ($join) {
+                $join->on([
+                    ['assignments.tries','>','alumno_submission_intento.tries_left'],
+                    ['assignments.assignment_id','=','alumno_submission_intento.assignment_id'],
+                ]);
+            })            
+            ->join('languages','languages.language_id','=','assignments.language')
+            ->select('assignments.*','alumno_submission_intento.*','languages.*')
+            ->get();
     }
 
     /**
