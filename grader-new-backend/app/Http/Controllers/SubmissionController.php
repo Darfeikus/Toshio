@@ -29,7 +29,8 @@ class SubmissionController extends Controller
                 ]);
             })            
             ->join('languages','languages.language_id','=','assignments.language')
-            ->select('assignments.*','alumno_submission_intento.*','languages.*')
+            ->select('assignments.*','alumno_submission_intento.*','languages.*','submissions.updated_at')
+            ->orderBy('submissions.updated_at','asc')
             ->get();
     }
 
@@ -92,7 +93,8 @@ class SubmissionController extends Controller
                 ]);
             })            
             ->join('languages','languages.language_id','=','assignments.language')
-            ->select('assignments.*','alumno_submission_intento.*','languages.*')
+            ->select('assignments.*','alumno_submission_intento.*','languages.*','submissions.updated_at')
+            ->orderBy('submissions.updated_at','asc')
             ->get();
     }
 
