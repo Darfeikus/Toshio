@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\assignment;
 use DateTime;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Mockery\Generator\StringManipulation\Pass\Pass;
@@ -121,7 +122,13 @@ class AssignmentController extends Controller
     public function storeUpdate(Request $request)
     {
         //
-        return compileUpdate();
+        try{
+            compileUpdate();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
+        return json_encode(array('error' => false, 'message' => 'Success'));
     }
     /**
      * Display the specified resource.

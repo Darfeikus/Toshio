@@ -91,30 +91,30 @@ function compileUpdate()
             return json_encode(array('error' => true, 'message' => 'Invalid Format'));
         }
     }
-
+    
     try {
         
         $target_dir = 'testCases/' . $crn . '/' . $idAss . '/';
         $originalPath = 'testCases/' . $query[0]->crn . '/' . $query[0]->assignment_id.'/';
         
         if($target_dir != $originalPath){
-
+            
             if(!file_exists($target_dir)){
                 mkdir($target_dir,0777,true);
             }
             
             if($target_dir != $originalPath){
-                system('cp -avr '.$originalPath.' testCases/' . $crn . '/ && rm '.$originalPath.' -R');
+                $system = system('cp -avr '.$originalPath.' testCases/' . $crn . '/ && rm '.$originalPath.' -R')  ;
             }
         }
-
+        
         $target_file = $target_dir . $nombre;
-
+        
         if (isset($_FILES['file']['tmp_name'])) {
-            move_uploaded_file($_FILES['file']['tmp_name'], $target_file);
+            $system = move_uploaded_file($_FILES['file']['tmp_name'], $target_file);
             $zip = new ZipArchive;
             $res = $zip->open($target_file);
-
+            
             if ($res === TRUE) {
                 $zip->extractTo($target_dir);
                 $zip->close();
@@ -123,12 +123,12 @@ function compileUpdate()
             }
         }
         if (isset($_FILES['file2']['tmp_name'])) {
-            move_uploaded_file($_FILES['file2']['tmp_name'], $target_dir . 'rules.pdf');
+            $system = move_uploaded_file($_FILES['file2']['tmp_name'], $target_dir . 'rules.pdf');
         }
-
+        
         AssignmentController::update($idAss, $nombre, $crn, $fechaApertura, $fechaClausura, $intentos, $lenguaje, $runtime);
+        return json_encode(array('error' => false, 'message' => 'Success'));
     } catch (Exception $e) {
         return json_encode(array('error' => true, 'message' => $e->getMessage()));
     }
-    return json_encode(array('error' => false, 'message' => 'Success'));
 }

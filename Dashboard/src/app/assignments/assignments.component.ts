@@ -138,9 +138,9 @@ export class AssignmentsComponent implements OnInit {
       formData.append('horaApertura', this.time.hour.toString().concat(":", this.time.minute.toString(), ":00"));
       formData.append('horaClausura', this.timeEnd.hour.toString().concat(":", this.timeEnd.minute.toString(), ":00"));
 
-      this.http.post('http://localhost:8000/api/assignment?id=A0132973', formData)
+      this.http.post('http://localhost:8000/api/assignment?id=A01329173', formData)
         .subscribe(res => {
-          // console.log(res);
+          console.log(res);
           if (res['error']) {
             alert(res["message"]);
           }
@@ -184,26 +184,19 @@ export class AssignmentsComponent implements OnInit {
       formData.append('fechaClausura', this.parserFormatter.format(this.dateClose));
       formData.append('horaApertura', this.time.hour.toString().concat(":", this.time.minute.toString(), ":00"));
       formData.append('horaClausura', this.timeEnd.hour.toString().concat(":", this.timeEnd.minute.toString(), ":00"));
-      // console.log(formData.get('assignment_id'));
-      // console.log(formData.get('nombre'));
-      // console.log(formData.get('intentos'));
-      // console.log(formData.get('runtime'));
-      // console.log(formData.get('fechaApertura'));
-      // console.log(formData.get('fechaClausura'));
-      // console.log(formData.get('horaApertura'));
-      // console.log(formData.get('horaClausura'));
       
-      this.http.post('http://localhost:8000/api/assignment/update?id=A0132973', formData)
-      
+      this.http.post('http://localhost:8000/api/assignment/update?id=A01329173', formData)
         .subscribe(res => {
-          // console.log(res);
+          res.toString();
+          console.log(res);
           if (res['error']) {
             alert(res["message"]);
           }
           else {
-            console.log(res);
             location.reload();
           }
+        }, (error) => {
+          location.reload();
         });
     }
   }
