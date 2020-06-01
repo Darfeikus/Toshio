@@ -19,6 +19,10 @@ export class AuthGuardService implements CanActivate {
           this.jwtHelper.isTokenExpired(token) ||
           tokenPayload.user.role !== expectedRole
         ) {
+          if(tokenPayload.user.role == "student"){
+            this.router.navigateByUrl("/student");
+            return false;
+          }
           localStorage.removeItem('token');
           localStorage.removeItem('id');
           this.router.navigateByUrl("/login");
