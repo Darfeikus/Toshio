@@ -60,4 +60,8 @@ export class StudentDashboardComponent implements OnInit {
   uploadAttempt(assignment_id): void {
     this.router.navigateByUrl("/student/attempt?assignment_id=" + assignment_id);
   }
+
+  getId(){
+    return localStorage.getItem('id');
+  }
 }
