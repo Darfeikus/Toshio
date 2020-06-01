@@ -1,0 +1,488 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2 (Ubuntu 12.2-2.pgdg19.10+1)
+-- Dumped by pg_dump version 12.2 (Ubuntu 12.2-2.pgdg19.10+1)
+
+-- Started on 2020-05-31 02:47:18 CDT
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 5 (class 2615 OID 17919)
+-- Name: pgagent; Type: SCHEMA; Schema: -; Owner: darfeikus
+--
+
+CREATE SCHEMA pgagent;
+
+
+ALTER SCHEMA pgagent OWNER TO darfeikus;
+
+--
+-- TOC entry 3272 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: SCHEMA pgagent; Type: COMMENT; Schema: -; Owner: darfeikus
+--
+
+COMMENT ON SCHEMA pgagent IS 'pgAgent system tables';
+
+
+--
+-- TOC entry 2 (class 3079 OID 17920)
+-- Name: pgagent; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgagent WITH SCHEMA pgagent;
+
+
+--
+-- TOC entry 3273 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION pgagent; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pgagent IS 'A PostgreSQL job scheduler';
+
+
+--
+-- TOC entry 232 (class 1255 OID 17872)
+-- Name: checkactive(); Type: FUNCTION; Schema: public; Owner: darfeikus
+--
+
+CREATE FUNCTION public.checkactive() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+BEGIN
+    IF new.start_date > NOW() THEN
+		new.active = false;
+	END IF;
+	RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.checkactive() OWNER TO darfeikus;
+
+--
+-- TOC entry 230 (class 1255 OID 17440)
+-- Name: substracttries(); Type: FUNCTION; Schema: public; Owner: darfeikus
+--
+
+CREATE FUNCTION public.substracttries() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    r student_group%rowtype;
+BEGIN
+    UPDATE alumno_submission_intento SET
+	tries_left = tries_left-1,
+	grade = 
+	CASE 
+		WHEN grade is null THEN new.grade
+		WHEN new.grade > grade THEN new.grade else grade
+	END 
+	WHERE id = new.user_id AND assignment_id = new.assignment_id;
+	RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.substracttries() OWNER TO darfeikus;
+
+--
+-- TOC entry 229 (class 1255 OID 17399)
+-- Name: updatetries(); Type: FUNCTION; Schema: public; Owner: darfeikus
+--
+
+CREATE FUNCTION public.updatetries() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    r student_group%rowtype;
+BEGIN
+	FOR r IN SELECT * FROM student_group where crn = new.crn
+    LOOP
+        INSERT INTO alumno_submission_intento(assignment_id,id,tries_left)
+		VALUES(new.assignment_id,r.user_id,new.tries);
+    END LOOP;
+	RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.updatetries() OWNER TO darfeikus;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 213 (class 1259 OID 17378)
+-- Name: alumno_submission_intento; Type: TABLE; Schema: public; Owner: darfeikus
+--
+
+CREATE TABLE public.alumno_submission_intento (
+    assignment_id bigint,
+    id character varying,
+    tries_left integer,
+    grade numeric(5,2)
+);
+
+
+ALTER TABLE public.alumno_submission_intento OWNER TO darfeikus;
+
+--
+-- TOC entry 204 (class 1259 OID 16734)
+-- Name: assignments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.assignments (
+    assignment_id bigint NOT NULL,
+    name character varying NOT NULL,
+    crn character varying NOT NULL,
+    start_date timestamp without time zone NOT NULL,
+    end_date timestamp without time zone NOT NULL,
+    tries integer NOT NULL,
+    language integer NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    active boolean DEFAULT true NOT NULL,
+    runtime numeric(4,2) DEFAULT 10 NOT NULL,
+    CONSTRAINT date CHECK ((start_date < end_date))
+);
+
+
+ALTER TABLE public.assignments OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16743)
+-- Name: assignments_assignment_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.assignments_assignment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.assignments_assignment_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3274 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: assignments_assignment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.assignments_assignment_id_seq OWNED BY public.assignments.assignment_id;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16745)
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.groups (
+    crn character varying NOT NULL,
+    name character varying NOT NULL,
+    term_code character varying NOT NULL,
+    professor_id character varying NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.groups OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16753)
+-- Name: languages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.languages (
+    language character varying NOT NULL,
+    language_id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    extension character varying
+);
+
+
+ALTER TABLE public.languages OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 16761)
+-- Name: languages_languages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.languages_languages_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.languages_languages_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3275 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: languages_languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.languages_languages_id_seq OWNED BY public.languages.language_id;
+
+
+--
+-- TOC entry 209 (class 1259 OID 16763)
+-- Name: professor_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.professor_group (
+    crn character varying NOT NULL,
+    professor_id character varying
+);
+
+
+ALTER TABLE public.professor_group OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 16769)
+-- Name: student_group; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.student_group (
+    user_id character varying NOT NULL,
+    crn character varying NOT NULL
+);
+
+
+ALTER TABLE public.student_group OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16775)
+-- Name: submissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.submissions (
+    assignment_id integer NOT NULL,
+    grade numeric(5,2) NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    submission_id integer NOT NULL,
+    user_id character varying NOT NULL
+);
+
+
+ALTER TABLE public.submissions OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 16780)
+-- Name: submissions_submission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.submissions_submission_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.submissions_submission_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3276 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: submissions_submission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.submissions_submission_id_seq OWNED BY public.submissions.submission_id;
+
+
+--
+-- TOC entry 3045 (class 2604 OID 16782)
+-- Name: assignments assignment_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments ALTER COLUMN assignment_id SET DEFAULT nextval('public.assignments_assignment_id_seq'::regclass);
+
+
+--
+-- TOC entry 3056 (class 2604 OID 16783)
+-- Name: languages language_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.languages ALTER COLUMN language_id SET DEFAULT nextval('public.languages_languages_id_seq'::regclass);
+
+
+--
+-- TOC entry 3059 (class 2604 OID 16784)
+-- Name: submissions submission_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.submissions ALTER COLUMN submission_id SET DEFAULT nextval('public.submissions_submission_id_seq'::regclass);
+
+
+--
+-- TOC entry 3102 (class 2606 OID 16786)
+-- Name: assignments assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments
+    ADD CONSTRAINT assignments_pkey PRIMARY KEY (assignment_id);
+
+
+--
+-- TOC entry 3104 (class 2606 OID 16788)
+-- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (crn);
+
+
+--
+-- TOC entry 3106 (class 2606 OID 16790)
+-- Name: languages languages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.languages
+    ADD CONSTRAINT languages_pkey PRIMARY KEY (language_id);
+
+
+--
+-- TOC entry 3049 (class 2606 OID 18200)
+-- Name: assignments runtime; Type: CHECK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.assignments
+    ADD CONSTRAINT runtime CHECK ((runtime > (0)::numeric)) NOT VALID;
+
+
+--
+-- TOC entry 3050 (class 2606 OID 18201)
+-- Name: assignments runtime_limit; Type: CHECK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.assignments
+    ADD CONSTRAINT runtime_limit CHECK ((runtime < 99.99)) NOT VALID;
+
+
+--
+-- TOC entry 3108 (class 2606 OID 16792)
+-- Name: submissions submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.submissions
+    ADD CONSTRAINT submissions_pkey PRIMARY KEY (submission_id);
+
+
+--
+-- TOC entry 3051 (class 2606 OID 18196)
+-- Name: assignments tries; Type: CHECK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.assignments
+    ADD CONSTRAINT tries CHECK ((tries > 0)) NOT VALID;
+
+
+--
+-- TOC entry 3138 (class 2620 OID 17400)
+-- Name: assignments after_insert_assignments; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER after_insert_assignments AFTER INSERT ON public.assignments FOR EACH ROW EXECUTE FUNCTION public.updatetries('assignment_id', 'crn', 'tries');
+
+
+--
+-- TOC entry 3140 (class 2620 OID 17441)
+-- Name: submissions after_insert_submissions; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER after_insert_submissions AFTER INSERT ON public.submissions FOR EACH ROW EXECUTE FUNCTION public.substracttries();
+
+
+--
+-- TOC entry 3139 (class 2620 OID 17907)
+-- Name: assignments before_insert_assignments_activate; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER before_insert_assignments_activate BEFORE INSERT ON public.assignments FOR EACH ROW EXECUTE FUNCTION public.checkactive();
+
+
+--
+-- TOC entry 3136 (class 2606 OID 18361)
+-- Name: submissions assignment-id-submission; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.submissions
+    ADD CONSTRAINT "assignment-id-submission" FOREIGN KEY (assignment_id) REFERENCES public.assignments(assignment_id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3133 (class 2606 OID 18351)
+-- Name: assignments crn-assignments; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments
+    ADD CONSTRAINT "crn-assignments" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3134 (class 2606 OID 18341)
+-- Name: professor_group crn-professor-group; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.professor_group
+    ADD CONSTRAINT "crn-professor-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3135 (class 2606 OID 18356)
+-- Name: student_group crn-student-group; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.student_group
+    ADD CONSTRAINT "crn-student-group" FOREIGN KEY (crn) REFERENCES public.groups(crn) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3137 (class 2606 OID 18346)
+-- Name: alumno_submission_intento id_assignment_tries; Type: FK CONSTRAINT; Schema: public; Owner: darfeikus
+--
+
+ALTER TABLE ONLY public.alumno_submission_intento
+    ADD CONSTRAINT id_assignment_tries FOREIGN KEY (assignment_id) REFERENCES public.assignments(assignment_id) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+
+
+--
+-- TOC entry 3132 (class 2606 OID 16813)
+-- Name: assignments language-assignments; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.assignments
+    ADD CONSTRAINT "language-assignments" FOREIGN KEY (language) REFERENCES public.languages(language_id);
+
+
+-- Completed on 2020-05-31 02:47:18 CDT
+
+--
+-- PostgreSQL database dump complete
+--
+

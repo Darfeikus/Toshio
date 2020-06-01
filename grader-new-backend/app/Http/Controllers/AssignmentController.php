@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use App\assignment;
+use DateTime;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Mockery\Generator\StringManipulation\Pass\Pass;
@@ -22,7 +24,44 @@ class AssignmentController extends Controller
     public function index()
     {
         //
-        return assignment::all();
+        date_default_timezone_set('America/Mexico_City');
+        $query = assignment::all();
+        $date = date("Y-m-d H:i:s");
+        foreach($query as $assignment){
+            
+            $active = false;
+
+            if($assignment->end_date > $date && $assignment->start_date < $date){
+                $active = true;
+            }
+
+            $assignment->active = $active;
+            DB::table('assignments')
+            ->where('assignment_id', $assignment->assignment_id)
+            ->update(['active' => $active]);
+        }
+        return $query;
+    }
+
+    public static function confirmQuery($query){
+        date_default_timezone_set('America/Mexico_City');
+        $date = date("Y-m-d H:i:s");
+
+        foreach($query as $assignment){
+            
+            $active = false;
+
+            if($assignment->end_date > $date && $assignment->start_date < $date){
+                $active = true;
+            }
+
+            $assignment->active = $active;
+            DB::table('assignments')
+            ->where('assignment_id', $assignment->assignment_id)
+            ->update(['active' => $active]);
+        }
+        
+        return $query;
     }
 
     /**
@@ -32,12 +71,35 @@ class AssignmentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public static function delete($idAss)
+    public static function delete($id)
     {
-        DB::table('assignments')->where('assignment_id', '=', $idAss)->delete();
+        //
+        try {
+            return DB::table('assignments')->where('assignment_id', '=', $id)->delete();
+        } catch (ModelNotFoundException $e) {
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage())),
+                404
+            )->header('Content-type', 'application/json');
+        }
     }
 
-    public static function createAssignment($nombre, $crn, $start_date, $end_date, $tries, $language)
+    public static function update($id,$nombre, $crn, $start_date, $end_date, $tries, $language, $runtime)
+    {
+        return DB::table('assignments')
+              ->where('assignment_id', $id)
+              ->update([
+                'crn' => $crn,
+                'name' => $nombre,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'tries' => $tries,
+                'language' => $language,
+                'runtime' => $runtime 
+                ]);
+    }
+
+    public static function createAssignment($nombre, $crn, $start_date, $end_date, $tries, $language, $runtime)
     {
         $data = assignment::create([
             'crn' => $crn,
@@ -45,7 +107,8 @@ class AssignmentController extends Controller
             'start_date' => $start_date,
             'end_date' => $end_date,
             'tries' => $tries,
-            'language' => $language
+            'language' => $language,
+            'runtime' => $runtime
         ]);
         return $data->assignment_id;
     }
@@ -56,17 +119,36 @@ class AssignmentController extends Controller
         return compile();
     }
 
+    public function storeUpdate(Request $request)
+    {
+        //
+        try{
+            compileUpdate();
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
+        return json_encode(array('error' => false, 'message' => 'Success'));
+    }
     /**
      * Display the specified resource.
      *
      * @param  \App\assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function show(int $group)
+    public static function show(int $assignment)
     {
         //
         try {
-            return assignment::findOrFail($group);
+            $query = DB::table('assignments')
+            ->join('groups', function ($join) use ($assignment){
+                $join->on('groups.crn', '=', 'assignments.crn')
+                    ->where('assignments.assignment_id', '=', $assignment);
+            })
+            ->join('languages','languages.language_id','=','assignments.language')
+            ->select('groups.name as group_name', 'assignments.*','languages.*')
+            ->get();
+            return AssignmentController::confirmQuery($query);
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -75,20 +157,19 @@ class AssignmentController extends Controller
         }
     }
 
-    public function showTeacher($professor_id)
+    public static function showTeacher($professor_id)
     {
         try {
-            $crn = DB::table('professor_group')->where([
-                ['professor_id', '=', $professor_id],
-            ])->pluck('crn');
-            $json = [];
-            $collection = assignment::all();
-            foreach ($crn as $currentCrn) {
-                foreach ($collection->where('crn', '=', $currentCrn) as $assignment) {
-                    array_push($json, $assignment);
-                }
-            }
-            return json_encode($json);
+            $query = DB::table('professor_group')
+            ->join('assignments', function ($join) use ($professor_id){
+                $join->on('professor_group.crn', '=', 'assignments.crn')
+                    ->where('professor_group.professor_id', '=', $professor_id);
+            })
+            ->join('groups','professor_group.crn','=','groups.crn')
+            ->join('languages','languages.language_id','=','assignments.language')
+            ->select('groups.name as group_name', 'assignments.*','professor_group.*','languages.*')
+            ->get();
+            return AssignmentController::confirmQuery($query);
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -100,17 +181,16 @@ class AssignmentController extends Controller
     public function showStudent($user_id)
     {
         try {
-            $crn = DB::table('student_group')->where([
-                ['user_id', '=', $user_id],
-            ])->pluck('crn');
-            $json = [];
-            $collection = assignment::all();
-            foreach ($crn as $currentCrn) {
-                foreach ($collection->where('crn', '=', $currentCrn) as $assignment) {
-                    array_push($json, $assignment);
-                }
-            }
-            return json_encode($json);
+            $query = DB::table('student_group')
+                ->join('assignments', function ($join) use ($user_id){
+                    $join->on('student_group.crn', '=', 'assignments.crn')
+                        ->where('student_group.user_id', '=', $user_id);
+                })
+                ->join('groups','student_group.crn','=','groups.crn')
+                ->join('languages','languages.language_id','=','assignments.language')
+                ->select('groups.name as group_name', 'assignments.*','student_group.*','languages.*')
+                ->get();
+            return AssignmentController::confirmQuery($query);
         } catch (ModelNotFoundException $e) {
             return response(
                 json_encode(array('error' => true, 'error_message' => $e->getMessage())),
@@ -123,7 +203,7 @@ class AssignmentController extends Controller
     {
         //
         try {
-            $collection = assignment::all();
+            $collection = $this->getAll();
             return $collection->where('assignment_id', '=', $id);
         } catch (ModelNotFoundException $e) {
             return response(
@@ -140,10 +220,6 @@ class AssignmentController extends Controller
      * @param  \App\assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, assignment $assignment)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

@@ -18,16 +18,17 @@ export class GroupsComponent implements OnInit {
     fileSource: new FormControl('', [Validators.required])
   });
 
+  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router) {}
+  
   ngOnInit(): void {
     this.http.get('http://localhost:8000/api/group/teacher/A01329173')
       .subscribe(res => {
         this.myGroups = res;
-        console.log(this.myGroups);
+        // console.log(this.myGroups);
       })
   }
 
   closeResult = "";
-  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router) {}
 
   get f() {
     return this.myForm.controls;
@@ -48,12 +49,11 @@ export class GroupsComponent implements OnInit {
     formData.append('file', this.myForm.get('fileSource').value);
     formData.append('name',this.myForm.get('name').value);
 
-    this.http.post('http://localhost:8000/api/group?id=A01329173', formData,{responseType: 'text'})
+    this.http.post('http://localhost:8000/api/group?id=A01329173', formData)
       .subscribe(res => {
         console.log(res);
-        var json = JSON.parse(res);
-        if(json['error']){
-          alert(json["message"]);
+        if(res['error']){
+          alert(res["message"]);
         }
         else{
           location.reload();
@@ -84,8 +84,21 @@ export class GroupsComponent implements OnInit {
     }
   }
 
+  delete($crn){
+
+    this.http.get('http://localhost:8000/api/group/delete/'+$crn)
+      .subscribe(res => {
+        if(res){
+          location.reload();
+        }
+        else{
+          alert("There was a problem while deleting")
+        }
+      });
+  }
+
   details() {
     this.router.navigateByUrl("/groups/details");
   }
-  
+
 }
