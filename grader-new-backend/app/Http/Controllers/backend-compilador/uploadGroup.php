@@ -17,7 +17,7 @@ function compile()
 {
     include "SimpleXLS.php";
 
-    $id_teacher = $_GET['id'];
+    $id_teacher = $_POST['id'];
     $name = $_POST['name'];
     $target_dir = 'groups/';
     

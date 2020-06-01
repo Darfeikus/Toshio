@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
+import { RequestsService } from './../shared/services/requests.service';
 
 @Component({
   selector: "app-dashboard",
@@ -17,28 +18,25 @@ export class DashboardComponent implements OnInit {
   inactive: any = [];
   languages: object;
   closeResult = "";
-  
-  constructor(private modalService: NgbModal, private http: HttpClient, private router: Router) {}
+
+  constructor(private modalService: NgbModal, private http: HttpClient, private router: Router, private requestsService: RequestsService, ) { }
 
   ngOnInit(): void {
-
-    this.http.get('http://localhost:8000/api/submission')
+    this.requestsService.get("submission")
       .subscribe(res => {
         this.submissions = res;
         // console.log(this.myGroups);
       });
-
-    this.http.get('http://localhost:8000/api/group/teacher/A01329173')
+    this.requestsService.get("group/teacher/" + localStorage.getItem('id'))
       .subscribe(res => {
         this.myGroups = res;
         // console.log(this.myGroups);
       });
-
-    this.http.get('http://localhost:8000/api/assignment/teacher/A01329173')
+    this.requestsService.get("assignment/teacher/"+localStorage.getItem('id'))
       .subscribe(res => {
         this.myAssignments = res;
         this.myAssignments.forEach(assignment => {
-          if(!assignment.active){
+          if (!assignment.active) {
             this.inactive.push(assignment);
           }
         });
@@ -59,8 +57,8 @@ export class DashboardComponent implements OnInit {
       );
   }
 
-  details(assignment_id){
-    this.router.navigateByUrl("/groups/details?assignment_id="+assignment_id);
+  details(assignment_id) {
+    this.router.navigateByUrl("/groups/details?assignment_id=" + assignment_id);
   }
 
   private getDismissReason(reason: any): string {

@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap'
+import { RequestsService } from './../shared/services/requests.service';
 
 @Component({
   selector: "app-assignments",
@@ -28,20 +29,27 @@ export class AssignmentsComponent implements OnInit {
   inactive: any = [];
   languages: object;
   currentAssignment: any = [];
+  
+  constructor(
+    private parserFormatter: NgbDateParserFormatter,
+    private http: HttpClient,
+    private modalService: NgbModal,
+    private calendar: NgbCalendar,
+    private router: Router,
+    private requestsService: RequestsService,
+  ) { }
 
   ngOnInit(): void {
     this.setCurrentTimeForStartingTime();
-    this.http.get('http://localhost:8000/api/group/teacher/A01329173')
+    this.requestsService.get("group/teacher/"+localStorage.getItem('id'))
       .subscribe(res => {
         this.myGroups = res;
-        // console.log(this.myGroups);
       });
-    this.http.get('http://localhost:8000/api/language')
+    this.requestsService.get("language")
       .subscribe(res => {
         this.languages = res;
-        // console.log(this.languages);
       });
-    this.http.get('http://localhost:8000/api/assignment/teacher/A01329173')
+    this.requestsService.get("assignment/teacher/"+localStorage.getItem('id'))
       .subscribe(res => {
         this.myAssignments = res;
         this.myAssignments.forEach(assignment => {
@@ -49,7 +57,6 @@ export class AssignmentsComponent implements OnInit {
             this.inactive.push(assignment);
           }
         });
-        // console.log(this.myAssignments);
       });
   }
 
@@ -68,14 +75,6 @@ export class AssignmentsComponent implements OnInit {
     fileSource: new FormControl(''),
     fileSource2: new FormControl('')
   });
-
-  constructor(
-    private parserFormatter: NgbDateParserFormatter,
-    private http: HttpClient,
-    private modalService: NgbModal,
-    private calendar: NgbCalendar,
-    private router: Router
-  ) { }
 
   get f() {
     return this.myForm.controls;
@@ -138,7 +137,7 @@ export class AssignmentsComponent implements OnInit {
       formData.append('horaApertura', this.time.hour.toString().concat(":", this.time.minute.toString(), ":00"));
       formData.append('horaClausura', this.timeEnd.hour.toString().concat(":", this.timeEnd.minute.toString(), ":00"));
 
-      this.http.post('http://localhost:8000/api/assignment?id=A01329173', formData)
+      this.requestsService.post("assignment",formData)
         .subscribe(res => {
           console.log(res);
           if (res['error']) {
@@ -185,7 +184,7 @@ export class AssignmentsComponent implements OnInit {
       formData.append('horaApertura', this.time.hour.toString().concat(":", this.time.minute.toString(), ":00"));
       formData.append('horaClausura', this.timeEnd.hour.toString().concat(":", this.timeEnd.minute.toString(), ":00"));
       
-      this.http.post('http://localhost:8000/api/assignment/update?id=A01329173', formData)
+      this.requestsService.post("assignment/update",formData)
         .subscribe(res => {
           res.toString();
           console.log(res);
@@ -273,7 +272,7 @@ export class AssignmentsComponent implements OnInit {
   }
 
   delete($id) {
-    this.http.get('http://localhost:8000/api/assignment/delete/' + $id)
+    this.requestsService.get("assignment/delete/"+$id)
       .subscribe(res => {
         console.log(res);
         if (res) {

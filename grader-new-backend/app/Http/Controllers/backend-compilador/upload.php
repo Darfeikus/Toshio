@@ -2,7 +2,7 @@
     use App\Http\Controllers\SubmissionController;
 
     function compile(){
-        $id_student = $_GET['id'];
+        $id_student = $_POST['id'];
         $crn = $_POST['crn'];
         $runtime = $_POST['runtime'];
         $id_assignment = $_POST['assignment_id'];

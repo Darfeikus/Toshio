@@ -15,24 +15,25 @@ export class LoginComponent implements OnInit {
     studentId: new FormControl(''),
     password: new FormControl(''),
   });
-  
+
   constructor(
     private router: Router,
     private loginService: LoginService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   /*
   ! obviamente primero se valida, y si es exitoso, lo manda al dashboard con su token en la sesión
   */
   login() {
     this.loginService.makeLogin(this.graderLoginForm).
-    subscribe((res: any )=> {
-      localStorage.setItem('token', res.token);
-      this.router.navigateByUrl("/student");
-    },err=>{
-      console.log(err);
-    })
+      subscribe((res: any) => {
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('id', this.graderLoginForm.get('studentId').value);
+        this.router.navigateByUrl("/student");
+      }, err => {
+        console.log(err);
+      })
   }
 }

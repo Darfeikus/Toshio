@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Router } from "@angular/router";
+import { RequestsService } from '../../shared/services/requests.service';
 
 @Component({
   selector: 'app-attempt',
@@ -30,7 +31,7 @@ export class AttemptComponent implements OnInit {
   mySubmissions: any = [];
   labels: string[] = [];
 
-  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute,  private router: Router) {
+  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute,  private router: Router, private requestsService: RequestsService) {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.assignment_id = params.assignment_id;
     });
@@ -57,8 +58,9 @@ export class AttemptComponent implements OnInit {
     formData.append('lang', this.assignmentinfo.extension);
     formData.append('crn', this.assignmentinfo.crn);
     formData.append('runtime', this.assignmentinfo.runtime);
+    formData.append('id', localStorage.getItem('id'));
 
-    this.http.post('http://localhost:8000/api/submission?id=A01732313', formData)
+    this.requestsService.post('submission', formData)
       .subscribe(res => {
         console.log(res);
         if (res['error']) {
@@ -91,15 +93,15 @@ export class AttemptComponent implements OnInit {
   ngOnInit(): void {
     const date = new Date();
     
-    this.http.get('http://localhost:8000/api/submission/assignment/' + this.assignment_id)
+    this.requestsService.get('submission/assignment/' + this.assignment_id)
       .subscribe(res => {
-        var index = this.indexOfObj(res,'id','A01732313');
+        var index = this.indexOfObj(res,'id',localStorage.getItem('id'));
         if(index<0){
           this.router.navigateByUrl("/student");
         }
       });
 
-    this.http.get('http://localhost:8000/api/assignment/' + this.assignment_id).subscribe(res => {
+    this.requestsService.get('assignment/' + this.assignment_id).subscribe(res => {
       this.assignmentinfo = res[0];
       if(new Date(this.assignmentinfo.start_date) > date || date > new Date(this.assignmentinfo.end_date)){
         this.router.navigateByUrl("/student");

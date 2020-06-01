@@ -3,6 +3,7 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { RequestsService } from './../shared/services/requests.service';
 
 @Component({
   selector: "app-groups",
@@ -18,13 +19,12 @@ export class GroupsComponent implements OnInit {
     fileSource: new FormControl('', [Validators.required])
   });
 
-  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router) {}
+  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router, private requestsService: RequestsService) {}
   
   ngOnInit(): void {
-    this.http.get('http://localhost:8000/api/group/teacher/A01329173')
+    this.requestsService.get("group/teacher/"+localStorage.getItem('id'))
       .subscribe(res => {
         this.myGroups = res;
-        // console.log(this.myGroups);
       })
   }
 
@@ -48,8 +48,8 @@ export class GroupsComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.myForm.get('fileSource').value);
     formData.append('name',this.myForm.get('name').value);
-
-    this.http.post('http://localhost:8000/api/group?id=A01329173', formData)
+    formData.append('id',localStorage.getItem('id'));
+    this.requestsService.post("group",formData)
       .subscribe(res => {
         console.log(res);
         if(res['error']){
@@ -85,8 +85,7 @@ export class GroupsComponent implements OnInit {
   }
 
   delete($crn){
-
-    this.http.get('http://localhost:8000/api/group/delete/'+$crn)
+    this.requestsService.get("group/delete/"+$crn)
       .subscribe(res => {
         if(res){
           location.reload();

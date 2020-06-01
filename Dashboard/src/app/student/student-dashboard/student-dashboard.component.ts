@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap'
 import { JsonPipe } from '@angular/common';
+import { RequestsService } from './../../shared/services/requests.service';
 
 @Component({
   selector: "app-student-dashboard",
@@ -23,10 +24,11 @@ export class StudentDashboardComponent implements OnInit {
   inactive: any = [];
   myGroups: any = [];
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private requestsService: RequestsService) { }
 
   ngOnInit(): void {
-    this.http.get('http://localhost:8000/api/assignment/student/A01732313')
+
+    this.requestsService.get("assignment/student/"+localStorage.getItem('id'))
       .subscribe(res => {
         this.myAssignments = res;
         this.myAssignments.forEach(assignment => {
@@ -35,8 +37,9 @@ export class StudentDashboardComponent implements OnInit {
             this.inactive.push(assignment);
           }
         });
+        console.log(this.myAssignments);
       })
-    this.http.get('http://localhost:8000/api/submission/A01732313')
+    this.requestsService.get('submission/'+localStorage.getItem('id'))
       .subscribe(res => {
         this.mySubmissions = res;
         this.mySubmissions.forEach(submission => {
