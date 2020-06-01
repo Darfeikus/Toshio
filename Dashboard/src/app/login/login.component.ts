@@ -31,7 +31,21 @@ export class LoginComponent implements OnInit {
       subscribe((res: any) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('id', this.graderLoginForm.get('studentId').value);
-        this.router.navigateByUrl("/student");
+        let role = this.loginService.getRole(res.token);
+        switch (role) {
+          case "student":
+            this.router.navigateByUrl("/student");
+          break;
+
+          case "teacher":
+            this.router.navigateByUrl("/");
+          break;
+        
+          default:
+            localStorage.removeItem("token");
+            localStorage.removeItem('id');
+          break;
+        }
       }, err => {
         console.log(err);
       })

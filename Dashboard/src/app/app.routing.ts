@@ -4,6 +4,7 @@ import { BlankTemplateComponent } from "./template/blank-template.component";
 import { LeftNavTemplateComponent } from "./template/left-nav-template.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { LoginComponent } from "./login/login.component";
+import { AuthGuardService } from './auth/auth-guard.service';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,10 @@ export const routes: Routes = [
     children: [
       {
         path: "",
+        canActivate: [AuthGuardService],
+        data:{
+          expectedRole: "teacher"
+        },
         loadChildren: () =>
           import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
       },
@@ -24,6 +29,10 @@ export const routes: Routes = [
       },
       {
         path: "assignments",
+        canActivate: [AuthGuardService],
+        data:{
+          expectedRole: "teacher"
+        },
         loadChildren: () =>
           import("./assignments/assignments.module").then(
             (m) => m.AssignmentsModule
@@ -39,16 +48,28 @@ export const routes: Routes = [
       },
       {
         path: "student",
+        canActivate: [AuthGuardService],
+        data:{
+          expectedRole: "student"
+        },
         loadChildren: () =>
           import("./student/student.module").then((m) => m.StudentModule),
       },
       {
         path: "students",
+        canActivate: [AuthGuardService],
+        data:{
+          expectedRole: "teacher"
+        },
         loadChildren: () =>
           import("./students/students.module").then((m) => m.StudentsModule),
       },
       {
         path: "groups",
+        canActivate: [AuthGuardService],
+        data:{
+          expectedRole: "teacher"
+        },
         loadChildren: () =>
           import("./groups/groups.module").then((m) => m.GroupsModule),
       },

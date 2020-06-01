@@ -44,11 +44,11 @@ export class AssignmentsComponent implements OnInit {
     this.requestsService.get("group/teacher/"+localStorage.getItem('id'))
       .subscribe(res => {
         this.myGroups = res;
-      });
+      }, this.requestsService.unauthorized);
     this.requestsService.get("language")
       .subscribe(res => {
         this.languages = res;
-      });
+      }, this.requestsService.unauthorized);
     this.requestsService.get("assignment/teacher/"+localStorage.getItem('id'))
       .subscribe(res => {
         this.myAssignments = res;
@@ -57,7 +57,7 @@ export class AssignmentsComponent implements OnInit {
             this.inactive.push(assignment);
           }
         });
-      });
+      }, this.requestsService.unauthorized);
   }
 
   myForm = new FormGroup({
@@ -146,7 +146,7 @@ export class AssignmentsComponent implements OnInit {
           else {
             location.reload();
           }
-        })
+        }, this.requestsService.unauthorized)
     }
   }
 
@@ -195,6 +195,7 @@ export class AssignmentsComponent implements OnInit {
             location.reload();
           }
         }, (error) => {
+          this.requestsService.unauthorized(error);
           location.reload();
         });
     }
@@ -281,7 +282,7 @@ export class AssignmentsComponent implements OnInit {
         else {
           alert("There was a problem while deleting")
         }
-      });
+      }, this.requestsService.unauthorized);
   }
 
   private getDismissReason(reason: any): string {
