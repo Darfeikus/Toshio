@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 require 'backend-compilador/upload.php';
 
@@ -84,8 +85,32 @@ class SubmissionController extends Controller
 
     public function showAssignment($id)
     {
-        return DB::table('alumno_submission_intento')->where('assignment_id','=',$id)->get();
+        return DB::table('alumno_submission_intento')->where('assignment_id','=',$id)->orderBy('id','asc')->get();
             
+    }
+
+    public function csv($id)
+    {
+ 
+        $users = DB::table('alumno_submission_intento')->where('assignment_id','=',$id)->orderBy('id','asc')->get();
+ 
+        foreach ($users as $user) {
+ 
+                $userData[] = [
+                    'Matricula' => $user->id,
+                    'Calificacion' => $user->grade,
+                ];
+            }
+ 
+        // Generate and return the spreadsheet
+        Excel::create('users', function ($excel) use ($userData) {
+ 
+            // Build the spreadsheet, passing in the users array
+            $excel->sheet('sheet1', function ($sheet) use ($userData) {
+                $sheet->fromArray($userData);
+            });
+ 
+        })->download('csv');
     }
 
     public function show($id)

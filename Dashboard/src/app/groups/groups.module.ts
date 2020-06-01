@@ -11,6 +11,7 @@ import { GroupsComponent } from "./groups.component";
 import { GroupsRoutingModule } from "./groups-routing/groups-routing.module";
 import { GroupsDetailsComponent } from './groups-details/groups-details.component';
 import { HttpClientModule } from "@angular/common/http";
+import { AppService } from './groups-details/app.service';
 
 @NgModule({
   imports: [
@@ -27,6 +28,6 @@ import { HttpClientModule } from "@angular/common/http";
     AlertModule.forRoot(),
   ],
   declarations: [GroupsComponent, GroupsDetailsComponent],
-  providers: [],
+  providers: [AppService],
 })
 export class GroupsModule {}

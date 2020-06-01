@@ -42,8 +42,6 @@ export class DashboardComponent implements OnInit {
             this.inactive.push(assignment);
           }
         });
-        // console.log(this.myAssignments);
-        // console.log(this.inactive);
       });
     // llamar a API y llenar arreglos para hacer dinámico el listado
   }
@@ -62,7 +60,7 @@ export class DashboardComponent implements OnInit {
   }
 
   details(assignment_id){
-    this.router.navigateByUrl("/groups/details");
+    this.router.navigateByUrl("/groups/details?assignment_id="+assignment_id);
   }
 
   private getDismissReason(reason: any): string {
