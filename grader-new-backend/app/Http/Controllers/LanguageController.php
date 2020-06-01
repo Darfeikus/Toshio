@@ -16,8 +16,14 @@ class LanguageController extends Controller
      */
     public function index()
     {
-        //
-        return Language::all();
+        try {
+            return Language::all();
+        } catch (ModelNotFoundException $e) {
+            return response(
+                json_encode(array('error' => true, 'error_message' => $e->getMessage())),
+                404
+            )->header('Content-type', 'application/json');
+        }
     }
 
     /**

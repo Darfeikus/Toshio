@@ -64,7 +64,8 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    
+    static function create(array $data)
     {   
         $user = new User();
         $user->setStudentId($data['student_id']);

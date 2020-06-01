@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Auth::routes();
-Route::get('send-mail', 'MailController@sendMail');
+// Auth::routes();
+// Route::get('send-mail', 'MailController@sendMail');

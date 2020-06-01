@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 //API ROUTES
-Route::post("/submission", 'SubmissionController@store');
-Route::post("/group", 'GroupController@store');
-Route::post("/assignment", 'AssignmentController@store');
-Route::post("/assignment/update", 'AssignmentController@storeUpdate');
+Route::post("/submission", 'SubmissionController@store')->middleware('auth:teacher');
+Route::post("/group", 'GroupController@store')->middleware('auth:teacher');
+Route::post("/assignment", 'AssignmentController@store')->middleware('auth:teacher');
+Route::post("/assignment/update", 'AssignmentController@storeUpdate')->middleware('auth:teacher');
 
 Route::get("/submission", 'SubmissionController@index');
 Route::get("/submission/{id}", 'SubmissionController@show'); //Shows all submissions from the student
@@ -26,20 +26,20 @@ Route::get("/submission/assignment/csv/{id}", 'SubmissionController@csv');
 
 Route::get("/group", 'GroupController@index');
 Route::get("/group/test", 'GroupController@test');
-Route::get("/group/teacherl", 'GroupController@showTeacherL');
+Route::get("/group/teacherl", 'GroupController@showTeacherL')->middleware('auth:teacher');;
 Route::get("/group/{id}", 'GroupController@show');
-Route::get("/group/delete/{id}", 'GroupController@delete');
-Route::get("/group/teacher/{id}", 'GroupController@showTeacher');
-Route::get("/group/student/{id}", 'GroupController@showStudent');
+Route::get("/group/delete/{id}", 'GroupController@delete')->middleware('auth:teacher');
+Route::get("/group/teacher/{id}", 'GroupController@showTeacher')->middleware('auth:teacher');
+Route::get("/group/student/{id}", 'GroupController@showStudent')->middleware('auth:student');
 
-Route::get("/assignment", 'AssignmentController@index')->middleware('auth:teacher');
-Route::get("/assignment/{id}", 'AssignmentController@show')->middleware('auth:teacher');
+Route::get("/assignment", 'AssignmentController@index');
+Route::get("/assignment/{id}", 'AssignmentController@show');
 Route::get("/assignment/delete/{id}", 'AssignmentController@delete')->middleware('auth:teacher');
 Route::get("/assignment/teacher/{id}", 'AssignmentController@showTeacher')->middleware('auth:teacher');
-Route::get("/assignment/student/{id}", 'AssignmentController@showStudent')->middleware('auth:teacher');
+Route::get("/assignment/student/{id}", 'AssignmentController@showStudent')->middleware('auth:student');
 
 //language routes
-Route::get("/language", 'LanguageController@index')->middleware('auth:teacher');
+Route::get("/language", 'LanguageController@index');
 Route::get("/language/{id}", 'LanguageController@show');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
