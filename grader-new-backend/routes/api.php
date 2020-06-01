@@ -32,11 +32,11 @@ Route::get("/group/delete/{id}", 'GroupController@delete');
 Route::get("/group/teacher/{id}", 'GroupController@showTeacher');
 Route::get("/group/student/{id}", 'GroupController@showStudent');
 
-Route::get("/assignment", 'AssignmentController@index');
-Route::get("/assignment/{id}", 'AssignmentController@show');
-Route::get("/assignment/delete/{id}", 'AssignmentController@delete');
-Route::get("/assignment/teacher/{id}", 'AssignmentController@showTeacher');
-Route::get("/assignment/student/{id}", 'AssignmentController@showStudent');
+Route::get("/assignment", 'AssignmentController@index')->middleware('auth:teacher');
+Route::get("/assignment/{id}", 'AssignmentController@show')->middleware('auth:teacher');
+Route::get("/assignment/delete/{id}", 'AssignmentController@delete')->middleware('auth:teacher');
+Route::get("/assignment/teacher/{id}", 'AssignmentController@showTeacher')->middleware('auth:teacher');
+Route::get("/assignment/student/{id}", 'AssignmentController@showStudent')->middleware('auth:teacher');
 
 //language routes
 Route::get("/language", 'LanguageController@index')->middleware('auth:teacher');
