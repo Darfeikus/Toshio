@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
-use Firebase\JWT\JWT;
 
 class LoginController extends Controller
 {
@@ -47,20 +46,8 @@ class LoginController extends Controller
                 json_encode(array('error' => true, 'error_message' => "Incorrect Password"))
                 , 400)->header('Content-type', 'application/json');
         }
-        $key = "mxfx*C#QJ*aRfeoKTRPUC%&P5vgk^fbY";
-        $payload = array(
-            "iss" => "http://example.org",
-            "aud" => "http://example.com",
-            "iat" => 1356999524,
-            "nbf" => 1357000000,
-            "user" => array(
-                'student_id' => $user->getStudentId(),
-                'role' => $user->getRole()
-            )
-        );
-        $jwt = JWT::encode($payload, $key);
         return response(
-            json_encode(array('message' => 'SuccessfulLogin', 'token' => $jwt))
+            json_encode(array('message' => 'SuccessfulLogin', 'token' => $user->tokenize()))
             , 200)->header('Content-type', 'application/json');
     }
 
@@ -83,6 +70,8 @@ class LoginController extends Controller
     
 
     public function denyAccess(){
-        return("Unauthorized");
+        return response(
+            json_encode(array('error' => true, 'error_message' => "You are not authorized"))
+            , 401)->header('Content-type', 'application/json');
     }
 }

@@ -29,12 +29,12 @@ Route::get("/assignment/teacher/{id}", 'AssignmentController@showTeacher');
 Route::get("/assignment/student/{id}", 'AssignmentController@showStudent');
 
 //language routes
-Route::get("/language", 'LanguageController@index');
+Route::get("/language", 'LanguageController@index')->middleware('auth:teacher');
 Route::get("/language/{id}", 'LanguageController@show');
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 //Register Routes
 Route::post('/register', 'Auth\RegisterController@register');

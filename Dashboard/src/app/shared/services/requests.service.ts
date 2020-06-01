@@ -22,4 +22,15 @@ export class RequestsService {
    
     return this.http.post<any>(this.baseURL+url, body, options)
   }
+
+  get(url: string, options?)
+  {
+    if(!options) 
+      options = {}
+    
+    if(localStorage.getItem('token'))
+      options.headers = new HttpHeaders({'Authentication': localStorage.getItem('token')});
+   
+    return this.http.post<any>(this.baseURL+url, options)
+  }
 }

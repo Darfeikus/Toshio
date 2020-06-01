@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\User;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Firebase\JWT\ExpiredException;
 
 class Authenticate extends Middleware
 {
@@ -17,26 +19,26 @@ class Authenticate extends Middleware
      *
      * @throws \Illuminate\Auth\AuthenticationException
      */
-    public function handle($request, Closure $next, ...$guards)
+    public function handle($request, Closure $next, $role)
     {
-        $this->authenticate($request, $guards);
-
-        return $next($request);
+        return $this->authenticate($request, $next, $role);
     }
 
-    protected function authenticate($request, array $guards)
+    protected function authenticate($request, $next, $role)
     {
-        if (empty($guards)) {
-            dd("NEPE");
+        try{
+            $user = User::getFromToken($request->header('Authorization'));
+        }catch (ExpiredException $e) {
+            return $this->redirectTo($request);
+        }catch (\UnexpectedValueException $e){
+            return $this->redirectTo($request);
+        }
+        
+        if(strcmp($user->getRole(),$role) != 0){
+            return $this->redirectTo($request);
         }
 
-        foreach ($guards as $guard) {
-            if ($this->auth->guard($guard)->check()) {
-                return $this->auth->shouldUse($guard);
-            }
-        }
-
-        $this->unauthenticated($request, $guards);
+        return $next($request);
     }
 
     /**
@@ -47,6 +49,6 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        return route('unauthorized');
+        return redirect()->route('unauthorized');
     }
 }
