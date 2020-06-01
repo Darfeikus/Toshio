@@ -92,8 +92,7 @@ class User
             "iss" => "http://example.org",
             "aud" => "http://example.com",
             "nbf" => mktime(0, 0, 0, date("m"),   date("d"),   date("Y")),
-            "nbf" => mktime(0, 0, 0, date("m"),   date("d"),   date("Y")),
-            "exp" => mktime(2, 0, 0, date("m"),   1,   date("Y")),
+            "exp" => mktime(2, 0, 0, date("m")+1,   1,   date("Y")),
             "user" => array(
                 'student_id' => $this->studentId,
                 'role' => $this->role

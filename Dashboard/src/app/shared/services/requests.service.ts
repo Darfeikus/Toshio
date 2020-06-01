@@ -18,7 +18,7 @@ export class RequestsService {
       options = {}
     
     if(localStorage.getItem('token'))
-      options.headers = new HttpHeaders({'Authentication': localStorage.getItem('token')});
+      options.headers = new HttpHeaders({'Authorization': localStorage.getItem('token')});
    
     return this.http.post<any>(this.baseURL+url, body, options)
   }
@@ -29,7 +29,9 @@ export class RequestsService {
       options = {}
     
     if(localStorage.getItem('token'))
-      options.headers = new HttpHeaders({'Authentication': localStorage.getItem('token')});
+      options.headers = new HttpHeaders({'Authorization': localStorage.getItem('token')});
+
+    console.log(options);
    
     return this.http.get<any>(this.baseURL+url, options)
   }
