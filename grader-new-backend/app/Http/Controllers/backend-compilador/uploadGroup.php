@@ -2,12 +2,13 @@
 
 use \App\Http\Controllers\MailController;
 use \App\Http\Controllers\GroupController;
+use \App\Http\Controllers\Auth\RegisterController;
 
 function RandomString() {
-    $characters = '0123456789abcdefghijkmlmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%';
+    $characters = '0123456789abcdefghijkmlmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
-    for ($i = 0; $i < 6; $i++) {
+    for ($i = 0; $i < 9; $i++) {
         $randomString .= $characters[rand(0, $charactersLength - 1)];
     }
     return $randomString;
@@ -38,7 +39,7 @@ function compile()
     $termcode = 0;
     $crn = 0;
     $arrayUsers = array();
-
+    
     if ($xlsx = SimpleXLS::parse($target_file)) {
         $i = 0; //rows
         foreach ($xlsx->rows() as $elt) {
@@ -49,18 +50,28 @@ function compile()
                     GroupController::createGroup($id_teacher,$crn,$name,$termcode);
                 }
                 $currentId = $elt[4];
-                
-                GroupController::insertStudent($crn,$currentId);
-                
                 $password = RandomString();
-                $hashed = md5($password);
-
-                // MailController::sendMail($currentId,$password);
-
+                GroupController::insertStudent($crn,$currentId);
                 array_push($arrayUsers,array($currentId,$password));
             }
             $i++;
         }
+        $i = 0;
+        foreach($arrayUsers as $user){
+            $data = array('student_id'=>$user[0],'password'=>$user[1],'role'=>'student');
+            
+            $query = json_encode(RegisterController::create($data));
+            $data = json_decode($query);
+            
+            if(!isset(json_decode($data->original)->error)){
+                // MailController::sendMailLogin($user[0],$user[1]);
+                // MailController::sendMailGroup($user[0],$name);
+            }
+            else{
+                // MailController::sendMailGroup($user[0],$name);
+            }
+        }
+        return json_encode(array('error' => false, 'message' => 'Success'));
     } else {
         return json_encode(array('error' => true, 'message' => SimpleXLS::parseError()));
     }
