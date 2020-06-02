@@ -5,7 +5,7 @@
 -- Dumped from database version 12.2 (Ubuntu 12.2-2.pgdg19.10+1)
 -- Dumped by pg_dump version 12.2 (Ubuntu 12.2-2.pgdg19.10+1)
 
--- Started on 2020-05-31 02:47:18 CDT
+-- Started on 2020-05-31 22:07:34 CDT
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -29,7 +29,7 @@ CREATE SCHEMA pgagent;
 ALTER SCHEMA pgagent OWNER TO darfeikus;
 
 --
--- TOC entry 3272 (class 0 OID 0)
+-- TOC entry 3282 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: SCHEMA pgagent; Type: COMMENT; Schema: -; Owner: darfeikus
 --
@@ -46,7 +46,7 @@ CREATE EXTENSION IF NOT EXISTS pgagent WITH SCHEMA pgagent;
 
 
 --
--- TOC entry 3273 (class 0 OID 0)
+-- TOC entry 3283 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION pgagent; Type: COMMENT; Schema: -; Owner: 
 --
@@ -181,7 +181,7 @@ CREATE SEQUENCE public.assignments_assignment_id_seq
 ALTER TABLE public.assignments_assignment_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3274 (class 0 OID 0)
+-- TOC entry 3284 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: assignments_assignment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -239,7 +239,7 @@ CREATE SEQUENCE public.languages_languages_id_seq
 ALTER TABLE public.languages_languages_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3275 (class 0 OID 0)
+-- TOC entry 3285 (class 0 OID 0)
 -- Dependencies: 208
 -- Name: languages_languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -307,7 +307,7 @@ CREATE SEQUENCE public.submissions_submission_id_seq
 ALTER TABLE public.submissions_submission_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3276 (class 0 OID 0)
+-- TOC entry 3286 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: submissions_submission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -337,6 +337,228 @@ ALTER TABLE ONLY public.languages ALTER COLUMN language_id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.submissions ALTER COLUMN submission_id SET DEFAULT nextval('public.submissions_submission_id_seq'::regclass);
+
+
+--
+-- TOC entry 3035 (class 0 OID 17921)
+-- Dependencies: 214
+-- Data for Name: pga_jobagent; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_jobagent (jagpid, jaglogintime, jagstation) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3036 (class 0 OID 17932)
+-- Dependencies: 216
+-- Data for Name: pga_jobclass; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_jobclass (jclid, jclname) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3037 (class 0 OID 17944)
+-- Dependencies: 218
+-- Data for Name: pga_job; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_job (jobid, jobjclid, jobname, jobdesc, jobhostagent, jobenabled, jobcreated, jobchanged, jobagentid, jobnextrun, joblastrun) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3039 (class 0 OID 17996)
+-- Dependencies: 222
+-- Data for Name: pga_schedule; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_schedule (jscid, jscjobid, jscname, jscdesc, jscenabled, jscstart, jscend, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3040 (class 0 OID 18026)
+-- Dependencies: 224
+-- Data for Name: pga_exception; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_exception (jexid, jexscid, jexdate, jextime) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3041 (class 0 OID 18041)
+-- Dependencies: 226
+-- Data for Name: pga_joblog; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_joblog (jlgid, jlgjobid, jlgstatus, jlgstart, jlgduration) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3038 (class 0 OID 17970)
+-- Dependencies: 220
+-- Data for Name: pga_jobstep; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_jobstep (jstid, jstjobid, jstname, jstdesc, jstenabled, jstkind, jstcode, jstconnstr, jstdbname, jstonerror, jscnextrun) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3042 (class 0 OID 18058)
+-- Dependencies: 228
+-- Data for Name: pga_jobsteplog; Type: TABLE DATA; Schema: pgagent; Owner: darfeikus
+--
+
+COPY pgagent.pga_jobsteplog (jslid, jsljlgid, jsljstid, jslstatus, jslresult, jslstart, jslduration, jsloutput) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3276 (class 0 OID 17378)
+-- Dependencies: 213
+-- Data for Name: alumno_submission_intento; Type: TABLE DATA; Schema: public; Owner: darfeikus
+--
+
+COPY public.alumno_submission_intento (assignment_id, id, tries_left, grade) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3267 (class 0 OID 16734)
+-- Dependencies: 204
+-- Data for Name: assignments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.assignments (assignment_id, name, crn, start_date, end_date, tries, language, created_at, updated_at, active, runtime) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3269 (class 0 OID 16745)
+-- Dependencies: 206
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.groups (crn, name, term_code, professor_id, created_at, updated_at) FROM stdin;
+36883	Estructura de Datos	202011	L00000001	2020-05-31 21:39:20.533738	2020-05-31 21:39:20.533738
+36882	Bases de Datos	202011	L00000001	2020-05-31 21:45:12.79174	2020-05-31 21:45:12.79174
+\.
+
+
+--
+-- TOC entry 3270 (class 0 OID 16753)
+-- Dependencies: 207
+-- Data for Name: languages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.languages (language, language_id, created_at, updated_at, extension) FROM stdin;
+Python3	10	2020-05-28 12:13:22.060017	2020-05-28 12:13:22.060017	py
+Java	9	2020-05-28 12:13:22.060017	2020-05-28 12:13:22.060017	java
+C	8	2020-05-28 12:13:22.060017	2020-05-28 12:13:22.060017	c
+\.
+
+
+--
+-- TOC entry 3272 (class 0 OID 16763)
+-- Dependencies: 209
+-- Data for Name: professor_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.professor_group (crn, professor_id) FROM stdin;
+36882	L00000001
+\.
+
+
+--
+-- TOC entry 3273 (class 0 OID 16769)
+-- Dependencies: 210
+-- Data for Name: student_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.student_group (user_id, crn) FROM stdin;
+A01732313	36882
+A01730687	36882
+A01734433	36882
+A01731813	36882
+A01730344	36882
+A01730547	36882
+A01734184	36882
+A01733983	36882
+A01730875	36882
+A01730712	36882
+A01733228	36882
+A01734337	36882
+A01329618	36882
+A01733922	36882
+A01734225	36882
+A01657967	36882
+A01734010	36882
+A01733984	36882
+A01733749	36882
+A01733927	36882
+A01734066	36882
+A01730397	36882
+A01731065	36882
+A01734198	36882
+A01329785	36882
+A01733753	36882
+A01734211	36882
+A01734205	36882
+A01734565	36882
+A01733616	36882
+A01174460	36882
+A01734172	36882
+A01730311	36882
+A01730451	36882
+A01734609	36882
+A01730601	36882
+A01733902	36882
+A01731103	36882
+A01734193	36882
+\.
+
+
+--
+-- TOC entry 3274 (class 0 OID 16775)
+-- Dependencies: 211
+-- Data for Name: submissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.submissions (assignment_id, grade, created_at, updated_at, submission_id, user_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3287 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: assignments_assignment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.assignments_assignment_id_seq', 147, true);
+
+
+--
+-- TOC entry 3288 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: languages_languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.languages_languages_id_seq', 10, true);
+
+
+--
+-- TOC entry 3289 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: submissions_submission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.submissions_submission_id_seq', 80, true);
 
 
 --
@@ -480,7 +702,7 @@ ALTER TABLE ONLY public.assignments
     ADD CONSTRAINT "language-assignments" FOREIGN KEY (language) REFERENCES public.languages(language_id);
 
 
--- Completed on 2020-05-31 02:47:18 CDT
+-- Completed on 2020-05-31 22:07:34 CDT
 
 --
 -- PostgreSQL database dump complete
