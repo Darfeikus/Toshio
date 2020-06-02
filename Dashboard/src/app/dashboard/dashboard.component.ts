@@ -25,12 +25,10 @@ export class DashboardComponent implements OnInit {
     this.requestsService.get("submission")
       .subscribe(res => {
         this.submissions = res;
-        // console.log(this.myGroups);
       });
     this.requestsService.get("group/teacher/" + localStorage.getItem('id'))
       .subscribe(res => {
         this.myGroups = res;
-        // console.log(this.myGroups);
       });
     this.requestsService.get("assignment/teacher/"+localStorage.getItem('id'))
       .subscribe(res => {
@@ -40,7 +38,10 @@ export class DashboardComponent implements OnInit {
             this.inactive.push(assignment);
           }
         });
+        this.myAssignments = this.myAssignments.filter(assignment => assignment.active);
       });
+      
+
     // llamar a API y llenar arreglos para hacer dinámico el listado
   }
 

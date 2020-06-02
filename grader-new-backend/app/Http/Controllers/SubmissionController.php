@@ -22,14 +22,13 @@ class SubmissionController extends Controller
      */
     public function index()
     {
-        return DB::table('alumno_submission_intento')
-            ->join('submissions', function ($join){
-                $join->on('submissions.assignment_id', '=', 'alumno_submission_intento.assignment_id');
+        return DB::table('submissions')
+            ->join('alumno_submission_intento', function ($join){
+                $join->on('submissions.user_id', '=', 'alumno_submission_intento.id');
             })
             ->join('assignments', function ($join) {
                 $join->on([
-                    ['assignments.tries','>','alumno_submission_intento.tries_left'],
-                    ['assignments.assignment_id','=','alumno_submission_intento.assignment_id'],
+                    ['assignments.assignment_id','=','submissions.assignment_id'],
                 ]);
             })            
             ->join('languages','languages.language_id','=','assignments.language')

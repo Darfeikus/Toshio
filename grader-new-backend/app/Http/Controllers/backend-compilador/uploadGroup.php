@@ -64,8 +64,8 @@ function compile()
             $data = json_decode($query);
             
             if(!isset(json_decode($data->original)->error)){
-                // MailController::sendMailLogin($user[0],$user[1]);
-                // MailController::sendMailGroup($user[0],$name);
+                MailController::sendMailLogin($user[0],$user[1]);
+                MailController::sendMailGroup($user[0],$name);
             }
             else{
                 MailController::sendMailGroup($user[0],$name);
