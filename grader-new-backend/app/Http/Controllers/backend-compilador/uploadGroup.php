@@ -68,7 +68,7 @@ function compile()
                 // MailController::sendMailGroup($user[0],$name);
             }
             else{
-                // MailController::sendMailGroup($user[0],$name);
+                MailController::sendMailGroup($user[0],$name);
             }
         }
         return json_encode(array('error' => false, 'message' => 'Success'));
