@@ -1,13 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 use Illuminate\Support\Facades\DB;
+use App\submission;
+use Illuminate\Http\Request;
+
+use App\assignment;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 require 'backend-compilador/upload.php';
 
-use App\submission;
-use Illuminate\Http\Request;
 
 class SubmissionController extends Controller
 {
@@ -38,27 +42,36 @@ class SubmissionController extends Controller
 
     public static function uploadSubmission($id,$grade,$user_id)
     {
-        $try = DB::table('alumno_submission_intento')->where([
-            ['assignment_id', '=',$id],
-            ['id', '=',$user_id],
-        ])->value('tries_left');
-        
-        if($try > 0){
-            $insertedId = DB::table('submissions')->insertGetId([
-                'assignment_id' => $id,
-                'grade' => $grade,
-                'user_id' => $user_id,
-            ]);
-            DB::connection('mysql')->table('submissions')->insert([
-                'submission_id' => $insertedId,
-                'assignment_id' => $id,
-                'grade' => $grade,
-                'user_id' => $user_id,
-            ]);
-            return  json_encode([$grade]);
+        DB::beginTransaction();
+        try{
+            $try = DB::table('alumno_submission_intento')->where([
+                ['assignment_id', '=',$id],
+                ['id', '=',$user_id],
+            ])->value('tries_left');
+            
+            if($try > 0){
+                $insertedId = submission::create([
+                    'assignment_id' => $id,
+                    'grade' => $grade,
+                    'user_id' => $user_id,
+                ])->submission_id;
+                // DB::connection('mysql')->table('submissions')->insert([
+                //     'submission_id' => $insertedId,
+                //     'assignment_id' => $id,
+                //     'grade' => $grade,
+                //     'user_id' => $user_id,
+                // ]);
+                DB::commit();
+                return  json_encode([$grade]);
+            }
+            else{
+                DB::rollBack();
+                return json_encode(["Maximum number of tries used"]);
+            }
         }
-        else{
-            return json_encode(["Maximum number of tries used"]);
+        catch(Exception $e){
+            DB::rollBack();
+            return json_encode($e->getMessage());
         }
     }
 
