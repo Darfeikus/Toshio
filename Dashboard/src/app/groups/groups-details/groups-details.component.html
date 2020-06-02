@@ -1,0 +1,32 @@
+<div class="" id="page-wrapper">
+  <div class="container-fluid">
+    <div class="row row-stat">
+      <div class="table-responsive m-3">
+        <div class="d-inline-flex" *ngFor="let assignment of assignment">
+          <div class="p-2">
+            <h3>{{assignment.name}}</h3>
+          </div>
+            <button class="btn btn-outline-success"  (click)="download()">
+              Exportar
+            </button>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Matricula</th>
+              <th>Numero de intentos restantes</th>
+              <th>Calificacion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let submission of submissions">
+              <td>{{submission.id}}</td>
+              <td>{{submission.tries_left}}</td>
+              <th>{{submission.grade}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="" id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 mt-3">
+                <h1>{{assignmentinfo.name}}</h1>
+                <h4>Fecha de Entrega: 
+                    {{getDayOfWeek(assignmentinfo.end_date)}}</h4>
+            </div>
+            <div class="col-12 mt-3">
+                <h4 *ngIf="!labels.length" >Estatus: {{assignmentinfo.status}}</h4>
+                <h4 *ngIf="labels.length" >Estatus: {{labels[0]}}</h4>
+                <h6>Lenguaje: <label style="color:blue;">{{assignmentinfo.language}}</label></h6>
+                <h6>Runtime: <label style="color:blue;">{{assignmentinfo.runtime}}</label></h6>
+            </div>
+            <div class="col-12 mt-3">
+                <div class="card">
+                    <h5 class="card-header">Descripción</h5>
+                    <div class="card-body">
+                        <!-- <embed src="localhost:8000/rules.pdf" width="800px" height="2100px" /> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <div class="card">
+                    <h5 class="card-header">Subir Intento</h5>
+                    <div class="card-body">
+                        <form [formGroup]="myForm" (ngSubmit)="submit()">
+                            <div class="form-group">
+                                <label for="file">Archivo</label>
+                                <input 
+                                    formControlName="file"
+                                    id="file" 
+                                    type="file" 
+                                    class="form-control"
+                                    (change)="onFileChange($event)">
+                                <div *ngIf="f.file.touched && f.file.invalid" class="alert alert-danger">
+                                    <div *ngIf="f.file.errors.required">File is required.</div>
+                                </div>
+                            </div>
+                                  
+                            <button class="btn btn-primary" type="submit" [disabled] = "!myForm.valid">Submit </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <h5 *ngIf="labels.length" class="card-header">Retroalimentación</h5>
+                <div class="card" style="height: 50%;overflow: scroll;">
+                    <div class="card-body" *ngFor="let label of labels">
+                        <label>{{label}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

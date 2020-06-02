@@ -1,0 +1,65 @@
+<div class="container login-container container-fluid">
+  <div class="row">
+    <div class="col-md-6 login-form-1">
+      <h3>Online GRADER</h3>
+      <form [formGroup]="graderLoginForm" (ngSubmit)="login()">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Matrícula / Nómina"
+            formControlName="studentId"
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Contraseña"
+            formControlName="password"
+          />
+        </div>
+        <div class="form-group">
+          <button
+            type="submit"
+            class="btnSubmit"
+          >Inicia Sesión</button>
+        </div>
+        <div class="form-group">
+          <a class="ForgetPwd">¿Olvidaste tu contraseña ?</a>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6 login-form-2">
+      <h3>Programación Competitiva ITESM</h3>
+      <form>
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Matrícula / Nómina"
+            value=""
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Contraseña"
+            value=""
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="submit"
+            class="btnSubmit"
+            value="Iniciar Sesión"
+          />
+        </div>
+        <div class="form-group">
+          <a class="ForgetPwd">¿Olvidaste tu contraseña ?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
