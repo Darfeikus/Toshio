@@ -55,12 +55,12 @@ class SubmissionController extends Controller
                     'grade' => $grade,
                     'user_id' => $user_id,
                 ])->submission_id;
-                // DB::connection('mysql')->table('submissions')->insert([
-                //     'submission_id' => $insertedId,
-                //     'assignment_id' => $id,
-                //     'grade' => $grade,
-                //     'user_id' => $user_id,
-                // ]);
+                DB::connection('mysql')->table('submissions')->insert([
+                    'submission_id' => $insertedId,
+                    'assignment_id' => $id,
+                    'grade' => $grade,
+                    'user_id' => $user_id,
+                ]);
                 DB::commit();
                 return  json_encode([$grade]);
             }
@@ -104,7 +104,6 @@ class SubmissionController extends Controller
     public function showAssignment($id)
     {
         return DB::table('alumno_submission_intento')->where('assignment_id','=',$id)->orderBy('id','asc')->get();
-            
     }
 
     public function show($id)

@@ -9,12 +9,6 @@ import { RequestsService } from '../../shared/services/requests.service';
   selector: 'app-attempt',
   templateUrl: './attempt.component.html',
   styleUrls: ['./attempt.component.css'],
-  template: `
-  <pdf-viewer [src]="pdfSrc" 
-              [render-text]="true"
-              style="display: block;"
-  ></pdf-viewer>
-  `
 })
 export class AttemptComponent implements OnInit {
 
@@ -29,9 +23,10 @@ export class AttemptComponent implements OnInit {
   len = "";
   extension = "";
   mySubmissions: any = [];
+  submission: any;
   labels: string[] = [];
 
-  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute,  private router: Router, private requestsService: RequestsService) {
+  constructor(private http: HttpClient, private activatedRoute: ActivatedRoute, private router: Router, private requestsService: RequestsService) {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.assignment_id = params.assignment_id;
     });
@@ -82,35 +77,43 @@ export class AttemptComponent implements OnInit {
   }
 
   indexOfObj(array, attr, value) {
-    for(var i = 0; i < array.length; i++) {
-        if(array[i][attr] === value) {
-            return i;
-        }
+    for (var i = 0; i < array.length; i++) {
+      if (array[i][attr] === value) {
+        return i;
+      }
     }
     return -1;
   }
 
   ngOnInit(): void {
     const date = new Date();
-    
+
     this.requestsService.get('submission/assignment/' + this.assignment_id)
       .subscribe(res => {
-        var index = this.indexOfObj(res,'id',localStorage.getItem('id'));
-        if(index<0){
+        var index = this.indexOfObj(res, 'id', localStorage.getItem('id'));
+        this.submission = res[index];
+        if (index < 0) {
           this.router.navigateByUrl("/student");
         }
       });
 
+    this.requestsService.get('submission/' + localStorage.getItem('id'))
+      .subscribe(res => {
+        this.mySubmissions = res;
+      });
+
     this.requestsService.get('assignment/' + this.assignment_id).subscribe(res => {
       this.assignmentinfo = res[0];
-      if(new Date(this.assignmentinfo.start_date) > date || date > new Date(this.assignmentinfo.end_date)){
+      if (new Date(this.assignmentinfo.start_date) > date || date > new Date(this.assignmentinfo.end_date)) {
         this.router.navigateByUrl("/student");
       }
+
       var index = this.mySubmissions.findIndex(x => x.assignment_id == this.assignmentinfo.assignment_id);
-      if(index != -1){
-        this.assignmentinfo['status'] = this.mySubmissions[index].grade + "/100";
+
+      if (index != -1) {
+        this.assignmentinfo['status'] = this.submission.grade + "/100";
       }
-      else{
+      else {
         this.assignmentinfo['status'] = "Sin entregar";
       }
     });
