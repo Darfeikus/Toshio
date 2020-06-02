@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 //API ROUTES
-Route::post("/submission", 'SubmissionController@store')->middleware('auth:teacher');
+Route::post("/submission", 'SubmissionController@store')->middleware('auth:student');
 Route::post("/group", 'GroupController@store')->middleware('auth:teacher');
 Route::post("/assignment", 'AssignmentController@store')->middleware('auth:teacher');
 Route::post("/assignment/update", 'AssignmentController@storeUpdate')->middleware('auth:teacher');

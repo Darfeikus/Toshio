@@ -44,7 +44,13 @@ class SubmissionController extends Controller
         ])->value('tries_left');
         
         if($try > 0){
-            DB::table('submissions')->insert([
+            $insertedId = DB::table('submissions')->insertGetId([
+                'assignment_id' => $id,
+                'grade' => $grade,
+                'user_id' => $user_id,
+            ]);
+            DB::connection('mysql')->table('submissions')->insert([
+                'submission_id' => $insertedId,
                 'assignment_id' => $id,
                 'grade' => $grade,
                 'user_id' => $user_id,
